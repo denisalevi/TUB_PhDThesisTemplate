@@ -87,7 +87,7 @@
 \usepackage{tikz}
 
 %\usepackage{pgf}
-\usepackage{tikzscale}
+%\usepackage{tikzscale}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.12}
 \usepgfplotslibrary{external} 
