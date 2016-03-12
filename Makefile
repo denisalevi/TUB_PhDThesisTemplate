@@ -778,6 +778,7 @@ PNGTOPNM	?= pngtopnm	# From NetPBM - step 1 for png -> eps
 PPMTOPGM	?= ppmtopgm	# From NetPBM - (gray) step 2 for png -> eps
 PNMTOPS		?= pnmtops	# From NetPBM - step 3 for png -> eps
 GUNZIP		?= gunzip	# GZipped EPS
+ASYMPTOTE   ?= asy
 # == Beamer Enlarged Output ==
 PSNUP		?= psnup
 # == Viewing Stuff ==
@@ -1187,6 +1188,7 @@ all_files.rst		?= $(wildcard *.rst)
 all_files.lhs		?= $(wildcard *.lhs)
 all_files.mp		?= $(wildcard *.mp)
 all_files.fig		?= $(wildcard *.fig)
+all_files.asy   	?= $(wildcard *.asy)
 all_files.gpi		?= $(wildcard *.gpi)
 all_files.dot		?= $(wildcard *.dot)
 all_files.xvg		?= $(wildcard *.xvg)
@@ -1238,6 +1240,7 @@ files.gpi	:= $(call filter-buildable,gpi)
 files.dot	:= $(call filter-buildable,dot)
 files.mp	:= $(call filter-buildable,mp)
 files.fig	:= $(call filter-buildable,fig)
+files.asy	:= $(call filter-buildable,asy)
 files.xvg	:= $(call filter-buildable,xvg)
 files.svg	:= $(call filter-buildable,svg)
 files.png	:= $(call filter-buildable,png)
@@ -1268,6 +1271,7 @@ default_files.gpi	:= $(call filter-default,gpi)
 default_files.dot	:= $(call filter-default,dot)
 default_files.mp	:= $(call filter-default,mp)
 default_files.fig	:= $(call filter-default,fig)
+default_files.asy	:= $(call filter-default,asy)
 default_files.xvg	:= $(call filter-default,xvg)
 default_files.svg	:= $(call filter-default,svg)
 default_files.png	:= $(call filter-default,png)
@@ -1367,6 +1371,7 @@ graphic_source_extensions	:= mp \
 				   xvg \
 				   svg \
 				   dot \
+				   asy \
 				   eps.gz
 
 ifeq "$(strip $(BUILD_STRATEGY))" "latex"
@@ -2541,6 +2546,10 @@ define convert-jpg
 $(CONVERT) $(if $3,-type Grayscale,) '$1' eps2:'$2'
 endef
 
+# Creation of .pdf files from .asy files
+# $(call convert-asy,<asy file>)
+convert-asy	= $(ASYMPTOTE) -V -f pdf $1
+
 # Creation of .eps files from .fig files
 # $(call convert-fig,<fig file>,<output file>,[gray])
 convert-fig	= $(FIG2DEV) -L $(if $(filter %.pdf,$2),pdf,eps) $(if $3,-N,) $1 $2
@@ -3081,6 +3090,10 @@ endif
 %.pdf:	%.fig
 	$(QUIET)$(call echo-graphic,$^,$@)
 	$(QUIET)$(call convert-fig,$<,$@,$(GRAY))
+
+%.pdf:	%.asy
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-asy,$<)
 
 %.pdf:	%.svg
 	$(QUIET)$(call echo-graphic,$^,$@)
