@@ -1181,6 +1181,7 @@ endif
 
 # Files of interest
 all_files.tex		?= $(wildcard *.tex)
+all_files.xmpdata	?= $(wildcard *.xmpdata)
 all_files.tex.sh	?= $(wildcard *.tex.sh)
 all_files.tex.pl	?= $(wildcard *.tex.pl)
 all_files.tex.py	?= $(wildcard *.tex.py)
