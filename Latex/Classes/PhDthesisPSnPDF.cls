@@ -89,10 +89,11 @@
 %\usepackage{pgf}
 \usepackage{tikzscale}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.12}
+\pgfplotsset{compat=1.9}
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
-\tikzexternalize[shell escape=-enable-write18, optimize=false]
+\tikzexternalize[shell escape=-enable-write18,  optimize=false]
+%\tikzexternalize[shell escape=-shell-escape,  optimize=false]
 \tikzset{external/system call= {pdflatex -save-size=80000 
                                -pool-size=10000000 
                                -extra-mem-top=50000000 
