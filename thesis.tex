@@ -12,7 +12,7 @@
 %: Style file for Latex
 % Most style definitions are in the external file PhDthesisPSnPDF.
 % In this template package, it can be found in ./Latex/Classes/
-\documentclass[twoside,12pt]{Latex/Classes/PhDthesisPSnPDF}
+\documentclass[twoside,12pt,online,a4paper]{Latex/Classes/PhDthesisPSnPDF}
 
 
 %: Macro file for Latex
@@ -25,7 +25,7 @@
 %:                  TITLE PAGE: name, degree,..
 % ----------------------------------------------------------------------
 % below is to generate the title page with crest and author name
-\RequirePackage{ifpdf} 
+
 %if output to PDF then put the following in PDF header
 \ifpdf  
     \pdfcatalog { /PageMode (/UseOutlines)

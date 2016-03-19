@@ -20,8 +20,8 @@
 
 \newif\ifCLASSOPTIONfinal           \CLASSOPTIONfinaltrue
 \newif\ifCLASSOPTIONdraft           \CLASSOPTIONdraftfalse
-\newif\ifCLASSOPTIONdraftcls        \CLASSOPTIONdraftclsfalse
-\newif\ifCLASSOPTIONdraftclsnofoot  \CLASSOPTIONdraftclsnofootfalse
+\newif\ifCLASSOPTIONprint           \CLASSOPTIONprintfalse
+\newif\ifCLASSOPTIONonline          \CLASSOPTIONonlinetrue
 
 \newif\ifCLASSOPTIONnofonttune      \CLASSOPTIONnofonttunefalse
 
@@ -39,11 +39,16 @@
 \DeclareOption{11pt}{\PassOptionsToClass{11pt}{book}\def\CLASSOPTIONpt{11}}
 \DeclareOption{12pt}{\PassOptionsToClass{12pt}{book}\def\CLASSOPTIONpt{12}}
 
+\DeclareOption{a4paper}{\PassOptionsToClass{a4paper}{book}\def\CLASSOPTIONpapersize{a4paper}}
+\DeclareOption{a5paper}{\PassOptionsToClass{a5paper}{book}\def\CLASSOPTIONpapersize{a5paper}}
+\DeclareOption{letterpaper}{\PassOptionsToClass{letterpaper}{book}\def\CLASSOPTIONpapersize{letterpaper}}
+
 \DeclareOption{oneside}{\PassOptionsToClass{oneside}{book}\@twosidefalse\@mparswitchfalse
                         \CLASSOPTIONonesidetrue\CLASSOPTIONtwosidefalse}
 \DeclareOption{twoside}{\PassOptionsToClass{twoside}{book}\@twosidetrue\@mparswitchtrue
                         \CLASSOPTIONtwosidetrue\CLASSOPTIONonesidefalse}
-
+\DeclareOption{print}{ \CLASSOPTIONprinttrue\CLASSOPTIONonlinefalse}
+\DeclareOption{online}{ \CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
@@ -78,11 +83,33 @@
 \RequirePackage{lscape}   % Supports Landscape Layout
 \RequirePackage{setspace} % Define line spacing in paragraph
 \RequirePackage{calc}     % calculate vertical spacing
-
+\RequirePackage{tabularx}
 % ************************* Conditional Statements *****************************
 \RequirePackage{ifthen}   % Conditional statements
 \RequirePackage{ifpdf}    % Check for pdfLaTeX
 \RequirePackage{ifxetex}  % XeLaTeX
+
+
+
+% *************************** Graphics and Figures *****************************
+\RequirePackage[usenames, dvipsnames]{color}
+\ifpdf
+  % Convert eps figures to pdf
+  \RequirePackage{epstopdf}
+  %\RequirePackage[pdftex]{graphicx}
+      \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
+    %\RequirePackage[pdftex]{graphicx}
+%    \pdfcompresslevel=9
+%    \pdfminorversion=5
+%    \pdfobjcompresslevel=3
+    \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
+\else
+     \DeclareGraphicsExtensions{.eps, .ps}
+    \RequirePackage{epsfig}
+    \RequirePackage{graphicx}
+    \graphicspath{{0_frontmatter/figures/EPS/}{0_frontmatter/figures/}}
+\fi
+
 
 % TeX default is 50
 \hyphenpenalty=750
@@ -183,7 +210,6 @@ texpreamble("\RequirePackage{upgreek}");
 \RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
 %\RequirePackage{nextpage}
 \RequirePackage{booktabs}
-\RequirePackage{setspace}
 \RequirePackage[figure,lined,boxed]{algorithm2e}
 %\RequirePackage{showframe}
 \RequirePackage{multirow}
@@ -309,17 +335,61 @@ texpreamble("\RequirePackage{upgreek}");
 %\newboolean{usepgf} %Deklaration
 %\setboolean{usepgf}{false} %Zuweisung
 
+%******************************* Print / Online ********************************
+% Defines a print / online version to define page-layout and hyperrefering
 
+% Moved below other usepackage definitions to fix PDFLaTeX footnote warning
+% Based on the suggestion by John Plaice
 
-\ifpdf
+\ifsetDVI
+  \special{papersize=\the\paperwidth,\the\paperheight}
+  %\RequirePackage[unicode=true]{hyperref}  % extra option dvips
+     \setlength{\paperheight}{297mm}
+   \setlength{\paperwidth}{210mm}
+       \RequirePackage[ bookmarksopen = true,
+                 bookmarksnumbered = true,
+                 breaklinks = true,
+                 linktocpage,
+                 colorlinks = true,
+                 linkcolor = blue,
+                 urlcolor  = blue,
+                 citecolor = red,
+                 anchorcolor = green,
+                 ]{hyperref}
+\else
+  %\RequirePackage[unicode=true]{hyperref}
+  %\pdfpagewidth=\the\paperwidth
+  %\pdfpageheight=\the\paperheight
+  \pdfpageheight=297mm
+   \pdfpagewidth=210mm
+\fi
+\ifCLASSOPTIONprint
+%\ifpdf
+  % For Print version
+  \hypersetup{
+    final=true,
+    plainpages=false,
+    pdfstartview=FitV,
+    pdftoolbar=true,
+    pdfmenubar=true,
+    bookmarksopen=true,
+    bookmarksnumbered=true,
+    breaklinks=true,
+    linktocpage,
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black,
+    anchorcolor=black
+  }
+  \ifCLASSOPTIONtwoside
+    \hypersetup{pdfpagelayout=TwoPageRight}
+  \else
+    \hypersetup{pdfpagelayout=OneColumn}
+  \fi
 %-->
-%--> Google.com search "hyperref options"
-%--> 
-%--> http://www.ai.mit.edu/lab/sysadmin/latex/documentation/latex/hyperref/manual.pdf
-%--> http://www.chemie.unibas.ch/~vogtp/LaTeX2PDFLaTeX.pdf 
-%--> http://www.uni-giessen.de/partosch/eurotex99/ oberdiek/print/sli4a4col.pdf
-%--> http://me.in-berlin.de/~miwie/tex-refs/html/latex-packages.html
-%-->
+\else
+ % For PDF Online version
     \hypersetup{ plainpages = false, 
                  bookmarksopen = true,
                  bookmarksnumbered = true,
@@ -340,42 +410,17 @@ texpreamble("\RequirePackage{upgreek}");
                  pdfencoding=unicode
 }
 %                 ]{hyperref} 
-
-    \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
-    %\RequirePackage[pdftex]{graphicx}
-%    \pdfcompresslevel=9
-%    \pdfminorversion=5
-%    \pdfobjcompresslevel=3
-    \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
-\else
-    \RequirePackage[ bookmarksopen = true,
-                 bookmarksnumbered = true,
-                 breaklinks = true,
-                 linktocpage,
-                 colorlinks = true,
-                 linkcolor = blue,
-                 urlcolor  = blue,
-                 citecolor = red,
-                 anchorcolor = green,
-                 ]{hyperref}
-
-    \DeclareGraphicsExtensions{.eps, .ps}
-    \RequirePackage{epsfig}
-    \RequirePackage{graphicx}
-    \graphicspath{{0_frontmatter/figures/EPS/}{0_frontmatter/figures/}}
 \fi
+
+%\else
+
+
+
+%\fi
 
 
 %:-------------------------- page layout -----------------------
 
-%A4 settings
-\ifpdf
-   \pdfpageheight=297mm
-   \pdfpagewidth=210mm
-\else
-   \setlength{\paperheight}{297mm}
-   \setlength{\paperwidth}{210mm}
-\fi
 
 \setlength{\hoffset}{0.00cm}
 \setlength{\voffset}{0.00cm}
