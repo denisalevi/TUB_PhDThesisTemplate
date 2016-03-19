@@ -18,14 +18,14 @@ DEL "%FILENAME%.pdf"
 DEL "%FILENAME%.ps"
 DEL "%FILENAME%.dvi"
 
-pdflatex  -draftmode -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
+pdflatex -shell-escape -draftmode -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 bibtex "%FILENAME%.aux"
 makeindex "%FILENAME%.aux"
 makeindex "%FILENAME%.idx"
 makeglossaries "%FILENAME%"
-pdflatex -draftmode -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000  "%FILENAME%.tex"
+pdflatex -shell-escape -draftmode -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000  "%FILENAME%.tex"
 makeglossaries "%FILENAME%"
-pdflatex  -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
+pdflatex  -shell-escape -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 
 
 DEL "%FILENAME%.aux"

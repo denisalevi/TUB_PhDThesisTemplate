@@ -12,7 +12,7 @@
 %: Style file for Latex
 % Most style definitions are in the external file PhDthesisPSnPDF.
 % In this template package, it can be found in ./Latex/Classes/
-\documentclass[twoside,11pt]{Latex/Classes/PhDthesisPSnPDF}
+\documentclass[twoside,12pt]{Latex/Classes/PhDthesisPSnPDF}
 
 
 %: Macro file for Latex
@@ -183,7 +183,7 @@
 \cfchapter{Discussion\label{ch:chapter7}}{7}{discussion}
 \tikzsetexternalprefix{./8/TikzPictures/}
 \cfchapter{Materials and Methods}{8}{materials_methods}
-
+\newpage
        % description of lab methods
 
 
@@ -205,7 +205,7 @@
 % PhDbiblio-url2 = names small caps, title bold & hyperlinked, link to page 
 \begin{multicols}{2} % \begin{multicols}{ # columns}[ header text][ space]
 \begin{tiny} % tiny(5) < scriptsize(7) < footnotesize(8) < small (9)
-
+\cleardoublepage
 \bibliographystyle{Latex/Classes/PhDbiblio-url2} % Title is link if provided
 \renewcommand{\bibname}{References} % changes the header; default: Bibliography
 

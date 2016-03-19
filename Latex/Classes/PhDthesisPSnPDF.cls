@@ -5,66 +5,84 @@
 % based on CUEDthesis version 1 by Harish Bhanderi 2002
 %---------------------------------------------------------------
 
+% ************************** Class Identification ******************************
+\newcommand\fileversion{3.0}
+\newcommand\filedate{2015/06/28}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{Latex/Classes/PhDthesisPSnPDF}[\filedate\space PhD thesis class
+ by Holger Nahrstaedt (v\fileversion)]
+\typeout{https://github.com/holgern/TUB_PhDThesisTemplate}
 
-%-------------------------- identification ---------------------
-%\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{Latex/Classes/PhDthesisPSnPDF}[2016/03/12 v3 PhD thesis class]
+% class option conditionals
+
+\newif\ifCLASSOPTIONoneside         \CLASSOPTIONonesidetrue
+\newif\ifCLASSOPTIONtwoside         \CLASSOPTIONtwosidefalse
+
+\newif\ifCLASSOPTIONfinal           \CLASSOPTIONfinaltrue
+\newif\ifCLASSOPTIONdraft           \CLASSOPTIONdraftfalse
+\newif\ifCLASSOPTIONdraftcls        \CLASSOPTIONdraftclsfalse
+\newif\ifCLASSOPTIONdraftclsnofoot  \CLASSOPTIONdraftclsnofootfalse
+
+\newif\ifCLASSOPTIONnofonttune      \CLASSOPTIONnofonttunefalse
+
+\newif\ifCLASSOPTIONcaptionsoff     \CLASSOPTIONcaptionsofffalse
+
+\newif\ifCLASSOPTIONromanappendices \CLASSOPTIONromanappendicesfalse
+
+% indicates if pdf (via pdflatex) output
+\newif\ifCLASSINFOpdf               \CLASSINFOpdffalse
 
 
-%:-------------------------- report or book -----------------------
+% LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
+\DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
+\DeclareOption{10pt}{\PassOptionsToClass{10pt}{book}\def\CLASSOPTIONpt{10}}
+\DeclareOption{11pt}{\PassOptionsToClass{11pt}{book}\def\CLASSOPTIONpt{11}}
+\DeclareOption{12pt}{\PassOptionsToClass{12pt}{book}\def\CLASSOPTIONpt{12}}
 
-%If you want to use a Report style document then uncomment the following 3 lines and comment the below 8 book style lines:
-%\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
-%\ProcessOptions\relax
-%%\LoadClass[a4paper]{report}
-%\ifx\pdfoutput\undefined
-%   \LoadClass[dvips, a4paper]{report}
-%\else
-%   \LoadClass[pdftex, a4paper]{report}
-%\fi
-
-%%Bibliography
-%%uncomment next line to change bibliography name to references for Report document class
-%\renewcommand{\refname}{References}
-
-
+\DeclareOption{oneside}{\PassOptionsToClass{oneside}{book}\@twosidefalse\@mparswitchfalse
+                        \CLASSOPTIONonesidetrue\CLASSOPTIONtwosidefalse}
+\DeclareOption{twoside}{\PassOptionsToClass{twoside}{book}\@twosidetrue\@mparswitchtrue
+                        \CLASSOPTIONtwosidetrue\CLASSOPTIONonesidefalse}
 
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
 %if you use a macTeX 2008 or later, use the ifpdf package
-\RequirePackage{ifpdf} 
 
-\ifpdf
-    % we are running PDFLaTeX
-    \message{pdfoutput detected}
-   %\LoadClass[pdftex, a4paper]{book}
-    \LoadClass[a4paper]{book}
-   %:------------------------ Enable normal pdf generation --------------------
- 
- %  \usepackage[pdftex]{hyperref}
-
-  %:-------------------------- Enable pdfa-1b generation -----------------------
-  \usepackage[a-1b]{pdfx}
-  \usepackage{xmpincl}
+\newif\ifsetDVI\setDVIfalse
+\ifx\pdfoutput\undefined
+  % we are not running PDFLaTeX
+  \setDVItrue
+  \LoadClass[dvips,fleqn,openright]{book}%
+\else % we are running PDFLaTeX
+  \ifnum \pdfoutput>0
+    %PDF-Output
+    \setDVIfalse
+    \LoadClass[pdftex,fleqn,openright]{book}%
+      %:-------------------------- Enable pdfa-1b generation -----------------------
+  \RequirePackage[a-1b]{pdfx}
+  \RequirePackage{xmpincl}
   %\includexmp{pdfa-1b}
   %: ----------------------------------------------------------------------------
-\else
+  \else
     %DVI-output
-  \LoadClass[dvips, a4paper]{book}
-  \usepackage[
-  dvips, 
-  %bookmarks=true,
-  %pdfpagelabels,
-  %pagebackref,
-  %hyperindex = true,
-  %hyperfigures,
-  pdfpagelayout = SinglePage,
-  pdfpagemode = UseOutlines, 
-  ]{hyperref}
-    
+    \setDVItrue
+    \LoadClass[fleqn,openright]{book}%
+  \fi
 \fi
+% ******************************************************************************
+% ******************************** Packages ************************************
+% ******************************************************************************
+% ************************** Layout and Formatting *****************************
 
+\RequirePackage{lscape}   % Supports Landscape Layout
+\RequirePackage{setspace} % Define line spacing in paragraph
+\RequirePackage{calc}     % calculate vertical spacing
+
+% ************************* Conditional Statements *****************************
+\RequirePackage{ifthen}   % Conditional statements
+\RequirePackage{ifpdf}    % Check for pdfLaTeX
+\RequirePackage{ifxetex}  % XeLaTeX
 
 % TeX default is 50
 \hyphenpenalty=750
@@ -80,15 +98,15 @@
 
 
 %:-------------------------- packages UTF8 -----------------------
-\usepackage{inputenc}
-\inputencoding{utf8}
-\makeatother
+%\RequirePackage{inputenc}
+%\inputencoding{utf8}
+%\makeatother
 %:-------------------------  graphics ----------------------------
-\usepackage{tikz}
+\RequirePackage{tikz}
 
-%\usepackage{pgf}
-\usepackage{tikzscale}
-\usepackage{pgfplots}
+%\RequirePackage{pgf}
+\RequirePackage{tikzscale}
+\RequirePackage{pgfplots}
 \pgfplotsset{compat=1.9}
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
@@ -112,8 +130,8 @@
 %\def\useexternalfile#1{\tikzsetnextfilename{#1-output}\input{\csname tikzexternal\endcsname#1.tikz}}
 
 %\tikzexternalize[shell escape=-enable-write18]
-\usepackage {asymptote}
-\usepackage {catchfile}
+\RequirePackage {asymptote}
+\RequirePackage {catchfile}
 
 \begingroup
 \catcode `\^^M = 12 \endlinechar = -1 %
@@ -134,103 +152,150 @@
 
 \begin{asydef}
 texpreamble("\include{commands}");
-texpreamble("\usepackage{libertine}");
-texpreamble("\usepackage[libertine]{newtxmath}");
-texpreamble("\usepackage[T1]{fontenc}");
-texpreamble("\usepackage{amssymb}");
-texpreamble("\usepackage{amsmath}");
-texpreamble("\usepackage{mathtools}");
-texpreamble("\usepackage{upgreek}");
+texpreamble("\RequirePackage{libertine}");
+texpreamble("\RequirePackage[libertine]{newtxmath}");
+texpreamble("\RequirePackage[T1]{fontenc}");
+texpreamble("\RequirePackage{amssymb}");
+texpreamble("\RequirePackage{amsmath}");
+texpreamble("\RequirePackage{mathtools}");
+texpreamble("\RequirePackage{upgreek}");
 \end{asydef}
 %// Global Asymptote definitions can be put here.
 %import three;
-%usepackage("bm");
+%RequirePackage("bm");
 %texpreamble("\def\V#1{\bm{#1}}");
 %// One can globally override the default toolbar settings here:
 %// settings.toolbar=true;
 %:-------------------------- packages for fancy things -----------------------
-\usepackage{graphics} % for improved inclusion of graphics
-%\usepackage{wrapfig} % to include figure with text wrapping around it
-\usepackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
-\usepackage{fancyhdr} % for better header layout
-\usepackage[german,english]{babel}
-%\usepackage[usenames, dvipsnames]{color}
-\usepackage[perpage]{footmisc}
-\usepackage[sort, numbers]{natbib}
-\usepackage{ifthen}
-\usepackage{placeins}
-\usepackage[countmax]{subfloat}
-\usepackage{subfig}
-\usepackage{multicol} % for pages with multiple text columns, e.g. References
+\RequirePackage{graphics} % for improved inclusion of graphics
+%\RequirePackage{wrapfig} % to include figure with text wrapping around it
+\RequirePackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
+\RequirePackage{fancyhdr} % for better header layout
+\RequirePackage[german,english]{babel}
+%\RequirePackage[usenames, dvipsnames]{color}
+\RequirePackage[perpage]{footmisc}
+\RequirePackage[sort, numbers]{natbib}
+\RequirePackage{placeins}
+\RequirePackage[countmax]{subfloat}
+\RequirePackage{subfig}
+\RequirePackage{multicol} % for pages with multiple text columns, e.g. References
 \setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
-\usepackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
-%\usepackage{nextpage}
-\usepackage{booktabs}
-\usepackage{setspace}
-\usepackage[figure,lined,boxed]{algorithm2e}
-%\usepackage{showframe}
-\usepackage{multirow}
-\usepackage{hhline}
-\usepackage{titlesec}
+\RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
+%\RequirePackage{nextpage}
+\RequirePackage{booktabs}
+\RequirePackage{setspace}
+\RequirePackage[figure,lined,boxed]{algorithm2e}
+%\RequirePackage{showframe}
+\RequirePackage{multirow}
+\RequirePackage{hhline}
+\RequirePackage{titlesec}
 
 %:-------------------------- Math -------------------------------------------
-%\usepackage{unicode-math}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{mathtools}
-\usepackage{upgreek}
-%\usepackage{eucal} %special alphabet
+%\RequirePackage{unicode-math}
+%\RequirePackage{amssymb}
+%\RequirePackage{amsmath}
+%\RequirePackage{mathtools}
+%\RequirePackage{upgreek}
+%\RequirePackage{eucal} %special alphabet
 
 %:-------------------------- Fonts ------------------------------------------
 
-\usepackage{marvosym} %Euro cur­rency sym­bol, male female symbol
+%\RequirePackage{marvosym} %Euro cur­rency sym­bol, male female symbol
 
 %---http://www.khirevich.com/latex/font/
-%\usepackage{charter}
-%\usepackage[expert]{mathdesign}
+%\RequirePackage{charter}
+%\RequirePackage[expert]{mathdesign}
 %---
 % mathtimes 
-%\usepackage{times}
-%\usepackage[mtbold,mtplusscr,mtpluscal,slantedgreek,T1]{mathtime}
-%\usepackage[mtbold]{mathtime}
-%\usepackage{bm}
+%\RequirePackage{times}
+%\RequirePackage[mtbold,mtplusscr,mtpluscal,slantedgreek,T1]{mathtime}
+%\RequirePackage[mtbold]{mathtime}
+%\RequirePackage{bm}
 % https://tug.org/pracjourn/2006-1/hartke/hartke.pdf
-%\usepackage{cmbright}
-%\usepackage{mathptmx}
-%\usepackage[varg]{txfonts}
+%\RequirePackage{cmbright}
+%\RequirePackage{mathptmx}
+%\RequirePackage[varg]{txfonts}
 %Palatino text
-%\usepackage{pxfonts}
-%\usepackage{txfonts}
-%\usepackage{fourier}
-%\usepackage{gfsartemisia-euler}
-%\usepackage[scaled=0.92]{helvet}  % set Helvetica as the sans-serif font
+%\RequirePackage{pxfonts}
+%\RequirePackage{txfonts}
+%\RequirePackage{fourier}
+%\RequirePackage{gfsartemisia-euler}
+%\RequirePackage[scaled=0.92]{helvet}  % set Helvetica as the sans-serif font
 %\renewcommand{\rmdefault}{ptm}    % set Times as the default text font
-%\usepackage[lite,subscriptcorrection,slantedGreek,nofontinfo]{mtpro2}
+%\RequirePackage[lite,subscriptcorrection,slantedGreek,nofontinfo]{mtpro2}
 % -- bestOption
-\usepackage{libertine}
-\usepackage[libertine]{newtxmath}
-\usepackage[T1]{fontenc}
+\RequirePackage{libertine}
+\RequirePackage[libertine]{newtxmath}
+%\RequirePackage[T1]{fontenc}
 % -- endBestoption
 %:---- http://www.tug.dk/FontCatalogue/garamondx/
 
-%\usepackage[urw-garamond]{mathdesign}
-%\usepackage{garamondx}
+%\RequirePackage[urw-garamond]{mathdesign}
+%\RequirePackage{garamondx}
 %:--- tikz
 
+\ifxetex
+  % XeLaTeX
+  \usepackage{amsmath}
+  \usepackage{fontspec}
+  \usepackage[]{unicode-math}
+  \setmainfont[
+    Extension = .otf,
+    UprightFont = *-regular,
+    BoldFont = *-bold,
+    ItalicFont = *-italic,
+    BoldItalicFont = *-bolditalic,
+  ]{xits}
+  
+  \setmathfont[ 
+    Extension = .otf,
+    BoldFont = *bold,
+  ]{xits-math}
+  
+\else
+  % default: pdfLaTeX
+  %:-------------------------- packages UTF8 -----------------------
+  \RequirePackage{inputenc}
+  \inputencoding{utf8}
+  \makeatother
+
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{marvosym} %Euro cur­rency sym­bol, male female symbol
+  % If building with PDFLaTeX, use microtype spacing adjustments
+  \RequirePackage[final]{microtype}
+  
+  %\input{glyphtounicode}
+  %\pdfglyphtounicode{f_f}{FB00}
+  %\pdfglyphtounicode{f_i}{FB01}
+  %\pdfglyphtounicode{f_l}{FB02}
+  %\pdfglyphtounicode{f_f_i}{FB03}
+  %\pdfglyphtounicode{f_f_l}{FB04}
+  %\pdfgentounicode=1
+
+  %\RequirePackage{amsfonts}
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  \RequirePackage{mathtools}
+   \RequirePackage{upgreek}
+\fi
+
+% Don't break enumeration (etc.) across pages in an ugly manner
+\clubpenalty=10000
+\widowpenalty=10000
 
 
 %:-------------------------- Glossary/Abbrev./Symbols -----------------------
 
-\usepackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
+\RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
 \glsdisablehyper
 \newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
-\usepackage{longtable}
+\RequirePackage{longtable}
 
 %:-------------------------- PDF/PS setup -----------------------
 % png or pfg/pdf graphics?
-%\usepackage{pgf}
-\usepackage{import}
-\usepackage{chapterfolder}
+%\RequirePackage{pgf}
+\RequirePackage{import}
+\RequirePackage{chapterfolder}
 
 \newif\ifusepng
 \usepngfalse
@@ -277,13 +342,13 @@ texpreamble("\usepackage{upgreek}");
 %                 ]{hyperref} 
 
     \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
-    %\usepackage[pdftex]{graphicx}
+    %\RequirePackage[pdftex]{graphicx}
 %    \pdfcompresslevel=9
 %    \pdfminorversion=5
 %    \pdfobjcompresslevel=3
     \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
 \else
-    \usepackage[ bookmarksopen = true,
+    \RequirePackage[ bookmarksopen = true,
                  bookmarksnumbered = true,
                  breaklinks = true,
                  linktocpage,
@@ -295,8 +360,8 @@ texpreamble("\usepackage{upgreek}");
                  ]{hyperref}
 
     \DeclareGraphicsExtensions{.eps, .ps}
-    \usepackage{epsfig}
-    \usepackage{graphicx}
+    \RequirePackage{epsfig}
+    \RequirePackage{graphicx}
     \graphicspath{{0_frontmatter/figures/EPS/}{0_frontmatter/figures/}}
 \fi
 
@@ -317,8 +382,8 @@ texpreamble("\usepackage{upgreek}");
 
 %: Uncomment this secion for two-sided printing
 % ------------------------------
-%\usepackage[left=4cm,right=3cm,top=3.2cm,bottom=3.8cm,includeheadfoot,includefoot]{geometry}
-% \usepackage[  
+%\RequirePackage[left=4cm,right=3cm,top=3.2cm,bottom=3.8cm,includeheadfoot,includefoot]{geometry}
+% \RequirePackage[  
 %     vmarginratio=1:2, %Verhältnis der oben/unten Seitenränder zur automatischen Berechnung
 %     paper=a4paper,
 %     lmargin=4cm, % mittlerer Rand
@@ -350,6 +415,17 @@ texpreamble("\usepackage{upgreek}");
 \setlength{\marginparwidth}{3cm}
 \setlength{\footskip}{2.36cm}
 
+% *************************** Setting PDF Meta-Data ****************************
+\ifpdf
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author},
+    pdfsubject={\@subject},
+    pdfkeywords={\@keywords}
+  }
+}
+\fi
 
 %: Uncomment this secion for one-sided printing
 % taken from the original file, but with the first two lanes modified
@@ -384,6 +460,12 @@ texpreamble("\usepackage{upgreek}");
 }
 
 
+% **************** Clear Header Style on the Last Empty Odd pages **************
+\renewcommand{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else%
+  \hbox{}%
+  \thispagestyle{empty}  % Empty header styles
+  \newpage%
+  \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 
 % \titleformat{\chapter}[display]
 % {\bfseries\sffamily\Large}
@@ -517,13 +599,15 @@ texpreamble("\usepackage{upgreek}");
 \newenvironment{dedication}
 {\begin{alwayssingle}
   \pagestyle{empty}
-  \begin{center}
-  \vspace*{1.5cm}
-  {\LARGE }
-  \end{center}
-  \vspace{0.5cm}
+
+  \vspace*{0.2\textheight}
   \begin{quote} \begin{center}}
 {\end{center} \end{quote} \end{alwayssingle}}
+
+% ********************************* Dedication *********************************
+% The dedication environment makes sure the dedication gets its
+% own page, centered
+
 
 
 % ACKNOWLEDGEMENTS
