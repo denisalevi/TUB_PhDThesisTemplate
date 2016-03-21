@@ -28,12 +28,26 @@
 %
 % default or leave empty: `Latin Modern' font will be loaded.
 %
+% ************************* Custom Page Margins ********************************
+%
+% `custommargin`: Use `custommargin' in options to activate custom page margins,
+% which can be defined in the preamble.tex. Custom margin will override
+% print/online margin setup.
+%
 
 %: Macro file for Latex
 % Macros help you summarise frequently repeated Latex commands.
 % Here, they are placed in an external file /Latex/Macros/MacroFile1.tex
 % An macro that you may use frequently is the figuremacro (see introduction.tex)
 \include{Latex/Macros/MacroFile1}
+
+% Add `custommargin' in the document class options to use this section
+% Set {innerside margin / outerside margin / topmargin / bottom margin}  and
+% other page dimensions
+\ifCLASSINFOcustommargin
+  \RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
+  %\setFancyHdr % To apply fancy header after geometry package is loaded
+\fi
 
 %: ----------------------------------------------------------------------
 %:                  TITLE PAGE: name, degree,..

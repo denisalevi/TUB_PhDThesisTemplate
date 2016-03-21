@@ -40,6 +40,8 @@
 
 \newif\ifCLASSINFOpdfonea             \CLASSINFOpdfoneafalse
 
+\newif\ifCLASSINFOcustommargin             \CLASSINFOcustommarginfalse
+
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
 \DeclareOption{10pt}{\PassOptionsToClass{10pt}{book}\def\CLASSOPTIONpt{10}}
@@ -49,7 +51,7 @@
 \DeclareOption{letterpaper}{\setlength{\paperheight}{11in}%
                             \setlength{\paperwidth}{8.5in}%
                             \PassOptionsToClass{letterpaper}{book}
-                            \def\CLASSOPTIONpaper{letter}%
+                            \def\CLASSOPTIONpaper{letterpaper}%
                             \def\CLASSINFOpaperwidth{8.5in}%
                             \def\CLASSINFOpaperheight{11in}}
 
@@ -57,14 +59,14 @@
 \DeclareOption{a4paper}{\setlength{\paperheight}{297mm}%
                         \setlength{\paperwidth}{210mm}%
                         \PassOptionsToClass{a4paper}{book}
-                        \def\CLASSOPTIONpaper{a4}%
+                        \def\CLASSOPTIONpaper{a4paper}%
                         \def\CLASSINFOpaperwidth{210mm}%
                         \def\CLASSINFOpaperheight{297mm}}
 
 \DeclareOption{a5paper}{\setlength{\paperheight}{210mm}%
                         \setlength{\paperwidth}{148mm}%
                         \PassOptionsToClass{a5paper}{book}
-                        \def\CLASSOPTIONpaper{a5}%
+                        \def\CLASSOPTIONpaper{a5paper}%
                         \def\CLASSINFOpaperwidth{148mm}%
                         \def\CLASSINFOpaperheight{210mm}}
 
@@ -122,6 +124,9 @@
   \fi
 }
 
+% ***************************** Custom Margins  ********************************
+\DeclareOption{custommargin}{\CLASSINFOcustommargintrue}
+
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
@@ -136,7 +141,7 @@
   \ifnum \pdfoutput>0
     %PDF-Output
     \setDVIfalse
-    \LoadClass[pdftex,fleqn,openright]{book}%
+    \LoadClass[fleqn,openright]{book}%
       %:-------------------------- Enable pdfa-1b generation -----------------------
   \ifCLASSINFOpdfonea
   \RequirePackage[a-1b]{pdfx}
@@ -415,10 +420,10 @@ texpreamble("\RequirePackage{upgreek}");
 % Based on the suggestion by John Plaice
 
 \ifsetDVI
-  \special{papersize=\the\paperwidth,\the\paperheight}
+  \special{papersize=\CLASSINFOpaperwidth,\CLASSINFOpaperheight}
   %\RequirePackage[unicode=true]{hyperref}  % extra option dvips
-     \setlength{\paperheight}{297mm}
-   \setlength{\paperwidth}{210mm}
+  %\setlength{\paperheight}{297mm}
+  % \setlength{\paperwidth}{210mm}
        \RequirePackage[ bookmarksopen = true,
                  bookmarksnumbered = true,
                  breaklinks = true,
@@ -433,9 +438,10 @@ texpreamble("\RequirePackage{upgreek}");
   %\RequirePackage[unicode=true]{hyperref}
   %\pdfpagewidth=\the\paperwidth
   %\pdfpageheight=\the\paperheight
-  \pdfpageheight=297mm
-   \pdfpagewidth=210mm
+  \pdfpageheight=\CLASSINFOpaperheight
+   \pdfpagewidth=\CLASSINFOpaperwidth
 \fi
+
 \ifCLASSOPTIONprint
 %\ifpdf
   % For Print version
@@ -455,6 +461,19 @@ texpreamble("\RequirePackage{upgreek}");
     citecolor=black,
     anchorcolor=black
   }
+  \ifCLASSINFOcustommargin
+  % Margin to be define in preamble using geometry package
+  \else
+    \ifsetDVI
+      % Odd and Even side Margin for binding and set viewmode for PDF
+      \RequirePackage[dvips,paper=\CLASSOPTIONpaper,hmarginratio=1:1,
+        vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
+    \else
+      \RequirePackage[pdftex,paper=\CLASSOPTIONpaper,hmarginratio=1:1,
+        vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
+    \fi
+  \fi
+
   \ifCLASSOPTIONtwoside
     \hypersetup{pdfpagelayout=TwoPageRight}
   \else
@@ -479,9 +498,22 @@ texpreamble("\RequirePackage{upgreek}");
                  %hyperindex = true,
                  %hyperfigures,
                  pdfpagelayout = SinglePage,
+                 %pdfpagelayout=OneColumn,
                  pdfpagemode = UseOutlines, 
                  pdfencoding=unicode
 }
+  \ifCLASSINFOcustommargin
+    % Margin to be define in preamble using geometry package
+    \else
+      % No Margin staggering on Odd and Even side
+      \ifsetDVI
+        \RequirePackage[paper=\CLASSOPTIONpaper,hmarginratio=1:1,
+          vmarginratio=1:1,scale=0.75]{geometry} % dvips
+      \else
+        \RequirePackage[pdftex,paper=\CLASSOPTIONpaper,hmarginratio=1:1,
+          vmarginratio=1:1,scale=0.75]{geometry}
+      \fi
+    \fi
 %                 ]{hyperref} 
 \fi
 
@@ -495,43 +527,6 @@ texpreamble("\RequirePackage{upgreek}");
 %:-------------------------- page layout -----------------------
 
 
-\setlength{\hoffset}{0.00cm}
-\setlength{\voffset}{0.00cm}
-
-%: Uncomment this secion for two-sided printing
-% ------------------------------
-%\RequirePackage[left=4cm,right=3cm,top=3.2cm,bottom=3.8cm,includeheadfoot,includefoot]{geometry}
-% \RequirePackage[  
-%     vmarginratio=1:2, %Verhältnis der oben/unten Seitenränder zur automatischen Berechnung
-%     paper=a4paper,
-%     lmargin=4cm, % mittlerer Rand
-%     rmargin=2cm, % äußerer Rand
-%     marginparwidth=2.3cm, % Breite des Marginpars
-%     includehead, % Kopfzeile in Berechnung einbeziehen
-%     includemp % Marginpar in die Berechnung mit einbeziehen
-% ]{geometry}
-%\setlength{\marginparwidth}{2.3cm}
-% \setlength{\oddsidemargin}{1.5cm}
-% \setlength{\evensidemargin}{0cm}
-% \setlength{\topmargin}{1mm}
-% \setlength{\headheight}{1.36cm}
-% \setlength{\headsep}{1.00cm}
-% \setlength{\textheight}{20.84cm}
-% \setlength{\textwidth}{14.5cm}
-% \setlength{\marginparsep}{1mm}
-% \setlength{\marginparwidth}{3cm}
-% \setlength{\footskip}{2.36cm}
-
-\setlength{\oddsidemargin}{1.5cm}
-\setlength{\evensidemargin}{0cm}
-\setlength{\topmargin}{-1cm}
-\setlength{\headheight}{1.36cm}
-\setlength{\headsep}{1.00cm}
-\setlength{\textheight}{21.84cm}
-\setlength{\textwidth}{14.5cm}
-\setlength{\marginparsep}{1mm}
-\setlength{\marginparwidth}{3cm}
-\setlength{\footskip}{2.36cm}
 
 % *************************** Setting PDF Meta-Data ****************************
 \ifpdf
@@ -564,7 +559,13 @@ texpreamble("\RequirePackage{upgreek}");
 % \setlength{\footskip}{2.36cm}
 
 
-%: section below defines fancy page layout options
+% ***************************** Header Formatting ******************************
+% Custom Header with Chapter Number, Page Number and Section Numbering
+
+\RequirePackage{fancyhdr} % Define custom header
+
+% Set Fancy Header Command is defined to Load FancyHdr after Geometry is defined
+\newcommand{\setFancyHdr}{
 % ------------------------------
 \pagestyle{fancy}
 \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
@@ -580,7 +581,17 @@ texpreamble("\RequirePackage{upgreek}");
   \fancyhead{}
   \renewcommand{\headrulewidth}{0pt}
 }
+}
 
+% If Margin has been set (default margin print/online version)
+\ifCLASSINFOcustommargin
+\AtBeginDocument{
+\@ifpackageloaded{geometry}{}{\ClassWarning{PhDThesisPSnPDF}{%
+  Custom margin is chosen, but geometry package is not loaded. Please load the
+  `geometry' package in the preamble.}}}
+\else
+\setFancyHdr % Apply fancy header settings otherwise apply it in preamble
+\fi
 
 % **************** Clear Header Style on the Last Empty Odd pages **************
 \renewcommand{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else%
