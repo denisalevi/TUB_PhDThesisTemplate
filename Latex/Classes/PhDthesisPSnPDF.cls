@@ -274,7 +274,7 @@ texpreamble("\RequirePackage{upgreek}");
 \RequirePackage{graphics} % for improved inclusion of graphics
 %\RequirePackage{wrapfig} % to include figure with text wrapping around it
 \RequirePackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
-\RequirePackage{fancyhdr} % for better header layout
+%\RequirePackage{fancyhdr} % for better header layout
 \RequirePackage[german,english]{babel}
 %\RequirePackage[usenames, dvipsnames]{color}
 \RequirePackage[perpage]{footmisc}
@@ -567,20 +567,20 @@ texpreamble("\RequirePackage{upgreek}");
 % Set Fancy Header Command is defined to Load FancyHdr after Geometry is defined
 \newcommand{\setFancyHdr}{
 % ------------------------------
-\pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancyhf{}
-\fancyhead[RO]{\bfseries\rightmark}
-\fancyhead[LE]{\bfseries\leftmark}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0pt}
-\addtolength{\headheight}{0.5pt}
-\fancypagestyle{plain}{
-  \fancyhead{}
-  \renewcommand{\headrulewidth}{0pt}
-}
+  \pagestyle{fancy}
+  \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. ##1 }}{}}
+  \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1}}
+  \fancyhf{}
+  \fancyhead[RO]{\bfseries\rightmark}
+  \fancyhead[LE]{\bfseries\leftmark}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \addtolength{\headheight}{0.5pt}
+  \fancypagestyle{plain}{
+    \fancyhead{}
+    \renewcommand{\headrulewidth}{0pt}
+  }
 }
 
 % If Margin has been set (default margin print/online version)
