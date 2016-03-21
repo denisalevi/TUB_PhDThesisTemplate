@@ -583,12 +583,17 @@ texpreamble("\RequirePackage{upgreek}");
   }
 }
 
+\setlength{\headheight}{14.5pt}
+
 % If Margin has been set (default margin print/online version)
 \ifCLASSINFOcustommargin
+\makeatletter
 \AtBeginDocument{
 \@ifpackageloaded{geometry}{}{\ClassWarning{PhDThesisPSnPDF}{%
   Custom margin is chosen, but geometry package is not loaded. Please load the
-  `geometry' package in the preamble.}}}
+  `geometry' package in the preamble.}}
+}
+\makeatother
 \else
 \setFancyHdr % Apply fancy header settings otherwise apply it in preamble
 \fi
