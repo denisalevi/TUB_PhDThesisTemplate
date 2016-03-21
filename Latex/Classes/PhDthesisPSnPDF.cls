@@ -38,6 +38,8 @@
 \newif\ifCLASSINFOsetfont             \CLASSINFOsetfontfalse
 \newif\ifCLASSINFOsetcustomfont             \CLASSINFOsetcustomfontfalse
 
+\newif\ifCLASSINFOpdfonea             \CLASSINFOpdfoneafalse
+
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
 \DeclareOption{10pt}{\PassOptionsToClass{10pt}{book}\def\CLASSOPTIONpt{10}}
@@ -73,6 +75,8 @@
                         \CLASSOPTIONtwosidetrue\CLASSOPTIONonesidefalse}
 \DeclareOption{print}{ \CLASSOPTIONprinttrue\CLASSOPTIONonlinefalse}
 \DeclareOption{online}{ \CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
+
+\DeclareOption{pdf1a}{\CLASSINFOpdfoneatrue}
 
 \DeclareOption{times}{
   \ifCLASSINFOsetfont
@@ -134,9 +138,12 @@
     \setDVIfalse
     \LoadClass[pdftex,fleqn,openright]{book}%
       %:-------------------------- Enable pdfa-1b generation -----------------------
+  \ifCLASSINFOpdfonea
   \RequirePackage[a-1b]{pdfx}
   \RequirePackage{xmpincl}
   %\includexmp{pdfa-1b}
+  \else
+  \fi
   %: ----------------------------------------------------------------------------
   \else
     %DVI-output
@@ -528,6 +535,9 @@ texpreamble("\RequirePackage{upgreek}");
 
 % *************************** Setting PDF Meta-Data ****************************
 \ifpdf
+% defined in thesis.xmpdata
+\ifCLASSINFOpdfonea
+\else
 \AtBeginDocument{
   \hypersetup{
     pdftitle = {\@title},
@@ -536,6 +546,7 @@ texpreamble("\RequirePackage{upgreek}");
     pdfkeywords={\@keywords}
   }
 }
+\fi
 \fi
 
 %: Uncomment this secion for one-sided printing
