@@ -32,6 +32,11 @@
 % indicates if pdf (via pdflatex) output
 \newif\ifCLASSINFOpdf               \CLASSINFOpdffalse
 
+\newif\ifCLASSINFOtimes               \CLASSINFOtimesfalse
+\newif\ifCLASSINFOfourier               \CLASSINFOfourierfalse
+\newif\ifCLASSINFOlibertine              \CLASSINFOlibertinefalse
+\newif\ifCLASSINFOsetfont             \CLASSINFOsetfontfalse
+\newif\ifCLASSINFOsetcustomfont             \CLASSINFOsetcustomfontfalse
 
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
@@ -39,9 +44,28 @@
 \DeclareOption{11pt}{\PassOptionsToClass{11pt}{book}\def\CLASSOPTIONpt{11}}
 \DeclareOption{12pt}{\PassOptionsToClass{12pt}{book}\def\CLASSOPTIONpt{12}}
 
-\DeclareOption{a4paper}{\PassOptionsToClass{a4paper}{book}\def\CLASSOPTIONpapersize{a4paper}}
-\DeclareOption{a5paper}{\PassOptionsToClass{a5paper}{book}\def\CLASSOPTIONpapersize{a5paper}}
-\DeclareOption{letterpaper}{\PassOptionsToClass{letterpaper}{book}\def\CLASSOPTIONpapersize{letterpaper}}
+\DeclareOption{letterpaper}{\setlength{\paperheight}{11in}%
+                            \setlength{\paperwidth}{8.5in}%
+                            \PassOptionsToClass{letterpaper}{book}
+                            \def\CLASSOPTIONpaper{letter}%
+                            \def\CLASSINFOpaperwidth{8.5in}%
+                            \def\CLASSINFOpaperheight{11in}}
+
+
+\DeclareOption{a4paper}{\setlength{\paperheight}{297mm}%
+                        \setlength{\paperwidth}{210mm}%
+                        \PassOptionsToClass{a4paper}{book}
+                        \def\CLASSOPTIONpaper{a4}%
+                        \def\CLASSINFOpaperwidth{210mm}%
+                        \def\CLASSINFOpaperheight{297mm}}
+
+\DeclareOption{a5paper}{\setlength{\paperheight}{210mm}%
+                        \setlength{\paperwidth}{148mm}%
+                        \PassOptionsToClass{a5paper}{book}
+                        \def\CLASSOPTIONpaper{a5}%
+                        \def\CLASSINFOpaperwidth{148mm}%
+                        \def\CLASSINFOpaperheight{210mm}}
+
 
 \DeclareOption{oneside}{\PassOptionsToClass{oneside}{book}\@twosidefalse\@mparswitchfalse
                         \CLASSOPTIONonesidetrue\CLASSOPTIONtwosidefalse}
@@ -49,6 +73,51 @@
                         \CLASSOPTIONtwosidetrue\CLASSOPTIONonesidefalse}
 \DeclareOption{print}{ \CLASSOPTIONprinttrue\CLASSOPTIONonlinefalse}
 \DeclareOption{online}{ \CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
+
+\DeclareOption{times}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOtimestrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+
+\DeclareOption{fourier}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOfouriertrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+
+\DeclareOption{libertine}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOlibertinetrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+
+\DeclareOption{customfont}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDThesisPSnPDF}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOsetcustomfonttrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
@@ -124,10 +193,6 @@
 \interfootnotelinepenalty=10000
 
 
-%:-------------------------- packages UTF8 -----------------------
-%\RequirePackage{inputenc}
-%\inputencoding{utf8}
-%\makeatother
 %:-------------------------  graphics ----------------------------
 \RequirePackage{tikz}
 
@@ -216,49 +281,50 @@ texpreamble("\RequirePackage{upgreek}");
 \RequirePackage{hhline}
 \RequirePackage{titlesec}
 
-%:-------------------------- Math -------------------------------------------
-%\RequirePackage{unicode-math}
-%\RequirePackage{amssymb}
-%\RequirePackage{amsmath}
-%\RequirePackage{mathtools}
-%\RequirePackage{upgreek}
-%\RequirePackage{eucal} %special alphabet
 
-%:-------------------------- Fonts ------------------------------------------
 
-%\RequirePackage{marvosym} %Euro cur­rency sym­bol, male female symbol
+% ********************************** Fonts **********************************
+\RequirePackage{textcomp}
+% Font Selection
+\ifCLASSINFOtimes
+  \ifxetex
+  \else
+    \RequirePackage{mathptmx}  % times roman, including math (where possible)
+  \fi
+  \message{PhDThesisPSnPDF: Using Times Roman font}
+\else
+\fi
 
-%---http://www.khirevich.com/latex/font/
-%\RequirePackage{charter}
-%\RequirePackage[expert]{mathdesign}
-%---
-% mathtimes 
-%\RequirePackage{times}
-%\RequirePackage[mtbold,mtplusscr,mtpluscal,slantedgreek,T1]{mathtime}
-%\RequirePackage[mtbold]{mathtime}
-%\RequirePackage{bm}
-% https://tug.org/pracjourn/2006-1/hartke/hartke.pdf
-%\RequirePackage{cmbright}
-%\RequirePackage{mathptmx}
-%\RequirePackage[varg]{txfonts}
-%Palatino text
-%\RequirePackage{pxfonts}
-%\RequirePackage{txfonts}
-%\RequirePackage{fourier}
-%\RequirePackage{gfsartemisia-euler}
-%\RequirePackage[scaled=0.92]{helvet}  % set Helvetica as the sans-serif font
-%\renewcommand{\rmdefault}{ptm}    % set Times as the default text font
-%\RequirePackage[lite,subscriptcorrection,slantedGreek,nofontinfo]{mtpro2}
-% -- bestOption
-\RequirePackage{libertine}
-\RequirePackage[libertine]{newtxmath}
-%\RequirePackage[T1]{fontenc}
-% -- endBestoption
-%:---- http://www.tug.dk/FontCatalogue/garamondx/
+\ifCLASSINFOfourier
+    \RequirePackage{fourier} % Fourier
+    \message{PhDThesisPSnPDF: Using Fourier font}
+ \else
+ \fi
+ 
+ \ifCLASSINFOlibertine
+    \RequirePackage{libertine}
+    \RequirePackage[libertine]{newtxmath}
+    \message{PhDThesisPSnPDF: Using Fourier font}
+ \else
+ \fi
 
-%\RequirePackage[urw-garamond]{mathdesign}
-%\RequirePackage{garamondx}
-%:--- tikz
+\ifCLASSINFOsetcustomfont
+  \message{PhDThesisPSnPDF: Using custom font}
+\else
+  \message{PhDThesisPSnPDF: No font is set}
+\fi % custom font
+
+% If Font is not set throw a warning.
+\ifCLASSINFOsetfont
+\else
+  \ClassWarning{PhDThesisPSnPDF}{Using default font Latin Modern. If you
+    would like to use other pre-defined fonts use `times' (The Cambridge 
+    University PhD thesis guidelines recommend using Times font)  or `fourier'
+    or load a custom font in the preamble.tex file by specifying `customfont' 
+    in the class options}
+  \RequirePackage{lmodern}
+\fi
+
 
 \ifxetex
   % XeLaTeX

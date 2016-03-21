@@ -8,12 +8,26 @@
 % and made available through OpenWetWare.org - the free biology wiki
 % and finally modified in 2015-2016 by Holger Nahrstaedt
 
-%\RequirePackage{pdf14}
 %: Style file for Latex
 % Most style definitions are in the external file PhDthesisPSnPDF.
 % In this template package, it can be found in ./Latex/Classes/
-\documentclass[twoside,12pt,online,a4paper]{Latex/Classes/PhDthesisPSnPDF}
+\documentclass[twoside,12pt,online,a4paper,times]{Latex/Classes/PhDthesisPSnPDF}
 
+
+% *********************** Choosing the Fonts in Class Options ******************
+%
+% `times' : Times font with math support. (The Cambridge University guidelines
+% recommend using times)
+%
+% `fourier': Utopia Font with Fourier Math font (Font has to be installed)
+%            It's a free font.
+% 'libertine' : Libertine Font with Math fonts (newtxmath)
+%
+% `customfont': Use `customfont' option in the document class and load the
+% package in the preamble.tex
+%
+% default or leave empty: `Latin Modern' font will be loaded.
+%
 
 %: Macro file for Latex
 % Macros help you summarise frequently repeated Latex commands.
@@ -34,7 +48,6 @@
 
 
 \title{Writing your thesis with LateX}
-
 
 
 % ----------------------------------------------------------------------
@@ -134,7 +147,7 @@
 
 % Tie in external source file for definitions: /0_frontmatter/glossary.tex
 % Glossary entries can also be defined in the main text. See glossary.tex
-\pagebreak
+\newpage
 %\chapter{Glossary}
 \begin{multicols}{2} % \begin{multicols}{#columns}[header text][space]
 \begin{footnotesize} % scriptsize(7) < footnotesize(8) < small (9) < normal (10)
@@ -172,7 +185,7 @@
 \tikzsetexternalprefix{./2/TikzPictures/}
 \cfchapter{State of the Art}{2}{chapter2}
 \tikzsetexternalprefix{./3/TikzPictures/}
-\cfchapter{Chapter 3\label{ch:chapter3}}{3}{chapter3}
+\cfchapter{Including tikz\label{ch:chapter3}}{3}{chapter3}
 \tikzsetexternalprefix{./4/TikzPictures/}
 \cfchapter{chapter 4\label{ch:chapter4}}{4}{chapter4}
 \tikzsetexternalprefix{./5/TikzPictures/}
