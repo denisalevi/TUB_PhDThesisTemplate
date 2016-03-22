@@ -803,7 +803,7 @@ texpreamble("\RequirePackage{upgreek}");
 \newenvironment{dedication}
 {\begin{alwayssingle}
   \pagestyle{empty}
-
+\cleardoublepage
   \vspace*{0.2\textheight}
   \begin{quote} \begin{center}}
 {\end{center} \end{quote} \end{alwayssingle}}
@@ -825,6 +825,7 @@ texpreamble("\RequirePackage{upgreek}");
 {\pagestyle{empty}
 \begin{alwayssingle}
 \begin{center}
+\cleardoublepage
 \vspace*{1.5cm}
 {\Large \bfseries Acknowledgements}
 \end{center}
@@ -840,6 +841,7 @@ texpreamble("\RequirePackage{upgreek}");
 {\pagestyle{empty}
 \begin{alwayssingle}
 \begin{center}
+\cleardoublepage
 \vspace*{1.5cm}
 {\Large \bfseries Acknowledgements}
 \end{center}
@@ -854,6 +856,7 @@ texpreamble("\RequirePackage{upgreek}");
 
 \newenvironment{abstracts} {\begin{alwayssingle} \pagestyle{empty}
   \begin{center}
+  \cleardoublepage
   \vspace*{1.5cm}
   {\Large \bfseries  Abstract}
   \end{center}
@@ -867,6 +870,7 @@ texpreamble("\RequirePackage{upgreek}");
 
 \newenvironment{abstractslong} {\begin{alwayssingle} \pagestyle{empty}
   \begin{center}
+  \cleardoublepage
   \vspace*{1.5cm}
   {\Large \bfseries  Abstract}
   \end{center}
@@ -877,6 +881,7 @@ texpreamble("\RequirePackage{upgreek}");
 %on including title and author etc as required to be handed in separately
 \makeatletter
 \newenvironment{abstractseparate} {\begin{alwayssingle} \pagestyle{empty}
+\cleardoublepage
   \vspace*{-1in}
  \begin{center}
     { \Large {\bfseries {\@title}} \par}
@@ -896,6 +901,7 @@ texpreamble("\RequirePackage{upgreek}");
 
 \newenvironment{declaration} {\begin{alwayssingle} \pagestyle{empty}
   \begin{center}
+  \cleardoublepage
   \vspace*{1.5cm}
   {\Large \bfseries  Declaration}
   \end{center}
@@ -905,6 +911,7 @@ texpreamble("\RequirePackage{upgreek}");
 %Deutsche Zusammenfassung
 \newenvironment{zusammenfassung} {\begin{alwayssingle} \pagestyle{empty}
   \begin{center}
+  \cleardoublepage
   \vspace*{1.5cm}
   {\Large \bfseries  Zusammenfassung}
   \end{center}
