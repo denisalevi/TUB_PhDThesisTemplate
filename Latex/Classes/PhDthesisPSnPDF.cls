@@ -234,42 +234,7 @@
 %\def\useexternalfile#1{\tikzsetnextfilename{#1-output}\input{\csname tikzexternal\endcsname#1.tikz}}
 
 %\tikzexternalize[shell escape=-enable-write18]
-\RequirePackage {asymptote}
-\RequirePackage {catchfile}
 
-\begingroup
-\catcode `\^^M = 12 \endlinechar = -1 %
-\global \def \IncludeAsymptoteFile #1%
-     {\def \BeginAsy {\begin {asy}[width=0.95\columnwidth]}
-      \def \DoAsy {\detokenize \expandafter {\AsymptoteFileContents}}
-      \begingroup
-             \lccode `\/ = `\\
-             \lccode `\( = `\{
-             \lccode `\) = `\}
-             \lowercase {\gdef \EndAsy {^^M/end(asy)^^M}}
-      \endgroup
-      \CatchFileEdef \AsymptoteFileContents {#1} {\def \par {^^J}}
-      \expandafter \expandafter \expandafter \BeginAsy \expandafter \DoAsy \EndAsy
-     }
-\endgroup
-
-
-\begin{asydef}
-texpreamble("\include{commands}");
-texpreamble("\RequirePackage{libertine}");
-texpreamble("\RequirePackage[libertine]{newtxmath}");
-texpreamble("\RequirePackage[T1]{fontenc}");
-texpreamble("\RequirePackage{amssymb}");
-texpreamble("\RequirePackage{amsmath}");
-texpreamble("\RequirePackage{mathtools}");
-texpreamble("\RequirePackage{upgreek}");
-\end{asydef}
-%// Global Asymptote definitions can be put here.
-%import three;
-%RequirePackage("bm");
-%texpreamble("\def\V#1{\bm{#1}}");
-%// One can globally override the default toolbar settings here:
-%// settings.toolbar=true;
 %:-------------------------- packages for fancy things -----------------------
 \RequirePackage{graphics} % for improved inclusion of graphics
 %\RequirePackage{wrapfig} % to include figure with text wrapping around it

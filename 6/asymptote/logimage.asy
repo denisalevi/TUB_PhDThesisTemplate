@@ -1,3 +1,27 @@
+if(!settings.multipleView) settings.batchView=false;
+settings.tex="pdflatex";
+defaultfilename="logimage";
+if(settings.render < 0) settings.render=4;
+settings.outformat="";
+settings.inlineimage=true;
+settings.embed=true;
+settings.toolbar=false;
+viewportmargin=(2,2);
+
+texpreamble("\include{commands}");
+texpreamble("\usepackage{mathptmx}");
+texpreamble("\usepackage[T1]{fontenc}");
+texpreamble("\usepackage{amssymb}");
+texpreamble("\usepackage{amsmath}");
+texpreamble("\usepackage{mathtools}");
+texpreamble("\usepackage{upgreek}");
+
+
+
+
+
+
+
 import graph;
 import palette;
 
