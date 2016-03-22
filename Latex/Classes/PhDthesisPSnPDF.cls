@@ -214,14 +214,14 @@
 \pgfplotsset{compat=1.9}
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
+\usetikzlibrary{external}
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
 %\tikzexternalize[shell escape=-shell-escape,  optimize=false]
-\tikzset{external/system call= {pdflatex -save-size=80000 
+\tikzset{external/system call= {pdflatex \tikzexternalcheckshellescape  -save-size=80000 
                                -pool-size=10000000 
                                -extra-mem-top=50000000 
                                -extra-mem-bot=10000000 
                                -main-memory=90000000 
-                               \tikzexternalcheckshellescape 
                                -halt-on-error 
                                -interaction=batchmode
                                -jobname "\image" "\texsource"}} 

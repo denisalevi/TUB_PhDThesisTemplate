@@ -2,7 +2,7 @@
   \begin{axis}[title  = Contributions per category
                           at LaTeX-Community.org,
     xbar,
-    y axis line style = { opacity = 0 },
+    y axis line style = { opacity = 1 },
     axis x line       = none,
     tickwidth         = 0pt,
     enlarge y limits  = 0.2,
