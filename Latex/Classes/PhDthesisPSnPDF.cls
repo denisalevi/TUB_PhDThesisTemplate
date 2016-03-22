@@ -599,12 +599,13 @@ texpreamble("\RequirePackage{upgreek}");
 \fi
 
 % **************** Clear Header Style on the Last Empty Odd pages **************
+\makeatletter
 \renewcommand{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else%
   \hbox{}%
   \thispagestyle{empty}  % Empty header styles
   \newpage%
   \if@twocolumn\hbox{}\newpage\fi\fi\fi}
-
+\makeatother
 % \titleformat{\chapter}[display]
 % {\bfseries\sffamily\Large}
 % { %\Huge\textsc{\chaptertitlename}\sffamily
@@ -634,6 +635,7 @@ texpreamble("\RequirePackage{upgreek}");
 % These macros are used to declare arguments needed for the
 % construction of the title page and other preamble.
 \makeatletter
+\def\subtitle#1{\gdef\@subtitle{#1}}
 % The year and term the degree will be officially conferred
 \def\degreedate#1{\gdef\@degreedate{#1}}
 % The full (unabbreviated) name of the degree
@@ -670,41 +672,92 @@ texpreamble("\RequirePackage{upgreek}");
 %define title page layout
 \makeatletter
 \renewcommand{\maketitle}{%
-
+\computeTitlePageSpacing
+\begin{doublespace}
 \begin{alwayssingle}
-    \renewcommand{\footnotesize}{\small}
-    \renewcommand{\footnoterule}{\relax}
-    \thispagestyle{empty}
-%  \null\vfill
-  \begin{center}
-  %{\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
-  %{\large \vspace*{-30mm} {{\@crest} \par}}
-    { \Huge {\bfseries {\@title}} \par}\vspace*{15mm}
-{\Large 
-    {{vorgelegt von} \par}
-    \vspace*{-1ex}
-    {{\@olddegree} \par}
-    \vspace*{-1ex}
-    {{\@author} \par}
-    \vspace*{-1ex}
-    {aus {\@cityofbirth} \par}
-	\vspace*{5mm}
-%	{{\@cityofbirth} \par}    
+\begin{center}
 
-	\vspace*{1ex}
+    \thispagestyle{empty}
+
+{\usebox{\@PHDtitle}} % subtitle is defined
+\vspace{.15\titlepagespacing}
+
+{\usebox{\@PHDauthor}}
+\vspace*{0.5em}
+\vspace{.2\titlepagespacing}
+ {\usebox{\@PHDdegree}}
+\vspace*{.2\titlepagespacing}
+\vspace*{0.5em}
+{\usebox{\@PHDcomitee}}
+\vspace*{0.5em}
+\vspace*{.3\titlepagespacing}
+ {\usebox{\@PHDdate}} 
+\end{center}
+\end{alwayssingle}
+\end{doublespace}
+}
+
+\makeatother
+
+% page number for cover back side should have page number blanked
+
+
+% ******************** To compute empty space in title page *******************
+% Boxes below are used to space different contents on the title page
+% Based on https://github.com/cambridge/thesis
+\makeatletter
+
+\newcommand{\computeTitlePageSpacing}{
+
+
+% Title Box
+\newsavebox{\@PHDtitle}
+\begin{lrbox}{\@PHDtitle}
+  \begin{minipage}[c]{0.98\textwidth}
+    \centering \Huge \bfseries{\@title}
+    \\
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDauthor}
+\begin{lrbox}{\@PHDauthor}
+\begin{minipage}[c]{\textwidth}
+  {\Large \centering
+      {{vorgelegt von} \par}
+      \vspace*{-1ex}
+      {{\@olddegree} \par}
+      \vspace*{-1ex}
+      {{\@author} \par}
+      \vspace*{-1ex}
+      {aus {\@cityofbirth} \par}
+  % {{\@cityofbirth} \par}    
+  }
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDdegree}
+\begin{lrbox}{\@PHDdegree}
+\begin{minipage}[c]{\textwidth}
+{\Large \centering
+  \vspace*{1ex}
     {{\@collegeordept} \par}
-	\vspace*{-1ex}
+  \vspace*{-1ex}
     {{\@university} \par}
-	\vspace*{-1ex}
+  \vspace*{-1ex}
     {{zur Erlangung des Akademischen Grades} \par}
     \vspace*{1ex}
     {{\@degreefull} \par}
-	\vspace*{-1ex}
+  \vspace*{-1ex}
     { {\@degree} \par}
-	\vspace*{1ex}
-{{genehmigte Dissertation} \par}\vspace*{5mm}
+  \vspace*{1ex}
+{{genehmigte Dissertation} \par}
 }
- \end{center}
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDcomitee}
+\begin{lrbox}{\@PHDcomitee}
+\begin{minipage}[c]{\textwidth}
  {\large 
 {{Promotionsausschuss:} \par}
 {{Vorsitzender: {\@comiteehead}} \par}\vspace*{-1ex}
@@ -713,20 +766,33 @@ texpreamble("\RequirePackage{upgreek}");
 {{Gutachter: {\@thirdreviewer}} \par}
     {\@degreedate}
 }%end large
-   \begin{center}
-    {\Large
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDdate}
+\begin{lrbox}{\@PHDdate}
+\begin{minipage}[c]{\textwidth}
+    {\Large 
+       \begin{center}
     \vspace*{1ex}
     {{{\@degreeplaceyear} \\D 83}}
+    \end{center}
     }
-   \end{center}
-  \null\vfill
+  \end{minipage}
+\end{lrbox}
 
-\end{alwayssingle}}
+
+%  Now to compute the free vertical space
+\newlength{\titlepagespacing}
+\setlength{\titlepagespacing}{ \textheight %
+                                           - \totalheightof{\usebox{\@PHDtitle}}
+                                           - \totalheightof{\usebox{\@PHDauthor}}
+                                           - \totalheightof{\usebox{\@PHDdegree}}
+                                           - \totalheightof{\usebox{\@PHDcomitee}}
+                                           - \totalheightof{\usebox{\@PHDdate}}
+}
+}
 \makeatother
-
-% page number for cover back side should have page number blanked
-
-
 %:-------------------------- front matter layout -----------------------
 
 % DEDICATION
