@@ -27,6 +27,7 @@ pdflatex -shell-escape -draftmode -synctex=1 -interaction=nonstopmode -interacti
 makeglossaries "%FILENAME%"
 pdflatex  -shell-escape -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 
+countErrWrnBBx.bat "%FILENAME%.log"
 
 DEL "%FILENAME%.aux"
 DEL "%FILENAME%.acn"
@@ -52,8 +53,6 @@ DEL "%FILENAME%.nls"
 DEL "%FILENAME%.slg"
 DEL "%FILENAME%.syg"
 DEL "%FILENAME%.syi"
-
-
 
 
 #"%FILENAME%.pdf"
