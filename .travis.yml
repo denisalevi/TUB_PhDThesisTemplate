@@ -1,4 +1,4 @@
-dist: xenial 
+dist: trusty
 before_install:
    - sudo apt-get update -qq
 install:
