@@ -54,5 +54,3 @@ DEL "%FILENAME%.slg"
 DEL "%FILENAME%.syg"
 DEL "%FILENAME%.syi"
 
-
-#"%FILENAME%.pdf"

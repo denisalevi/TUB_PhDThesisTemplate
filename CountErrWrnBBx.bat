@@ -11,4 +11,4 @@ echo Errors:_%StringErr%_   Warnings:_%StringWrn%_   Overfull:_%StringOvf%_   Un
 :: return with error code, in order to cause TexMaker to continue to show the message window
 :: for this to work, put the following into user defined fast translation box (without the :: ):
 :: pdflatex -synctex=1 -interaction=nonstopmode %.tex|!/CountErrWrnBBx.bat %.log|echo "foobar"
-exit /b -1
+::exit /b -1
