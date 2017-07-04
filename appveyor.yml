@@ -19,9 +19,9 @@ install:
  
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - compile-thesis-windows.bat thesis
-  - compile-thesis-windows-luatex.bat thesis thesis-luatex
-  - compile-thesis-windows-xetex.bat thesis thesis-xetex
+  - compile-thesis-windows.bat
+  - compile-thesis-windows-luatex.bat
+  - compile-thesis-windows-xetex.bat
 
 artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
