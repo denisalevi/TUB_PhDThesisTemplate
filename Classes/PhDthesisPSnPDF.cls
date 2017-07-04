@@ -805,7 +805,7 @@
 \newsavebox{\@PHDauthor}
 \begin{lrbox}{\@PHDauthor}
 \begin{minipage}[c]{\textwidth}
-  {\Large \centering
+  {\Large \centering \singlespacing
       {{vorgelegt von} \par}
       {{\@olddegree} \par}
       {{\@author} \par}
@@ -818,9 +818,8 @@
 \newsavebox{\@PHDdegree}
 \begin{lrbox}{\@PHDdegree}
 \begin{minipage}[c]{\textwidth}
-{\Large \centering
-  \vspace*{1ex}
-    {{\@collegeordept} \par}
+{\Large \centering \singlespacing
+    {{von der \@collegeordept} \par}
     {{\@university} \par}
     {{zur Erlangung des akademischen Grades} \par}
     \vspace*{1ex}
@@ -835,7 +834,7 @@
 \newsavebox{\@PHDcomitee}
 \begin{lrbox}{\@PHDcomitee}
 \begin{minipage}[c]{\textwidth}
- {\Large %\vspace*{-1ex}
+ {\Large \singlespacing
 {{Promotionsausschuss:} \par}
 {{Vorsitzender: {\@comiteehead}} \par}
 {{Gutachter: {\@firstreviewer}} \par}
@@ -937,11 +936,11 @@
 \newsavebox{\@PHDauthor}
 \begin{lrbox}{\@PHDauthor}
 \begin{minipage}[c]{\textwidth}
-  {\Large \centering
+  {\Large \centering \singlespacing
       {{vorgelegt von} \par}
       {{\@olddegree} \par}
       {{\@author} \par}
-      {aus {\@cityofbirth} \par}
+      {geb. in {\@cityofbirth} \par}
   % {{\@cityofbirth} \par}    
   }
   \end{minipage}
@@ -950,9 +949,8 @@
 \newsavebox{\@PHDdegree}
 \begin{lrbox}{\@PHDdegree}
 \begin{minipage}[c]{\textwidth}
-{\Large \centering
-  \vspace*{1ex}
-    {{\@collegeordept} \par}
+{\Large \centering \singlespacing
+    {{eingereicht an der \@collegeordept} \par}
     {{\@university} \par}
     {{zur Erlangung des Akademischen Grades} \par}
     \vspace*{1ex}
@@ -967,7 +965,7 @@
 \newsavebox{\@PHDdate}
 \begin{lrbox}{\@PHDdate}
 \begin{minipage}[c]{\textwidth}
-    {\Large 
+    {\Large \singlespacing
        \begin{center}
     {{\@degreedate}}
     \end{center}
