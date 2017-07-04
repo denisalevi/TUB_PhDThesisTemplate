@@ -60,7 +60,7 @@ DEL "%FILENAME%.aux.bbl"
 DEL "%FILENAME%.aux.blg"
 
 lualatex --shell-escape  --draftmode --synctex=1 --interaction=nonstopmode  "%FILENAME%.tex"
-bibtex "%FILENAME%.aux"
+biber "%FILENAME%"
 makeindex "%FILENAME%.aux"
 makeindex "%FILENAME%.idx"
 makeglossaries "%FILENAME%"

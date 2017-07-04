@@ -59,7 +59,7 @@ DEL "%FILENAME%.aux.bbl"
 DEL "%FILENAME%.aux.blg"
 
 xelatex -shell-escape   -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000   "%FILENAME%.tex"
-bibtex "%FILENAME%.aux"
+biber "%FILENAME%"
 makeindex "%FILENAME%.aux"
 makeindex "%FILENAME%.idx"
 makeglossaries "%FILENAME%"

@@ -307,6 +307,7 @@
 \RequirePackage{multirow}
 \RequirePackage{hhline}
 \RequirePackage{titlesec}
+\RequirePackage{textcomp}
 \RequirePackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
 \sisetup{
   locale = US ,
@@ -319,7 +320,7 @@
   \RequirePackage{mathtools}
    \RequirePackage{upgreek}
 % ********************************** Fonts **********************************
-\RequirePackage{textcomp}
+
 \RequirePackage{anyfontsize}
 % Font Selection
 \ifCLASSINFOtimes
