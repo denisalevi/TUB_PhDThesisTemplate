@@ -1,5 +1,5 @@
 before_install:
-  - curl -L https://github.com/krlmlr/texlive-squashfs/raw/master/out/texlive.tar.xz | tar -JxC ~
+  - curl -L https://github.com/raphink/travis-texlive/releases/download/2015-07-14_05/texlive.tar.xz | tar -JxC ~
 install:
   - PATH=$HOME/texlive/bin/x86_64-linux:$PATH
 script:
