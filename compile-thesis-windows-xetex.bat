@@ -3,7 +3,7 @@ SETLOCAL EnableExtensions EnableDelayedExpansion
 SET arg[0]=%1
 SET arg[1]=%2
 if "!arg[0]!"=="" ( set FILENAME=thesis)else ( set FILENAME=!arg[0]!)
-if "!arg[1]!"=="" ( set OUTPUT=thesis_luatex)else ( set OUTPUT=!arg[1]!)
+if "!arg[1]!"=="" ( set OUTPUT=thesis_xetex)else ( set OUTPUT=!arg[1]!)
 
 rem MIKTEX_BIN=C:\miktex\texmfs\install\miktex\bin\
 rem set PATH=%MIKTEX_BIN%;%PATH%
