@@ -80,12 +80,14 @@
 
 \Title        {Writing your Thesis with LateX}
 
-\Author       {Holger Nahrstaedt}
+\Author       {Max Mustermann}
 
-\Copyright    {Copyright \copyright\ 2016 "Holger Nahrstaedt"}
+\Copyright    {Creative Commons Namensnennung, nicht kommerziell, Weitergabe unter gleichen Bedingungen 4.0}
+\CopyrightURL  {http://creativecommons.org/licenses/by-nc-sa/4.0/}
+\Copyrighted   {False}
 
 \Keywords     {Latex\sep
                thesis}
 
-\Subject      {Your abstract ...}
+\Subject      {Dissertation; DDC 000:  Informatik, Wissen, Systeme}
 
