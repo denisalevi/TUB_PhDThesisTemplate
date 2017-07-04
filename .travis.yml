@@ -1,14 +1,7 @@
-dist: trusty
 before_install:
-   - sudo apt-get update -qq
+  - curl -L https://github.com/krlmlr/texlive-squashfs/raw/master/out/texlive.tar.xz | tar -JxC ~
 install:
-   - sudo apt-get install -y texlive-latex-base texlive-lang-german
-   - sudo apt-get install -y texlive-latex-recommended texlive-latex-extra
-   - sudo apt-get install -y texlive-science  texlive-pictures 
-   - sudo apt-get install -y texlive-fonts-recommended texlive-fonts-extra
-   - sudo apt-get install -y psutils texlive-extra-utils texlive-bibtex-extra
-   - sudo apt-get install -y  biber
-   - sudo apt-get install -y asymptote
+  - PATH=$HOME/texlive/bin/x86_64-linux:$PATH
 script:
    - make clean
    - make BUILD_STRATEGY=pdflatex
