@@ -11,7 +11,7 @@
 %: Style file for Latex
 % Most style definitions are in the external file PhDthesisPSnPDF.
 % In this template package, it can be found in ./Latex/Classes/
-\documentclass[twoside,11pt,online,a4paper,times,pdf1a,custommargin]{Latex/Classes/PhDthesisPSnPDF}
+\documentclass[twoside,11pt,online,a4paper,times,pdf1a,custommargin]{Classes/PhDthesisPSnPDF}
 
 
 % *********************** Choosing the Fonts in Class Options ******************
@@ -39,73 +39,31 @@
 % Macros help you summarise frequently repeated Latex commands.
 % Here, they are placed in an external file /Latex/Macros/MacroFile1.tex
 % An macro that you may use frequently is the figuremacro (see introduction.tex)
-\include{Latex/Macros/MacroFile1}
-
-% Add `custommargin' in the document class options to use this section
-% Set {innerside margin / outerside margin / topmargin / bottom margin}  and
-% other page dimensions
-\ifCLASSINFOcustommargin
-  \RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
-  \setFancyHdr % To apply fancy header after geometry package is loaded
-\fi
-
-%: ----------------------------------------------------------------------
-%:                  TITLE PAGE: name, degree,..
-% ----------------------------------------------------------------------
-% below is to generate the title page with crest and author name
-
-%if output to PDF then put the following in PDF header
-\ifpdf  
-    \pdfcatalog { /PageMode (/UseOutlines)
-                  /OpenAction (fitbh)  }
-\fi
+\include{Preamble/preamble}
+\include{thesis-info}
 
 
-\title{Writing your thesis with LateX}
-
-
-% ----------------------------------------------------------------------
-% The section below defines www links/email for author and institutions
-% They will appear on the title page of the PDF and can be clicked
-\ifpdf
-  % The crest is a graphics file of the logo of your research institution.
-  % Place it in ./0_frontmatter/figures and specify the width
-  \crest{}
-% If you are not creating a PDF then use the following. The default is PDF.
-\else
-%  \crest{\includegraphics[width=4cm]{logo.png}}
-  \crest{}
-\fi
-  \author{Holger Nahrstaedt}
-%  \cityofbirth{born in XYZ} % uncomment this if your university requires this
-  \cityofbirth{Berlin}
-%  % If city of birth is required, also uncomment 2 sections in PhDthesisPSnPDF
-%  % Just search for the "city" and you'll find them.
-\collegeordept{von der Fakult\"at IV - Elektrotechnik und Informatik}
-\university{der Technischen Universit\"at Berlin}
-\degreefull{Doktor der Ingenieurwissenschaften}
-\olddegree{Dipl.-Ing.}
-\degree{-Dr.-Ing.-}
-\degreedate{Tag der wissenschaftlichen Aussprache: XX. xxxx 2016}
-\degreeplaceyear{Berlin 2016}
-\comiteehead{-}
-\firstreviewer{-}
-\secondreviewer{-}
-\thirdreviewer{-}
-
-
-
-% ----------------------------------------------------------------------
-       
-% turn of those nasty overfull and underfull hboxes
-\hbadness=10000
-\hfuzz=50pt
 
 
 %: --------------------------------------------------------------
 %:                  FRONT MATTER: dedications, abstract,..
 % --------------------------------------------------------------
 \selectlanguage{english}
+
+% ***************************** Abstract Separate ******************************
+% To printout only the titlepage and the abstract with the PhD title and the
+% author name for submission to the Student Registry, use the `abstract' option in
+% the document class.
+
+\ifdefineAbstract
+ \pagestyle{empty}
+ \includeonly{0_frontmatter/zusammenfassung, 0_frontmatter/abstract}
+\fi
+
+%: --------------------------------------------------------------
+%:                  FRONT MATTER: dedications, abstract,..
+% --------------------------------------------------------------
+
 \loadglsentries{0_frontmatter/glossary}
 \makeglossaries
 \begin{document}
@@ -122,16 +80,14 @@
 
 
 
-\singlespacing
-%\onehalfspacing
+%\singlespacing
+\onehalfspacing
 %\doublespacing
 
 %: ----------------------- abstract ------------------------
 
 % Your institution may have specific regulations if you need an abstract and where it is to be placed in the document. The default here is just after title.
-\selectlanguage{german}
 \include{0_frontmatter/zusammenfassung}
-\selectlanguage{english}
 \include{0_frontmatter/abstract}
 
 
@@ -144,16 +100,12 @@
 
 %: ----------------------- contents ------------------------
 
-\setcounter{secnumdepth}{3} % organisational level that receives a numbers
-\setcounter{tocdepth}{3}    % print table of contents for level 3
 \tableofcontents            % print the table of contents
-% levels are: 0 - chapter, 1 - section, 2 - subsection, 3 - subsection
-
 
 %: ----------------------- list of figures/tables ------------------------
-
+\cleardoublepage
 \listoffigures	% print list of figures
-
+\cleardoublepage
 \listoftables  % print list of tables
 
 
@@ -161,7 +113,7 @@
 
 % Tie in external source file for definitions: /0_frontmatter/glossary.tex
 % Glossary entries can also be defined in the main text. See glossary.tex
-\newpage
+\cleardoublepage
 %\chapter{Glossary}
 \begin{multicols}{2} % \begin{multicols}{#columns}[header text][space]
 \begin{footnotesize} % scriptsize(7) < footnotesize(8) < small (9) < normal (10)
@@ -210,7 +162,7 @@
 \cfchapter{Discussion\label{ch:chapter7}}{7}{discussion}
 \tikzsetexternalprefix{./8/TikzPictures/}
 \cfchapter{Materials and Methods}{8}{materials_methods}
-\newpage
+\cleardoublepage
        % description of lab methods
 
 
@@ -229,34 +181,12 @@
 % The default below is 2 columns, small font, complete author names.
 % Entries are also linked back to the page number in the text and to external URL if provided in the BibTex file.
 
-% PhDbiblio-url2 = names small caps, title bold & hyperlinked, link to page 
-\begin{multicols}{2} % \begin{multicols}{ # columns}[ header text][ space]
-\begin{tiny} % tiny(5) < scriptsize(7) < footnotesize(8) < small (9)
-\cleardoublepage
-\bibliographystyle{Latex/Classes/PhDbiblio-url2} % Title is link if provided
+
+\begin{footnotesize} % tiny(5) < scriptsize(7) < footnotesize(8) < small (9)
 \renewcommand{\bibname}{References} % changes the header; default: Bibliography
+\printbibliography
+\end{footnotesize}
 
-\bibliography{9_backmatter/references} % adjust this to fit your BibTex file
-
-\end{tiny}
-\end{multicols}
-
-% --------------------------------------------------------------
-% Various bibliography styles exit. Replace above style as desired.
-
-% in-text refs: (1) (1; 2)
-% ref list: alphabetical; author(s) in small caps; initials last name; page(s)
-%\bibliographystyle{Latex/Classes/PhDbiblio-case} % title forced lower case
-%\bibliographystyle{Latex/Classes/PhDbiblio-bold} % title as in bibtex but bold
-%\bibliographystyle{Latex/Classes/PhDbiblio-url} % bold + www link if provided
-
-%\bibliographystyle{Latex/Classes/jmb} % calls style file jmb.bst
-% in-text refs: author (year) without brackets
-% ref list: alphabetical; author(s) in normal font; last name, initials; page(s)
-
-%\bibliographystyle{plainnat} % calls style file plainnat.bst
-% in-text refs: author (year) without brackets
-% (this works with package natbib)
 
 
 % --------------------------------------------------------------

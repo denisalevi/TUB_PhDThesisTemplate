@@ -6,17 +6,17 @@
 %---------------------------------------------------------------
 
 % ************************** Class Identification ******************************
-\newcommand\fileversion{3.0}
-\newcommand\filedate{2015/06/28}
+\newcommand\fileversion{3.1}
+\newcommand\filedate{2017/06/30}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{Latex/Classes/PhDthesisPSnPDF}[\filedate\space PhD thesis class
+\ProvidesClass{Classes/PhDthesisPSnPDF}[\filedate\space PhD thesis class
  by Holger Nahrstaedt (v\fileversion)]
 \typeout{https://github.com/holgern/TUB_PhDThesisTemplate}
 
 % class option conditionals
 
 \newif\ifCLASSOPTIONoneside         \CLASSOPTIONonesidetrue
-\newif\ifCLASSOPTIONtwoside         \CLASSOPTIONtwosidefalse
+\newif\ifCLASSOPTIONtwoside         \CLASSOPTIONtwosidetrue
 
 \newif\ifCLASSOPTIONfinal           \CLASSOPTIONfinaltrue
 \newif\ifCLASSOPTIONdraft           \CLASSOPTIONdraftfalse
@@ -124,14 +124,30 @@
   \fi
 }
 
+
+
 % ***************************** Custom Margins  ********************************
 \DeclareOption{custommargin}{\CLASSINFOcustommargintrue}
+
+% **************************** Separate Abstract  ******************************
+\newif \ifdefineAbstract\defineAbstractfalse %To enable Separate abstract
+
+\newif\ifCLASSINFOabstract\CLASSINFOabstractfalse % Enable Separate Abstract
+\DeclareOption{abstract}{
+  \CLASSINFOabstracttrue
+  \ClassWarning{PhDThesisPSnPDF}{You have chosen an option that generates only
+    the Title page and an abstract with PhD title and author name, if this was
+    intentional, ignore this warning. Congratulations on submitting your thesis!
+    If not, please remove the option `abstract' from the document class and
+    recompile. Good luck with your writing!}
+  \PassOptionsToClass{oneside}{book}
+}
 
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
 %if you use a macTeX 2008 or later, use the ifpdf package
-
+\RequirePackage{setspace} % Define line spacing in paragraph
 \newif\ifsetDVI\setDVIfalse
 \ifx\pdfoutput\undefined
   % we are not running PDFLaTeX
@@ -144,6 +160,8 @@
     \LoadClass[fleqn,openright]{book}%
       %:-------------------------- Enable pdfa-1b generation -----------------------
   \ifCLASSINFOpdfonea
+  \let\tmpa\textsuperscript
+  \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
   \RequirePackage[a-1b]{pdfx}
   \RequirePackage{xmpincl}
   %\includexmp{pdfa-1b}
@@ -162,15 +180,15 @@
 % ************************** Layout and Formatting *****************************
 
 \RequirePackage{lscape}   % Supports Landscape Layout
-\RequirePackage{setspace} % Define line spacing in paragraph
+
 \RequirePackage{calc}     % calculate vertical spacing
 \RequirePackage{tabularx}
 % ************************* Conditional Statements *****************************
 \RequirePackage{ifthen}   % Conditional statements
 \RequirePackage{ifpdf}    % Check for pdfLaTeX
 \RequirePackage{ifxetex}  % XeLaTeX
-
-
+\RequirePackage{ifluatex} %luatex
+\usepackage{etoolbox}
 
 % *************************** Graphics and Figures *****************************
 \RequirePackage[usenames, dvipsnames]{color}
@@ -210,12 +228,33 @@
 
 %\RequirePackage{pgf}
 \RequirePackage{tikzscale}
+%\usepackage{pstricks}
+%\usepackage{auto-pst-pdf}
+\usetikzlibrary{shapes,arrows}
+% needed for BB
+\usetikzlibrary{calc}
+
 \RequirePackage{pgfplots}
 \pgfplotsset{compat=1.9}
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
 \usetikzlibrary{external}
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
+
+\ifluatex
+\tikzset{external/system call={lualatex --enable-write18 --halt-on-error --interaction=batchmode
+--jobname "\image" "\texsource"}}
+\else
+\ifxetex
+\tikzset{external/system call={xelatex
+\tikzexternalcheckshellescape -save-size=80000 
+                               -pool-size=10000000 
+                               -extra-mem-top=50000000 
+                               -extra-mem-bot=10000000 
+                               -main-memory=90000000 
+                               -halt-on-error -interaction=batchmode
+                               -jobname "\image" "\texsource"}}
+\else
 %\tikzexternalize[shell escape=-shell-escape,  optimize=false]
 \tikzset{external/system call= {pdflatex \tikzexternalcheckshellescape  -save-size=80000 
                                -pool-size=10000000 
@@ -225,6 +264,8 @@
                                -halt-on-error 
                                -interaction=batchmode
                                -jobname "\image" "\texsource"}} 
+\fi
+\fi
 \makeatletter
 \newcommand{\useexternalfile}[2]{%
     \tikzsetnextfilename{#2-output}%
@@ -242,24 +283,41 @@
 %\RequirePackage{fancyhdr} % for better header layout
 \RequirePackage[german,english]{babel}
 %\RequirePackage[usenames, dvipsnames]{color}
-\RequirePackage[perpage]{footmisc}
-\RequirePackage[sort, numbers]{natbib}
+%\RequirePackage[perpage]{footmisc}
+%\RequirePackage[sort, numbers]{natbib}
 \RequirePackage{placeins}
 \RequirePackage[countmax]{subfloat}
 \RequirePackage{subfig}
 \RequirePackage{multicol} % for pages with multiple text columns, e.g. References
 \setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
 \RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
+% Add appendices
+\RequirePackage[title,titletoc]{appendix}
 %\RequirePackage{nextpage}
 \RequirePackage{booktabs}
-\RequirePackage[figure,lined,boxed]{algorithm2e}
+
+
+
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+
+%\RequirePackage{regexpatch}
+
 %\RequirePackage{showframe}
 \RequirePackage{multirow}
 \RequirePackage{hhline}
 \RequirePackage{titlesec}
-
-
-
+\RequirePackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
+\sisetup{
+  locale = US ,
+  per-mode = symbol,
+  binary-units = true
+}
+\RequirePackage{marvosym}
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  \RequirePackage{mathtools}
+   \RequirePackage{upgreek}
 % ********************************** Fonts **********************************
 \RequirePackage{textcomp}
 % Font Selection
@@ -279,16 +337,34 @@
  \fi
  
  \ifCLASSINFOlibertine
+ \ifluatex
+    %\RequirePackage{libertine}
+    %\RequirePackage[libertine,liby]{newtxmath}
+   \usepackage[libertine]{newtxmath}
+    \usepackage{libertine}
+  \else
+  \ifxetex
+  \setmainfont[
+    Path              = ./libertine/opentype/,
+    Extension         = .otf,
+    UprightFont = LinLibertine_R,
+    BoldFont = LinLibertine_RZ, % Regular Semibold
+    ItalicFont = LinLibertine_RI,
+    BoldItalicFont = LinLibertine_RZI, % Regular Semibold Italic
+  ] {libertine}
+  \newfontfamily\libertinesystemfont{Linux Libertine O}
+  \else
     \RequirePackage{libertine}
     \RequirePackage[libertine]{newtxmath}
-    \message{PhDThesisPSnPDF: Using Fourier font}
+  \fi
+   \fi
+    \message{PhDThesisPSnPDF: Using libertine font}
  \else
  \fi
 
 \ifCLASSINFOsetcustomfont
   \message{PhDThesisPSnPDF: Using custom font}
 \else
-  \message{PhDThesisPSnPDF: No font is set}
 \fi % custom font
 
 % If Font is not set throw a warning.
@@ -305,23 +381,43 @@
 
 \ifxetex
   % XeLaTeX
-  \usepackage{amsmath}
-  \usepackage{fontspec}
-  \usepackage[]{unicode-math}
-  \setmainfont[
-    Extension = .otf,
-    UprightFont = *-regular,
-    BoldFont = *-bold,
-    ItalicFont = *-italic,
-    BoldItalicFont = *-bolditalic,
-  ]{xits}
+  %\usepackage{fontspec}
+  \usepackage[no-math]{fontspec}
+  \DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
+\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
+\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
+  %\usepackage[]{unicode-math}
   
-  \setmathfont[ 
-    Extension = .otf,
-    BoldFont = *bold,
-  ]{xits-math}
+  \RequirePackage[final]{microtype}
+
   
 \else
+  \ifluatex
+  %\RequirePackage{fontspec}
+   \usepackage{fontspec}
+  %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
+%\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
+%\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
+ 
+  % If building with PDFLaTeX, use microtype spacing adjustments
+  \RequirePackage{microtype}
+  \DeclareCharacterInheritance
+   { encoding = {TU},
+     family = {LinLibertine,LinBiolinum} }
+   { A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
+     a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
+% ...
+%     j = {\j},
+% ...
+     Z = {\'Z,\.Z,\v Z},
+     z = {\'z,\.z,\v z}
+   }
+\microtypesetup{
+  tracking   = smallcaps ,
+  protrusion = alltext ,
+  expansion  = basictext
+}
+  \else
   % default: pdfLaTeX
   %:-------------------------- packages UTF8 -----------------------
   \RequirePackage{inputenc}
@@ -329,23 +425,19 @@
   \makeatother
 
   \RequirePackage[T1]{fontenc}
-  \RequirePackage{marvosym} %Euro cur­rency sym­bol, male female symbol
   % If building with PDFLaTeX, use microtype spacing adjustments
   \RequirePackage[final]{microtype}
   
-  %\input{glyphtounicode}
-  %\pdfglyphtounicode{f_f}{FB00}
-  %\pdfglyphtounicode{f_i}{FB01}
-  %\pdfglyphtounicode{f_l}{FB02}
-  %\pdfglyphtounicode{f_f_i}{FB03}
-  %\pdfglyphtounicode{f_f_l}{FB04}
-  %\pdfgentounicode=1
+  \input{glyphtounicode}
+  \pdfglyphtounicode{f_f}{FB00}
+  \pdfglyphtounicode{f_i}{FB01}
+  \pdfglyphtounicode{f_l}{FB02}
+  \pdfglyphtounicode{f_f_i}{FB03}
+  \pdfglyphtounicode{f_f_l}{FB04}
+  \pdfgentounicode=1
 
   %\RequirePackage{amsfonts}
-  \RequirePackage{amsmath}
-  \RequirePackage{amssymb}
-  \RequirePackage{mathtools}
-   \RequirePackage{upgreek}
+   \fi
 \fi
 
 % Don't break enumeration (etc.) across pages in an ugly manner
@@ -360,6 +452,8 @@
 \newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
 \RequirePackage{longtable}
 
+%:-------------------------- BibLatex ---------------------------
+\RequirePackage{csquotes}
 %:-------------------------- PDF/PS setup -----------------------
 % png or pfg/pdf graphics?
 %\RequirePackage{pgf}
@@ -565,7 +659,7 @@
 
 % **************** Clear Header Style on the Last Empty Odd pages **************
 \makeatletter
-\renewcommand{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else%
+\renewcommand{\cleardoublepage}{\clearpage\ifCLASSOPTIONtwoside \ifodd\c@page\else%
   \hbox{}%
   \thispagestyle{empty}  % Empty header styles
   \newpage%
@@ -624,6 +718,7 @@
 \def\firstreviewer#1{\gdef\@firstreviewer{#1}}
 \def\secondreviewer#1{\gdef\@secondreviewer{#1}}
 \def\thirdreviewer#1{\gdef\@thirdreviewer{#1}}
+\def\forthreviewer#1{\gdef\@forthreviewer{#1}}
 \makeatother
 % These macros define an environment for front matter that is always 
 % single column even in a double-column document.
@@ -632,6 +727,16 @@
        \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
        \else\newpage\fi}
        {\if@restonecol\twocolumn\else\newpage\fi}
+\makeatother
+
+% Set single column even under two column layout
+\makeatletter
+\newcommand{\setsinglecolumn}{
+\if@twocolumn
+   \onecolumn
+\else
+\fi
+}
 \makeatother
 
 %define title page layout
@@ -645,8 +750,11 @@
     \thispagestyle{empty}
 
 {\usebox{\@PHDtitle}} % subtitle is defined
-\vspace{.15\titlepagespacing}
+{\usebox{\@PHDsubtitle}} % subtitle is defined
 
+
+
+\vspace{.15\titlepagespacing}
 {\usebox{\@PHDauthor}}
 \vspace*{0.5em}
 \vspace{.2\titlepagespacing}
@@ -676,10 +784,157 @@
 
 
 % Title Box
+
 \newsavebox{\@PHDtitle}
 \begin{lrbox}{\@PHDtitle}
   \begin{minipage}[c]{0.98\textwidth}
-    \centering \Huge \bfseries{\@title}
+    \centering \Huge \singlespacing \bfseries{\@title}
+    \\
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDsubtitle}
+\begin{lrbox}{\@PHDsubtitle}
+  \begin{minipage}[c]{0.98\textwidth}
+    \centering \LARGE \singlespacing \bfseries{\@subtitle}
+    \\
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDauthor}
+\begin{lrbox}{\@PHDauthor}
+\begin{minipage}[c]{\textwidth}
+  {\Large \centering
+      {{vorgelegt von} \par}
+      \vspace*{-1ex}
+      {{\@olddegree} \par}
+      \vspace*{-1ex}
+      {{\@author} \par}
+      \vspace*{-1ex}
+      {geb. in {\@cityofbirth} \par}
+  % {{\@cityofbirth} \par}    
+  }
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDdegree}
+\begin{lrbox}{\@PHDdegree}
+\begin{minipage}[c]{\textwidth}
+{\Large \centering
+  \vspace*{1ex}
+    {{\@collegeordept} \par}
+  \vspace*{-1ex}
+    {{\@university} \par}
+  \vspace*{-1ex}
+    {{zur Erlangung des akademischen Grades} \par}
+    \vspace*{1ex}
+    {{\@degreefull} \par}
+  \vspace*{-1ex}
+    { {\@degree} \par}
+  \vspace*{1ex}
+{{genehmigte Dissertation} \par}
+}
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDcomitee}
+\begin{lrbox}{\@PHDcomitee}
+\begin{minipage}[c]{\textwidth}
+ {\Large \vspace*{-1ex}
+{{Promotionsausschuss:} \par}
+{{Vorsitzender: {\@comiteehead}} \par}\vspace*{-1ex}
+{{Gutachter: {\@firstreviewer}} \par}\vspace*{-1ex}
+{{Gutachterin: {\@secondreviewer}} \par}\vspace*{-1ex}
+{{Gutachter: {\@thirdreviewer}} \par}\vspace*{1ex}
+%{{Gutachter: {\@forthreviewer}} \par}
+    {\@degreedate}
+}%end large
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDdate}
+\begin{lrbox}{\@PHDdate}
+\begin{minipage}[c]{\textwidth}
+    {\Large 
+       \begin{center}
+    \vspace*{1ex}
+    {{{\@degreeplaceyear}}}
+    \end{center}
+    }
+  \end{minipage}
+\end{lrbox}
+
+
+%  Now to compute the free vertical space
+\newlength{\titlepagespacing}
+\setlength{\titlepagespacing}{ \textheight %
+                                           - \totalheightof{\usebox{\@PHDtitle}}
+                                           - \totalheightof{\usebox{\@PHDsubtitle}}
+                                           - \totalheightof{\usebox{\@PHDauthor}}
+                                           - \totalheightof{\usebox{\@PHDdegree}}
+                                           - \totalheightof{\usebox{\@PHDcomitee}}
+                                           - \totalheightof{\usebox{\@PHDdate}}
+}
+}
+\makeatother
+%:-------------------------- front matter layout -----------------------
+
+
+
+
+%define title page layout
+\makeatletter
+\newcommand{\makepretitle}{%
+\computePreTitlePageSpacing
+\begin{doublespace}
+\begin{alwayssingle}
+\begin{center}
+
+    \thispagestyle{empty}
+
+{\usebox{\@PHDtitle}} % subtitle is defined
+{\usebox{\@PHDsubtitle}} % subtitle is defined
+\vspace{.15\titlepagespacing}
+
+{\usebox{\@PHDauthor}}
+\vspace*{0.5em}
+\vspace{.2\titlepagespacing}
+ {\usebox{\@PHDdegree}}
+\vspace*{.2\titlepagespacing}
+\vspace*{1.5em}
+\vspace*{.3\titlepagespacing}
+ {\usebox{\@PHDdate}} 
+\end{center}
+\end{alwayssingle}
+\end{doublespace}
+}
+
+\makeatother
+
+% page number for cover back side should have page number blanked
+
+
+% ******************** To compute empty space in title page *******************
+% Boxes below are used to space different contents on the title page
+% Based on https://github.com/cambridge/thesis
+\makeatletter
+
+\newcommand{\computePreTitlePageSpacing}{
+
+
+% Title Box
+\newsavebox{\@PHDtitle}
+\begin{lrbox}{\@PHDtitle}
+  \begin{minipage}[c]{0.98\textwidth}
+    \centering \Huge  \singlespacing  \bfseries{\@title}
+    \\
+  \end{minipage}
+\end{lrbox}
+
+\newsavebox{\@PHDsubtitle}
+\begin{lrbox}{\@PHDsubtitle}
+  \begin{minipage}[c]{0.98\textwidth}
+    \centering \LARGE \singlespacing \bfseries{\@subtitle}
     \\
   \end{minipage}
 \end{lrbox}
@@ -715,24 +970,10 @@
   \vspace*{-1ex}
     { {\@degree} \par}
   \vspace*{1ex}
-{{genehmigte Dissertation} \par}
 }
   \end{minipage}
 \end{lrbox}
 
-\newsavebox{\@PHDcomitee}
-\begin{lrbox}{\@PHDcomitee}
-\begin{minipage}[c]{\textwidth}
- {\large 
-{{Promotionsausschuss:} \par}
-{{Vorsitzender: {\@comiteehead}} \par}\vspace*{-1ex}
-{{Gutachter: {\@firstreviewer}} \par}\vspace*{-1ex}
-{{Gutachter: {\@secondreviewer}} \par}\vspace*{-1ex}
-{{Gutachter: {\@thirdreviewer}} \par}
-    {\@degreedate}
-}%end large
-  \end{minipage}
-\end{lrbox}
 
 \newsavebox{\@PHDdate}
 \begin{lrbox}{\@PHDdate}
@@ -740,25 +981,27 @@
     {\Large 
        \begin{center}
     \vspace*{1ex}
-    {{{\@degreeplaceyear} \\D 83}}
+    {{\@degreedate}}
     \end{center}
     }
   \end{minipage}
 \end{lrbox}
 
-
 %  Now to compute the free vertical space
 \newlength{\titlepagespacing}
 \setlength{\titlepagespacing}{ \textheight %
                                            - \totalheightof{\usebox{\@PHDtitle}}
+                                           - \totalheightof{\usebox{\@PHDsubtitle}}
                                            - \totalheightof{\usebox{\@PHDauthor}}
                                            - \totalheightof{\usebox{\@PHDdegree}}
-                                           - \totalheightof{\usebox{\@PHDcomitee}}
-                                           - \totalheightof{\usebox{\@PHDdate}}
+                                            - \totalheightof{\usebox{\@PHDdate}}
 }
 }
 \makeatother
-%:-------------------------- front matter layout -----------------------
+
+
+
+
 
 % DEDICATION
 %
@@ -766,12 +1009,14 @@
 % own page and is set out in verse format.
 
 \newenvironment{dedication}
-{\begin{alwayssingle}
-  \pagestyle{empty}
+{
+  
 \cleardoublepage
+\setsinglecolumn
   \vspace*{0.2\textheight}
-  \begin{quote} \begin{center}}
-{\end{center} \end{quote} \end{alwayssingle}}
+  \thispagestyle{empty}
+  \centering
+}
 
 % ********************************* Dedication *********************************
 % The dedication environment makes sure the dedication gets its
@@ -786,41 +1031,70 @@
 % themselves appear in a quote environment, i.e. tabbed in at both sides, and
 % on its own page.
 
-\newenvironment{acknowledgements}
-{\pagestyle{empty}
-\begin{alwayssingle}
+\newenvironment{acknowledgementsOld}
+{\thispagestyle{empty}
+
 \begin{center}
 \cleardoublepage
+\setsinglecolumn
 \vspace*{1.5cm}
 {\Large \bfseries Acknowledgements}
 \end{center}
 \vspace{0.5cm}
 \begin{quote}}
-{\end{quote}\end{alwayssingle}}
+{\end{quote}}
+
+\newenvironment{acknowledgements}
+{  
+  \cleardoublepage
+  \setsinglecolumn
+  %\vspace*{1.5cm}
+  \chapter*{\centering \Large Acknowledgements}
+  %\chapter*{\makebox[1.0\linewidth]{\Large  Acknowledgements}}
+  \thispagestyle{empty}
+}
 
 % The acknowledgementslong environment puts a large, bold, centered 
 % "Acknowledgements" label at the top of the page. The acknowledgement itself 
 % does not appears in a quote environment so you can get more in.
 
 \newenvironment{acknowledgementslong}
-{\pagestyle{empty}
-\begin{alwayssingle}
+{\thispagestyle{empty}
 \begin{center}
 \cleardoublepage
+\setsinglecolumn
 \vspace*{1.5cm}
 {\Large \bfseries Acknowledgements}
 \end{center}
 \vspace{0.5cm}\begin{quote}}
-{\end{quote}\end{alwayssingle}}
+{\end{quote}}
 
-%ABSTRACT
+% ******************************** Abstract ************************************
 %
 %The abstract environment puts a large, bold, centered "Abstract" label at
 %the top of the page. The abstract itself appears in a quote environment,
 %i.e. tabbed in at both sides, and on its own page.
 
-\newenvironment{abstracts} {\begin{alwayssingle} \pagestyle{empty}
-  \begin{center}
+% To include only the Title and the abstract pages for submission to BoGS
+\ifCLASSINFOabstract
+    \defineAbstracttrue
+    % Disable the table of contents, figures, tables, index and nomenclature
+    \renewcommand{\tableofcontents}{}
+    \renewcommand{\listoffigures}{}
+    \renewcommand{\listoftables}{}
+    \renewcommand{\bibname}{}
+    \renewcommand{\bibliography}[1]{\thispagestyle{empty}}
+    \renewcommand{\cfchapter}[3]{}
+    \renewcommand{\printglossary}[2][YYY]{}
+    \renewcommand{\label}[1]{}
+    \renewcomman{\makeglossaries}{}
+\else
+    \defineAbstractfalse
+\fi
+
+
+\newenvironment{abstractsOld} {\pagestyle{empty}
+  \begin{center}\begin{alwayssingle}
   \cleardoublepage
   \vspace*{1.5cm}
   {\Large \bfseries  Abstract}
@@ -829,18 +1103,70 @@
    \begin{quote}}
 {\end{quote}\end{alwayssingle}}
 
+\makeatletter
+\newenvironment{abstracts} {
+\ifCLASSINFOabstract
+% Separate abstract as per Student Registry guidelines
+  \thispagestyle{empty}
+  \setsinglecolumn
+  \begin{center}
+    { \Large {\bfseries {\@title}} \par}
+    { \large {\bfseries {\@subtitle}} \par}
+    {{\large \vspace*{1em} \@author} \par}
+  \end{center}
+\else
+  \cleardoublepage
+  \setsinglecolumn
+  %\chapter*{\centering \Large Abstract}
+  \chapter*{\makebox[1.0\linewidth]{\Large  Abstract}}
+  \thispagestyle{empty}
+  \fi
+  }
+\makeatother
+
+\newenvironment{zusammenfassungOld} {\pagestyle{empty}
+  \begin{center}\begin{alwayssingle}
+  \cleardoublepage
+  \vspace*{1.5cm}
+  {\Large \bfseries  Zusammenfassung}
+  \end{center}
+  \vspace{0.5cm}
+   \begin{quote}}
+{\end{quote}\end{alwayssingle}}
+\makeatletter
+\newenvironment{zusammenfassung} {
+\ifCLASSINFOabstract
+% Separate abstract as per Student Registry guidelines
+  \thispagestyle{empty}
+  \setsinglecolumn
+  \begin{center}
+    { \Large {\bfseries {\@title}} \par}
+    { \large {\bfseries {\@subtitle}} \par}
+    {{\large \vspace*{1em} \@author} \par}
+  \end{center}
+\else
+  \cleardoublepage
+  \setsinglecolumn
+  %\chapter*{\centering \Large Zusammenfassung}
+  \chapter*{\makebox[1.0\linewidth]{\Large  Zusammenfassung}}
+  \thispagestyle{empty}
+  \fi
+  }
+\makeatother
 %The abstractlong environment puts a large, bold, centered "Abstract" label at
 %the top of the page. The abstract itself does not appears in a quote
 %environment so you can get more in.
 
-\newenvironment{abstractslong} {\begin{alwayssingle} \pagestyle{empty}
+\newenvironment{abstractslong} {
   \begin{center}
   \cleardoublepage
+  \setsinglecolumn
+  \thispagestyle{empty}
   \vspace*{1.5cm}
   {\Large \bfseries  Abstract}
   \end{center}
   \vspace{0.5cm} \begin{quote}}
-{\end{quote}\end{alwayssingle}}
+{\end{quote}}
 
 %The abstractseparate environment is for running of a page with the abstract
 %on including title and author etc as required to be handed in separately
@@ -864,25 +1190,19 @@
 \makeatother
 %Statement of originality if required
 
-\newenvironment{declaration} {\begin{alwayssingle} \pagestyle{empty}
+\newenvironment{declaration} {
   \begin{center}
   \cleardoublepage
+  \setsinglecolumn
+  \thispagestyle{empty}
   \vspace*{1.5cm}
   {\Large \bfseries  Declaration}
   \end{center}
   \vspace{0.5cm}
    \begin{quote}}
-{\end{quote}\end{alwayssingle}}
+{\end{quote}}
 %Deutsche Zusammenfassung
-\newenvironment{zusammenfassung} {\begin{alwayssingle} \pagestyle{empty}
-  \begin{center}
-  \cleardoublepage
-  \vspace*{1.5cm}
-  {\Large \bfseries  Zusammenfassung}
-  \end{center}
-  \vspace{0.5cm}
-   \begin{quote}}
-{\end{quote}\end{alwayssingle}}
+
 
 
 %:-------------------------- page numbers: roman+arabic -----------------------
@@ -895,8 +1215,8 @@
 
 %\newenvironment{romanpages}
 %{
-%	\setcounter{page}{1}
-%	\renewcommand{\thepage}{\roman{page}}
+% \setcounter{page}{1}
+% \renewcommand{\thepage}{\roman{page}}
 %} % close romanpage env't
  
 {\newpage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
@@ -905,3 +1225,4 @@
 %\SetSymbolFont{letters}{mathchartertext}{OML}{mdbch}{m}{n}
 %\newcommand{\gchar}[1]{\mathversion{mathchartertext}$#1$\mathversion{normal}}
 \newcommand{\gchar}[1]{$#1$}
+
