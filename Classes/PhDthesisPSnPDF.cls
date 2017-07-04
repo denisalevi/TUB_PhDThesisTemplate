@@ -320,6 +320,7 @@
    \RequirePackage{upgreek}
 % ********************************** Fonts **********************************
 \RequirePackage{textcomp}
+\RequirePackage{anyfontsize}
 % Font Selection
 \ifCLASSINFOtimes
   \ifxetex
@@ -743,7 +744,7 @@
 \makeatletter
 \renewcommand{\maketitle}{%
 \computeTitlePageSpacing
-\begin{doublespace}
+\begin{singlespace}
 \begin{alwayssingle}
 \begin{center}
 
@@ -767,7 +768,7 @@
  {\usebox{\@PHDdate}} 
 \end{center}
 \end{alwayssingle}
-\end{doublespace}
+\end{singlespace}
 }
 
 \makeatother
@@ -806,11 +807,8 @@
 \begin{minipage}[c]{\textwidth}
   {\Large \centering
       {{vorgelegt von} \par}
-      \vspace*{-1ex}
       {{\@olddegree} \par}
-      \vspace*{-1ex}
       {{\@author} \par}
-      \vspace*{-1ex}
       {geb. in {\@cityofbirth} \par}
   % {{\@cityofbirth} \par}    
   }
@@ -823,13 +821,10 @@
 {\Large \centering
   \vspace*{1ex}
     {{\@collegeordept} \par}
-  \vspace*{-1ex}
     {{\@university} \par}
-  \vspace*{-1ex}
     {{zur Erlangung des akademischen Grades} \par}
     \vspace*{1ex}
     {{\@degreefull} \par}
-  \vspace*{-1ex}
     { {\@degree} \par}
   \vspace*{1ex}
 {{genehmigte Dissertation} \par}
@@ -840,13 +835,14 @@
 \newsavebox{\@PHDcomitee}
 \begin{lrbox}{\@PHDcomitee}
 \begin{minipage}[c]{\textwidth}
- {\Large \vspace*{-1ex}
+ {\Large %\vspace*{-1ex}
 {{Promotionsausschuss:} \par}
-{{Vorsitzender: {\@comiteehead}} \par}\vspace*{-1ex}
-{{Gutachter: {\@firstreviewer}} \par}\vspace*{-1ex}
-{{Gutachterin: {\@secondreviewer}} \par}\vspace*{-1ex}
-{{Gutachter: {\@thirdreviewer}} \par}\vspace*{1ex}
+{{Vorsitzender: {\@comiteehead}} \par}
+{{Gutachter: {\@firstreviewer}} \par}
+{{Gutachterin: {\@secondreviewer}} \par}
+{{Gutachter: {\@thirdreviewer}} \par}
 %{{Gutachter: {\@forthreviewer}} \par}
+\vspace*{1ex}
     {\@degreedate}
 }%end large
   \end{minipage}
@@ -857,7 +853,6 @@
 \begin{minipage}[c]{\textwidth}
     {\Large 
        \begin{center}
-    \vspace*{1ex}
     {{{\@degreeplaceyear}}}
     \end{center}
     }
@@ -886,7 +881,7 @@
 \makeatletter
 \newcommand{\makepretitle}{%
 \computePreTitlePageSpacing
-\begin{doublespace}
+\begin{singlespace}
 \begin{alwayssingle}
 \begin{center}
 
@@ -906,7 +901,7 @@
  {\usebox{\@PHDdate}} 
 \end{center}
 \end{alwayssingle}
-\end{doublespace}
+\end{singlespace}
 }
 
 \makeatother
@@ -944,11 +939,8 @@
 \begin{minipage}[c]{\textwidth}
   {\Large \centering
       {{vorgelegt von} \par}
-      \vspace*{-1ex}
       {{\@olddegree} \par}
-      \vspace*{-1ex}
       {{\@author} \par}
-      \vspace*{-1ex}
       {aus {\@cityofbirth} \par}
   % {{\@cityofbirth} \par}    
   }
@@ -961,13 +953,10 @@
 {\Large \centering
   \vspace*{1ex}
     {{\@collegeordept} \par}
-  \vspace*{-1ex}
     {{\@university} \par}
-  \vspace*{-1ex}
     {{zur Erlangung des Akademischen Grades} \par}
     \vspace*{1ex}
     {{\@degreefull} \par}
-  \vspace*{-1ex}
     { {\@degree} \par}
   \vspace*{1ex}
 }
@@ -980,7 +969,6 @@
 \begin{minipage}[c]{\textwidth}
     {\Large 
        \begin{center}
-    \vspace*{1ex}
     {{\@degreedate}}
     \end{center}
     }
