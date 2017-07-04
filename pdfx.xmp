@@ -2,7 +2,7 @@
 %%                                                                 
 %%  File: pdfx.xmp                                         
 %% 
-%%  Copyright (c) 2015, CV Radhakrishnan <cvr@river-valley.org>,
+%%  Copyright (c) 2016, CV Radhakrishnan <cvr@river-valley.org>,
 %%    Han The Thanh <thanh@river-valley.org>,
 %%    Ross Moore <ross.moore@mq.edu.au>,
 %%    Peter Selinger <selinger@mathstat.dal.ca>
@@ -48,33 +48,29 @@
          <xmp:CreatorTool>\xmp@CreatorTool</xmp:CreatorTool>
          <xmp:CreateDate>\xmp@convDate</xmp:CreateDate>
          <xmp:MetadataDate>\xmp@convDate</xmp:MetadataDate>
-         \ifnot@empty\xmp@@Keywords{<pdf:Keywords>\xmp@@Keywords</pdf:Keywords>}
+         \ifx\xmp@@Keywords\@empty\else<pdf:Keywords>\xmp@@Keywords</pdf:Keywords>\fi
          <pdf:Producer>\xmp@Producer</pdf:Producer>
          <pdf:Trapped>False</pdf:Trapped>
 \ifnum\xmp@Part<4     <pdf:Version>PDF/X-\xmp@Part</pdf:Version>\fi
         \ifnum\xmp@Part>3 <pdfxid:GTS_PDFXVersion>PDF/X-\xmp@Part\xmp@Conformance</pdfxid:GTS_PDFXVersion>\fi
-         <pdfx:GTS_PDFXVersion>PDF/X-\xmp@Part\xmp@Conformance\ifnum\xmp@Part<4:\xmp@ReleaseDate\fi</pdfx:GTS_PDFXVersion>
+         <pdfx:GTS_PDFXVersion>PDF/X-\xmp@Part\xmp@Conformance\ifnum\xmp@Part<4:\xmp@ReleaseDate</pdfx:GTS_PDFXVersion>\else</pdfx:GTS_PDFXVersion>\fi
          \ifnum\xmp@Part<3 <pdfx:GTS_PDFXConformance>PDF/X-\xmp@Part\xmp@Conformance:\xmp@ReleaseDate</pdfx:GTS_PDFXConformance>\fi
-%        \ifnot@empty\xmp@AuthoritativeDomain{<pdfx:AuthoritativeDomain><rdf:Bag><rdf:li>\xmp@AuthoritativeDomain</rdf:li></rdf:Bag></pdfx:AuthoritativeDomain>}
-        \ifnot@empty\xmp@AuthoritativeDomain{<pdfx:AuthoritativeDomain>\xmp@AuthoritativeDomain</pdfx:AuthoritativeDomain>}
+%        \ifx\xmp@AuthoritativeDomain\@empty\else<pdfx:AuthoritativeDomain><rdf:Bag><rdf:li>\xmp@AuthoritativeDomain</rdf:li></rdf:Bag></pdfx:AuthoritativeDomain>\fi
+%        \ifx\xmp@AuthoritativeDomain\@empty\else<pdfx:AuthoritativeDomain>\xmp@AuthoritativeDomain</pdfx:AuthoritativeDomain>\fi
       </rdf:Description>
       <rdf:Description rdf:about="" xmlns:xmpRights = "http://ns.adobe.com/xap/1.0/rights/">
-         \ifnot@empty\xmp@Copyright{<xmpRights:Marked>True</xmpRights:Marked>
-    <xmpRights:UsageTerms>
-      <rdf:Alt><rdf:li xml:lang="x-default">\xmp@Copyright</rdf:li>
-      </rdf:Alt>
-    </xmpRights:UsageTerms>}
-      \ifnot@empty\xmp@CopyrightURL{<xmpRights:WebStatement>\xmp@CopyrightURL</xmpRights:WebStatement>}
+         \ifx\xmp@Copyright\@empty\else<xmpRights:Marked>\ifx\xmp@Copyrighted\@empty True\else\xmp@Copyrighted\fi</xmpRights:Marked>^^J<xmpRights:UsageTerms><rdf:Alt><rdf:li xml:lang="x-default">\xmp@@Copyright</rdf:li></rdf:Alt></xmpRights:UsageTerms>\fi
+      \ifx\xmp@WebStatement\@empty\else<xmpRights:WebStatement>\xmp@WebStatement</xmpRights:WebStatement>\fi
       </rdf:Description>
       <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
          <dc:format>application/pdf</dc:format>
-         \ifnot@empty\xmp@Title{<dc:title><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Title</rdf:li></rdf:Alt></dc:title>}
-         \ifnot@empty\xmp@@Author{<dc:creator><rdf:Seq><rdf:li>\xmp@@Author</rdf:li></rdf:Seq></dc:creator>}
-         \ifnot@empty\xmp@Publisher{<dc:publisher><rdf:Bag><rdf:li>\xmp@Publisher</rdf:li></rdf:Bag></dc:publisher>}
-         \ifnot@empty\xmp@Doi{<dc:identifier>doi:\xmp@Doi</dc:identifier>}
-         \ifnot@empty\xmp@Copyright{<dc:rights><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Copyright</rdf:li></rdf:Alt></dc:rights>}
-         \ifnot@empty\xmp@Subject{<dc:description><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Subject</rdf:li></rdf:Alt></dc:description>}
-         \ifnot@empty\xmp@Keywords{<dc:subject><rdf:Bag><rdf:li>\xmp@Keywords</rdf:li></rdf:Bag></dc:subject>}
+         \ifx\xmp@Title\@empty\else<dc:title><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Title</rdf:li></rdf:Alt></dc:title>\fi
+         \ifx\xmp@@Author\@empty\else<dc:creator><rdf:Seq><rdf:li>\xmp@@Author</rdf:li></rdf:Seq></dc:creator>\fi
+         \ifx\xmp@Org\@empty\else<dc:publisher><rdf:Bag><rdf:li>\xmp@Org</rdf:li></rdf:Bag></dc:publisher>\fi
+         \ifx\xmp@Doi\@empty\else<dc:identifier>doi:\xmp@Doi</dc:identifier>\fi
+         \ifx\xmp@Copyright\@empty\else<dc:rights><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Copyright</rdf:li></rdf:Alt></dc:rights>\fi
+         \ifx\xmp@Subject\@empty\else<dc:description><rdf:Alt><rdf:li xml:lang="x-default">\xmp@Subject</rdf:li></rdf:Alt></dc:description>\fi
+         \ifx\xmp@Keywords\@empty\else<dc:subject><rdf:Bag><rdf:li>\xmp@Keywords</rdf:li></rdf:Bag></dc:subject>\fi
       </rdf:Description>
       <rdf:Description rdf:about="" xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/"
                        xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema#"
@@ -188,91 +184,31 @@
               <pdfaSchema:prefix>prism</pdfaSchema:prefix>
               <pdfaSchema:property>
                <rdf:Seq>
-%% RRM: Only need to define the tags that are actually used below.
+%% RRM: Only need to define the tags that are actually used below. But \ifx ... \fi  must be all on one line.
 %% declare prism:aggregationType
-  \ifnot@empty\xmp@PublicationType{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>aggregationType</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>The type of publication. If defined, must be one of book, catalog, feed, journal, magazine, manual, newsletter, pamphlet.</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@PublicationType\@empty\else <rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>aggregationType</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>The type of publication. If defined, must be one of book, catalog, feed, journal, magazine, manual, newsletter, pamphlet.</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:issn
-  \ifnot@empty\xmp@Journalnumber{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>issn</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>The ISSN for the publication in which the resource was published</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Journalnumber\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>issn</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>The ISSN for the publication in which the resource was published</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:volume
-  \ifnot@empty\xmp@Volume{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>volume</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Additional identifier for the publication where the resource appeared, providing the Volume portion of the common Volume, Number scheme</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Volume\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>volume</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Additional identifier for the publication where the resource appeared, providing the Volume portion of the common Volume, Number scheme</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:number
-  \ifnot@empty\xmp@Issue{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>number</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Number of the Issue within the Volume</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Issue\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>number</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Number of the Issue within the Volume</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:coverDisplayDate
-  \ifnot@empty\xmp@CoverDisplayDate{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>coverDisplayDate</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Date on the cover of a magazine issue, as a human-readable text string</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@CoverDisplayDate\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>coverDisplayDate</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Date on the cover of a magazine issue, as a human-readable text string</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:coverDate
-  \ifnot@empty\xmp@CoverDate{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>coverDate</pdfaProperty:name>
-    <pdfaProperty:valueType>Date</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Date on the cover of a magazine issue, suitable for storing in a database field with a 'date' data type</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@CoverDate\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>coverDate</pdfaProperty:name>^^J    <pdfaProperty:valueType>Date</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Date on the cover of a magazine issue, suitable for storing in a database field with a 'date' data type</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:issueName
-  \ifnot@empty\xmp@Journaltitle{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>issueName</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Additional identifier, typically used for major issues of a magazine or other resource</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Journaltitle\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>issueName</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Additional identifier, typically used for major issues of a magazine or other resource</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:pageRange
-  \ifnot@empty\xmp@Firstpage{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>pageRange</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Page range for the published print version of the resource</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Firstpage\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>pageRange</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Page range for the published print version of the resource</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:startingPage
-  \ifnot@empty\xmp@Firstpage{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>startingPage</pdfaProperty:name>
-    <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>First page number for the published version of the resource</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Firstpage\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>startingPage</pdfaProperty:name>^^J    <pdfaProperty:valueType>Integer</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>First page number for the published version of the resource</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:endingPage
-  \ifnot@empty\xmp@Lastpage{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>endingPage</pdfaProperty:name>
-    <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>The last page number for the printed resource</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Lastpage\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>endingPage</pdfaProperty:name>^^J    <pdfaProperty:valueType>Integer</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>The last page number for the printed resource</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:doi
-  \ifnot@empty\xmp@Doi{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>doi</pdfaProperty:name>
-    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>Digital Object Identifier, DOI, for the article</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Doi\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>doi</pdfaProperty:name>^^J    <pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>Digital Object Identifier, DOI, for the article</pdfaProperty:description>^^J  </rdf:li>\fi
 %% declare prism:url
-  \ifnot@empty\xmp@Doi{<rdf:li rdf:parseType="Resource">
-    <pdfaProperty:name>url</pdfaProperty:name>
-    <pdfaProperty:valueType>URL</pdfaProperty:valueType>
-    <pdfaProperty:category>external</pdfaProperty:category>
-    <pdfaProperty:description>URL for the article or unit of content</pdfaProperty:description>
-  </rdf:li>}
+  \ifx\xmp@Doi\@empty\else<rdf:li rdf:parseType="Resource">^^J    <pdfaProperty:name>url</pdfaProperty:name>^^J    <pdfaProperty:valueType>URL</pdfaProperty:valueType>^^J    <pdfaProperty:category>external</pdfaProperty:category>^^J    <pdfaProperty:description>URL for the article or unit of content</pdfaProperty:description>^^J  </rdf:li>\fi
 %% RRM: more tags can be declared
 %                <rdf:li rdf:parseType="Resource">
 %                  <pdfaProperty:name></pdfaProperty:name>
@@ -286,18 +222,18 @@
         </pdfaExtension:schemas>
       </rdf:Description>
       <rdf:Description rdf:about="" xmlns:prism="http://prismstandard.org/namespaces/basic/2.2/">
-         \ifnot@empty\xmp@PublicationType{<prism:aggregationType>\xmp@PublicationType</prism:aggregationType>}
-	 \ifnot@empty\xmp@Journalnumber{<prism:issn>\xmp@Journalnumber</prism:issn>}
-	 \ifnot@empty\xmp@Volume{<prism:volume>\xmp@Volume</prism:volume>}
-	 \ifnot@empty\xmp@Issue{<prism:number>\xmp@Issue</prism:number>}
-	 \ifnot@empty\xmp@CoverDisplayDate{<prism:coverDisplayDate>\xmp@CoverDisplayDate</prism:coverDisplayDate>}
-	 \ifnot@empty\xmp@CoverDate{<prism:coverDate>\xmp@CoverDate</prism:coverDate>}
-	 \ifnot@empty\xmp@Journaltitle{<prism:issueName>\xmp@Journaltitle</prism:issueName>}
-	 \ifnot@empty\xmp@Firstpage{<prism:pageRange>\xmp@Firstpage-\xmp@Lastpage</prism:pageRange>}
-	 \ifnot@empty\xmp@Firstpage{<prism:startingPage>\xmp@Firstpage</prism:startingPage>}
-	 \ifnot@empty\xmp@Lastpage{<prism:endingPage>\xmp@Lastpage</prism:endingPage>}
-	 \ifnot@empty\xmp@Doi{<prism:doi>\xmp@Doi</prism:doi>}
-	 \ifnot@empty\xmp@Doi{<prism:url>http://dx.doi.org/\xmp@Doi</prism:url>}
+         \ifx\xmp@PublicationType\@empty\else<prism:aggregationType>\xmp@PublicationType</prism:aggregationType>\fi
+	 \ifx\xmp@Journalnumber\@empty\else<prism:issn>\xmp@Journalnumber</prism:issn>\fi
+	 \ifx\xmp@Volume\@empty\else<prism:volume>\xmp@Volume</prism:volume>\fi
+	 \ifx\xmp@Issue\@empty\else<prism:number>\xmp@Issue</prism:number>\fi
+	 \ifx\xmp@CoverDisplayDate\@empty\else<prism:coverDisplayDate>\xmp@CoverDisplayDate</prism:coverDisplayDate>\fi
+	 \ifx\xmp@CoverDate\@empty\else<prism:coverDate>\xmp@CoverDate</prism:coverDate>\fi
+	 \ifx\xmp@Journaltitle\@empty\else<prism:issueName>\xmp@Journaltitle</prism:issueName>\fi
+	 \ifx\xmp@Firstpage\@empty\else<prism:pageRange>\xmp@Firstpage-\xmp@Lastpage</prism:pageRange>\fi
+	 \ifx\xmp@Firstpage\@empty\else<prism:startingPage>\xmp@Firstpage</prism:startingPage>\fi
+	 \ifx\xmp@Lastpage\@empty\else<prism:endingPage>\xmp@Lastpage</prism:endingPage>\fi
+	 \ifx\xmp@Doi\@empty\else<prism:doi>\xmp@Doi</prism:doi>\fi
+	 \ifx\xmp@Doi\@empty\else<prism:url>http://dx.doi.org/\xmp@Doi</prism:url>\fi
       </rdf:Description>
 %      <rdf:Description rdf:about=""
 %            xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -314,7 +250,7 @@
 %         </dc:description>
 %         <dc:creator>
 %            <rdf:Bag>
-%               <rdf:li>\xmp@@Author</rdf:li>
+%               <rdf:li>\xmp@Author</rdf:li>
 %            </rdf:Bag>
 %         </dc:creator>
 %         <dc:subject>
@@ -333,10 +269,10 @@
    </rdf:RDF>
 </x:xmpmeta>
 % padding with 512 space characters to allow easier editing within a PDF
-\padding@line
-\padding@line
-\padding@line
-\padding@line
+\paddingline
+\paddingline
+\paddingline
+\paddingline
 %%
 %% End of pdfx.xmp
 %%

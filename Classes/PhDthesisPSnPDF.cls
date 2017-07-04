@@ -42,6 +42,9 @@
 
 \newif\ifCLASSINFOcustommargin             \CLASSINFOcustommarginfalse
 
+
+
+
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
 \DeclareOption{10pt}{\PassOptionsToClass{10pt}{book}\def\CLASSOPTIONpt{10}}
@@ -199,7 +202,7 @@
       \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
     %\RequirePackage[pdftex]{graphicx}
 %    \pdfcompresslevel=9
-%    \pdfminorversion=5
+%    \pdfminorversion=4
 %    \pdfobjcompresslevel=3
     \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
 \else
