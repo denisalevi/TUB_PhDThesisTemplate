@@ -52,7 +52,3 @@ DEL "%FILENAME%.syi"
 DEL "%FILENAME%.bcf"
 DEL "%FILENAME%.aux.bbl"
 DEL "%FILENAME%.aux.blg"
-
-
-
-#"%FILENAME%.pdf"
