@@ -1,9 +1,9 @@
+sudo: required
 before_install:
   - curl -L https://github.com/holgern/travis-texlive/releases/download/untagged-15e71555d09997dc7a43/texlive.tar.xz | tar -JxC ~
 install:
   - PATH=$HOME/texlive/bin/x86_64-linux:$PATH
   - sudo apt-get install -y psutils
-  - sudo apt-get install -y  biber
   - sudo apt-get install -y asymptote
 script:
    - make clean
