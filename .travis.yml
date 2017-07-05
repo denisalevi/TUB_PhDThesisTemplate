@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 before_install:
-  - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_02/texlive.tar.xz | tar -JxC ~
+  - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_04/texlive.tar.xz | tar -JxC ~
 install:
   - PATH=$HOME/texlive/bin/x86_64-linux:$PATH
   - sudo apt-get install -y psutils
