@@ -91,3 +91,8 @@
 
 \Subject      {Dissertation; DDC 000:  Informatik, Wissen, Systeme}
 
+
+\setCMYKcolorprofile{coated_FOGRA39L_argl.icc}
+{Coated FOGRA39}
+{FOGRA39 (ISO Coated v2 300\% (ECI))}
+{http://www.argyllcms.com/}

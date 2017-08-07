@@ -16,3 +16,5 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Build script
 * Seperated tex-files for each chapter
 * TikZ - support
+## Notes
+* pdfa-1b compatible-PDFs can only be generated with pdflatex at the moment.

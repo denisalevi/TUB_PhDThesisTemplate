@@ -38,12 +38,13 @@
 \newif\ifCLASSINFOsetfont             \CLASSINFOsetfontfalse
 \newif\ifCLASSINFOsetcustomfont             \CLASSINFOsetcustomfontfalse
 
-\newif\ifCLASSINFOpdfonea             \CLASSINFOpdfoneafalse
+\newif\ifCLASSINFOpdfaone               \CLASSINFOpdfaonefalse
+\newif\ifCLASSINFOpdfatwo               \CLASSINFOpdfatwofalse
+\newif\ifCLASSINFOpdfxthree             \CLASSINFOpdfxthreefalse
+\newif\ifCLASSINFOpdfax                 \CLASSINFOpdfaxfalse
+
 
 \newif\ifCLASSINFOcustommargin             \CLASSINFOcustommarginfalse
-
-
-
 
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
@@ -81,7 +82,9 @@
 \DeclareOption{print}{ \CLASSOPTIONprinttrue\CLASSOPTIONonlinefalse}
 \DeclareOption{online}{ \CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
 
-\DeclareOption{pdf1a}{\CLASSINFOpdfoneatrue}
+\DeclareOption{pdfa1}{\CLASSINFOpdfaonetrue\CLASSINFOpdfxthreefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
+\DeclareOption{pdfx3}{\CLASSINFOpdfxthreetrue\CLASSINFOpdfaonefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
+\DeclareOption{pdfa2}{\CLASSINFOpdfatwotrue\CLASSINFOpdfaonefalse\CLASSINFOpdfxthreefalse\CLASSINFOpdfaxtrue}
 
 \DeclareOption{times}{
   \ifCLASSINFOsetfont
@@ -162,14 +165,34 @@
     \setDVIfalse
     \LoadClass[fleqn,openright]{book}%
       %:-------------------------- Enable pdfa-1b generation -----------------------
-  \ifCLASSINFOpdfonea
-  \let\tmpa\textsuperscript
-  \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
-  \RequirePackage[a-1b]{pdfx}
-  \RequirePackage{xmpincl}
-  %\includexmp{pdfa-1b}
-  \else
-  \fi
+    \ifCLASSINFOpdfaone
+      \let\tmpa\textsuperscript
+      \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
+      \RequirePackage[a-1b]{pdfx}
+      %\RequirePackage[x-3]{pdfx}
+      \RequirePackage{xmpincl}
+      %\includexmp{pdfa-1b}
+    \else
+           \ifCLASSINFOpdfxthree
+               \let\tmpa\textsuperscript
+               \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
+              %\RequirePackage[a-1b]{pdfx}
+              \RequirePackage[x-3]{pdfx}
+              \RequirePackage{xmpincl}
+               %\includexmp{pdfa-1b}
+           \else
+              \ifCLASSINFOpdfatwo
+                 \let\tmpa\textsuperscript
+                 \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
+                \RequirePackage[a-2b]{pdfx}
+                %\RequirePackage[x-3]{pdfx}
+                \RequirePackage{xmpincl}
+                 %\includexmp{pdfa-1b}
+            \else
+        
+            \fi
+          \fi
+    \fi
   %: ----------------------------------------------------------------------------
   \else
     %DVI-output
@@ -194,11 +217,14 @@
 \usepackage{etoolbox}
 
 % *************************** Graphics and Figures *****************************
-\RequirePackage[usenames, dvipsnames]{color}
+%\RequirePackage[usenames, dvipsnames]{color}
 \ifpdf
   % Convert eps figures to pdf
   \RequirePackage{epstopdf}
-  %\RequirePackage[pdftex]{graphicx}
+  \RequirePackage[pdftex]{graphicx}
+  \usepackage{pstricks}    %for embedding pspicture.
+%\usepackage[pdftex]{graphicx}    %for figure environment.
+%\RequirePackage{svg}
       \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
     %\RequirePackage[pdftex]{graphicx}
 %    \pdfcompresslevel=9
@@ -287,7 +313,9 @@
 \RequirePackage[german,english]{babel}
 %\RequirePackage[usenames, dvipsnames]{color}
 %\RequirePackage[perpage]{footmisc}
-%\RequirePackage[sort, numbers]{natbib}
+\ifCLASSINFOpdfxthree
+\RequirePackage[sort, numbers]{natbib}
+\fi
 \RequirePackage{placeins}
 \RequirePackage[countmax]{subfloat}
 \RequirePackage{subfig}
@@ -310,7 +338,6 @@
 \RequirePackage{multirow}
 \RequirePackage{hhline}
 \RequirePackage{titlesec}
-\RequirePackage{textcomp}
 \RequirePackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
 \sisetup{
   locale = US ,
@@ -323,7 +350,7 @@
   \RequirePackage{mathtools}
    \RequirePackage{upgreek}
 % ********************************** Fonts **********************************
-
+\RequirePackage{textcomp}
 \RequirePackage{anyfontsize}
 % Font Selection
 \ifCLASSINFOtimes
@@ -488,7 +515,7 @@
   %\RequirePackage[unicode=true]{hyperref}  % extra option dvips
   %\setlength{\paperheight}{297mm}
   % \setlength{\paperwidth}{210mm}
-       \RequirePackage[ bookmarksopen = true,
+       \RequirePackage[ bookmarksopen = false,
                  bookmarksnumbered = true,
                  breaklinks = true,
                  linktocpage,
@@ -515,7 +542,7 @@
     pdfstartview=FitV,
     pdftoolbar=true,
     pdfmenubar=true,
-    bookmarksopen=true,
+    bookmarksopen=false,
     bookmarksnumbered=true,
     breaklinks=true,
     linktocpage,
@@ -556,13 +583,16 @@
                  urlcolor  = blue,
                  citecolor = red,
                  anchorcolor = green,
+                 pdfdisplaydoctitle = false,
+                 pdflang=Englisch,
+                 pdfview = FitB,
                  %bookmarks=true,
                  %pdfpagelabels,
                  %pagebackref,
                  %hyperindex = true,
                  %hyperfigures,
-                 pdfpagelayout = SinglePage,
-                 %pdfpagelayout=OneColumn,
+                 %pdfpagelayout = SinglePage,
+                 pdfpagelayout=OneColumn,
                  pdfpagemode = UseOutlines, 
                  pdfencoding=unicode
 }
@@ -595,7 +625,7 @@
 % *************************** Setting PDF Meta-Data ****************************
 \ifpdf
 % defined in thesis.xmpdata
-\ifCLASSINFOpdfonea
+\ifCLASSINFOpdfax
 \else
 \AtBeginDocument{
   \hypersetup{
@@ -629,6 +659,7 @@
 \RequirePackage{fancyhdr} % Define custom header
 
 % Set Fancy Header Command is defined to Load FancyHdr after Geometry is defined
+\ifCLASSOPTIONtwoside
 \newcommand{\setFancyHdr}{
 % ------------------------------
   \pagestyle{fancy}
@@ -646,8 +677,27 @@
     \renewcommand{\headrulewidth}{0pt}
   }
 }
-
+\setlength{\headheight}{25pt}
+\else
+\newcommand{\setFancyHdr}{
+% ------------------------------
+  \pagestyle{fancy}
+  \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. ##1 }}{}}
+  \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1}}
+  \fancyhf{}
+  \fancyhead[R]{\bfseries\rightmark}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \addtolength{\headheight}{0.5pt}
+  \fancypagestyle{plain}{
+    \fancyhead{}
+    \renewcommand{\headrulewidth}{0pt}
+  }
+}
 \setlength{\headheight}{14.5pt}
+\fi
+
 
 % If Margin has been set (default margin print/online version)
 \ifCLASSINFOcustommargin
@@ -793,6 +843,7 @@
 \newsavebox{\@PHDtitle}
 \begin{lrbox}{\@PHDtitle}
   \begin{minipage}[c]{0.98\textwidth}
+  \vspace*{-10ex}
     \centering \Huge \singlespacing \bfseries{\@title}
     \\
   \end{minipage}
@@ -823,11 +874,13 @@
 \begin{lrbox}{\@PHDdegree}
 \begin{minipage}[c]{\textwidth}
 {\Large \centering \singlespacing
-    {{von der \@collegeordept} \par}
+  \vspace*{1ex}
+    {{\@collegeordept} \par}
     {{\@university} \par}
     {{zur Erlangung des akademischen Grades} \par}
     \vspace*{1ex}
     {{\@degreefull} \par}
+  
     { {\@degree} \par}
   \vspace*{1ex}
 {{genehmigte Dissertation} \par}
@@ -839,14 +892,14 @@
 \begin{lrbox}{\@PHDcomitee}
 \begin{minipage}[c]{\textwidth}
  {\Large \singlespacing
-{{Promotionsausschuss:} \par}
-{{Vorsitzender: {\@comiteehead}} \par}
-{{Gutachter: {\@firstreviewer}} \par}
-{{Gutachterin: {\@secondreviewer}} \par}
-{{Gutachter: {\@thirdreviewer}} \par}
-%{{Gutachter: {\@forthreviewer}} \par}
-\vspace*{1ex}
-    {\@degreedate}
+  {{Promotionsausschuss:} \par}
+  {{Vorsitzender: {\@comiteehead}} \par}
+  {{Gutachter: {\@firstreviewer}} \par}
+  {{Gutachterin: {\@secondreviewer}} \par}
+  {{Gutachter: {\@thirdreviewer}} \par}
+  %{{Gutachter: {\@forthreviewer}} \par}
+  \vspace*{1ex}
+  {\@degreedate}
 }%end large
   \end{minipage}
 \end{lrbox}
@@ -944,7 +997,7 @@
       {{vorgelegt von} \par}
       {{\@olddegree} \par}
       {{\@author} \par}
-      {geb. in {\@cityofbirth} \par}
+      {aus {\@cityofbirth} \par}
   % {{\@cityofbirth} \par}    
   }
   \end{minipage}
@@ -954,7 +1007,7 @@
 \begin{lrbox}{\@PHDdegree}
 \begin{minipage}[c]{\textwidth}
 {\Large \centering \singlespacing
-    {{eingereicht an der \@collegeordept} \par}
+    {{\@collegeordept} \par}
     {{\@university} \par}
     {{zur Erlangung des Akademischen Grades} \par}
     \vspace*{1ex}
@@ -969,7 +1022,7 @@
 \newsavebox{\@PHDdate}
 \begin{lrbox}{\@PHDdate}
 \begin{minipage}[c]{\textwidth}
-    {\Large \singlespacing
+    {\Large  \singlespacing
        \begin{center}
     {{\@degreedate}}
     \end{center}

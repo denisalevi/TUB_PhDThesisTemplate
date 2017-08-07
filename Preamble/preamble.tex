@@ -19,27 +19,26 @@
 
 %if output to PDF then put the following in PDF header
 \ifpdf  
-%already in thesis.xmpdata
-%     \pdfinfo { /Title  (BI and EMG Recording for Swallowing Analysis and Control of FES Assisted Swallowing)
-%                /Creator (TeX)
-%                /Producer (pdflatex)
-%                /Author (Holger Nahrstaedt nahrstaedt@control.tu-berlin.de)
-%                /CreationDate (D:YYYYMMDDhhmmss)  %format D:YYYYMMDDhhmmss
-%                /ModDate (D:YYYYMMDDhhmm)
-%                /Subject (PhD-Thesis)
-%                /Keywords (BI,EMG) 
-%               }
-%     \hypersetup{pdfauthor={Holger Nahrstaedt},%
-% 		pdftitle={BI and EMG Recording for Swallowing Analysis and Control of FES Assisted Swallowing},%
-% 		pdfsubject={PhD-Thesis},%
-% 		pdfkeywords={BI, EMG},%
-% 		pdfproducer={LaTeX},%
-% 		pdfcreator={pdfLaTeX}
-% }
-    \pdfcatalog { /PageMode (/UseOutlines)
-                  /OpenAction (fitbh)  }
+  \ifCLASSINFOpdfxthree
+  \else
+      \pdfcatalog { /PageMode (/UseOutlines)
+                    /OpenAction (fitbh)  }
+  \fi
 \fi
 %\usepackage{showframe}
+\ifCLASSINFOpdfxthree
+\usepackage[
+    backend=biber,
+    style=ieee,
+    sortlocale=en_US,
+    natbib=false,
+    maxbibnames=50,
+    url=false, 
+    doi=true,
+    eprint=false
+]{biblatex}
+\addbibresource{9_backmatter/references.bib}
+\else
 \usepackage[
     backend=biber,
     style=ieee,
@@ -69,6 +68,7 @@
       %}
     }
 }
+\fi
 
 
 % ----------------------------------------------------------------------

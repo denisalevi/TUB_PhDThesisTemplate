@@ -11,9 +11,13 @@
 %: Style file for Latex
 % Most style definitions are in the external file PhDthesisPSnPDF.
 % In this template package, it can be found in ./Latex/Classes/
-\documentclass[twoside,11pt,online,a4paper,times,pdf1a,custommargin]{Classes/PhDthesisPSnPDF}
-
-
+%\documentclass[twoside,11pt,online,a4paper,times,pdfa1,custommargin]{Classes/PhDthesisPSnPDF}
+\documentclass[twoside,11pt,print,a4paper,times,pdfx3,custommargin]{Classes/PhDthesisPSnPDF}
+% *********************** Choosing pdfx standard ******************************
+% `pdfa1'
+% `pdfa2'
+% `pdfx3'
+%
 % *********************** Choosing the Fonts in Class Options ******************
 %
 % `times' : Times font with math support. (The Cambridge University guidelines
@@ -99,7 +103,7 @@
 
 
 %: ----------------------- contents ------------------------
-
+\currentpdfbookmark{Table of contents}{name}
 \tableofcontents            % print the table of contents
 
 %: ----------------------- list of figures/tables ------------------------
@@ -184,7 +188,14 @@
 
 \begin{footnotesize} % tiny(5) < scriptsize(7) < footnotesize(8) < small (9)
 \renewcommand{\bibname}{References} % changes the header; default: Bibliography
+\ifCLASSINFOpdfxthree
+%\bibliographystyle{Classes/PhDbiblio-url2} % Title is link if provided
+%\bibliographystyle{Classes/spbasic} % Title is link if provided
+%\bibliography{9_backmatter/references}
 \printbibliography
+\else
+\printbibliography
+\fi
 \end{footnotesize}
 
 
@@ -195,6 +206,11 @@
 %: Declaration of originality
 %\include{9_backmatter/declaration}
 
+% ********************************** Appendices ********************************
 
+\begin{appendices} % Using appendices environment for more functunality
+\tikzsetexternalprefix{./Appendix1/TikzPictures/}
+\include{Appendix1/appendix1}
+\end{appendices}
 
 \end{document}
