@@ -12,6 +12,6 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]];  then PATH=$HOME/texlive/bin/x86_64-linux:$PATH; fi
 script:
    - make clean
-   - make BUILD_STRATEGY=pdflatex
+   - make BUILD_STRATEGY=pdflatex BIB_STRATEGY=biblatex
    - make clean
    - make

@@ -20,6 +20,24 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Figure support for TikZ, pgf (with python) and asymptote.
 * Glossaries
 * siunitx
+## Make for linux and Mac
+
+```
+make BUILD_STRATEGY=pdflatex BIB_STRATEGY=biblatex
+```
+BUILD_STRATEGY can be latex, pdflatex, xelatex or lualatex
+BIB_STRATEGY can be either biblatex or bibtex
+
+run
+```
+make clean
+```
+to clean the directory.
+## Make for windows
+just run compile-{BUILD_STRATEGY}-{BIB_STRATEGY}.bat
+BUILD_STRATEGY can be latex, pdflatex, xelatex or lualatex
+BIB_STRATEGY can be either biblatex or bibtex
+##
 ## documentclass-options
 ```
 % *********************** Choosing pdfx standard ******************************

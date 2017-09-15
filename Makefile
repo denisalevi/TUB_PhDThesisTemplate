@@ -1,4 +1,5 @@
 # Copyright 2004 Chris Monson (shiblon@gmail.com)
+#           2017 Holger Nahrstaedt
 # Latest version available at http://www.bouncingchairs.net/oss
 #
 #    This file is part of ``Chris Monson's Free Software''.
@@ -46,6 +47,8 @@ version		:= 2.2.1-alpha9
 # This can be pdflatex or latex - you can change this by adding the following line to your Makefile.ini:
 # BUILD_STRATEGY := latex
 BUILD_STRATEGY		?= pdflatex
+BIB_STRATEGY		?= biber
+#BIB_STRATEGY		?= bibtex
 # This can be used to pass extra options to latex.
 LATEX_OPTS		?=
 #
@@ -745,11 +748,13 @@ WHICH		?= which
 XARGS		?= xargs
 SLEEP		?= sleep
 # == LaTeX (tetex-provided) ==
-BIBTEX		?= biber
+BIBTEX		?= bibtex
+BIBER		?= biber
 DVIPS		?= dvips
 LATEX		?= latex
 PDFLATEX	?= pdflatex --shell-escape
-XELATEX		?= xelatex
+XELATEX		?= xelatex --shell-escape
+LUALATEX    ?= lualatex --shell-escape
 EPSTOPDF	?= epstopdf
 MAKEINDEX	?= makeindex
 XINDY		?= xindy
@@ -1176,7 +1181,23 @@ default_graphic_extension	?= pdf
 latex_build_program		?= $(XELATEX)
 build_target_extension		?= pdf
 hyperref_driver_pattern		?= hdvipdf.*
-hyperref_driver_error		?= Using pdflatex: specify pdftex in the hyperref options (or leave it blank).
+hyperref_driver_error		?= Using xelatex: specify xelatex in the hyperref options (or leave it blank).
+endif
+
+ifeq "$(strip $(BUILD_STRATEGY))" "lualatex"
+default_graphic_extension	?= pdf
+latex_build_program		?= $(LUALATEX)
+build_target_extension		?= pdf
+hyperref_driver_pattern		?= hdvipdf.*
+hyperref_driver_error		?= Using xelatex: specify lualatex in the hyperref options (or leave it blank).
+endif
+
+ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
+latex_bib_program		?= $(BIBTEX)
+endif
+
+ifeq "$(strip $(BIB_STRATEGY))" "biber"
+latex_bib_program		?= $(BIBER)
 endif
 
 # Files of interest
@@ -1386,6 +1407,11 @@ graphic_target_extensions	:= pdf png jpg jpeg mps tif
 endif
 
 ifeq "$(strip $(BUILD_STRATEGY))" "xelatex"
+graphic_source_extensions	+= eps
+graphic_target_extensions	:= pdf png jpg jpeg mps tif
+endif
+
+ifeq "$(strip $(BUILD_STRATEGY))" "lualatex"
 graphic_source_extensions	+= eps
 graphic_target_extensions	:= pdf png jpg jpeg mps tif
 endif
@@ -2427,7 +2453,7 @@ endef
 # BibTeX invocations
 #
 # $(call run-bibtex,<tex stem>)
-run-bibtex	= $(BIBTEX) $1 | $(color_bib); $(call transcript,bibtex,$1)
+run-bibtex	= $(latex_bib_program) $1 | $(color_bib); $(call transcript,bibtex,$1)
 
 # $(call convert-eps-to-pdf,<eps file>,<pdf file>,[gray])
 # Note that we don't use the --filter flag because it has trouble with bounding boxes that way.
@@ -2967,7 +2993,7 @@ endif
 # Note that we do NOT touch the .bbl file if there is no need to
 # create/recreate it.  We would like to leave existing files alone if they
 # don't need to be changed, thus possibly avoiding a rebuild trigger.
-%.bbl: %.auxbbl.make
+%.bbl: %.auxbbl.make %.bcf
 	$(QUIET)\
 	$(if $(filter %.bib,$^),\
 		$(call echo-build,$(filter %.bib,$?) $*.aux,$@); \
@@ -3102,6 +3128,11 @@ endif
 endif
 
 ifeq "$(strip $(BUILD_STRATEGY))" "xelatex"
+%.pdf: %.eps $(if $(GRAY),$(gray_eps_file))
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-eps-to-pdf,$<,$@,$(GRAY))
+
+ifeq "$(strip $(BUILD_STRATEGY))" "lualatex"
 %.pdf: %.eps $(if $(GRAY),$(gray_eps_file))
 	$(QUIET)$(call echo-graphic,$^,$@)
 	$(QUIET)$(call convert-eps-to-pdf,$<,$@,$(GRAY))
