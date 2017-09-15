@@ -19,8 +19,8 @@ install:
  
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - compile-pdflatex-bibtex.bat
-  - compile-lualatex-bibtex.bat
+  - compile-pdflatex-biblatex.bat
+  - compile-lualatex-biblatex.bat
   - compile-xelatex-biblatex.bat
 
 artifacts:
