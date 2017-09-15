@@ -296,8 +296,7 @@
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
 
 \ifluatex
-\tikzset{external/system call={lualatex 
-\tikzexternalcheckshellescape
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape
                               -halt-on-error -interaction=batchmode
                               -jobname "\image" "\texsource"}}
 \else
@@ -415,10 +414,14 @@
 
   \else
   \ifxetex
-    \usepackage{libertine}
-    \usepackage{unicode-math}
-    \setmainfont[RawFeature=+onum]{Linux Libertine O}
-    \setsansfont[RawFeature=+lnum]{Linux Biolinum O}
+    %\usepackage{libertine}
+    %\usepackage{unicode-math}
+    %\setmainfont[RawFeature=+onum]{Linux Libertine O}
+    %\setsansfont[RawFeature=+lnum]{Linux Biolinum O}
+
+    \usepackage[libertine]{newtxmath}
+    \usepackage[no-math]{fontspec}
+    \setmainfont{Linux Libertine O}
   \else % pdflatex
     \RequirePackage[mono=false]{libertine}
     \RequirePackage[libertine]{newtxmath}
@@ -447,11 +450,14 @@
 
 \ifxetex
   % XeLaTeX
-  %\usepackage{fontspec}
+  \RequirePackage{amsfonts}
+  \RequirePackage{fontspec}
   %\usepackage[no-math]{fontspec}
-  \DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
-\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
-\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
+
+  %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
+  %\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
+  %\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
+  
   %\usepackage[]{unicode-math}
   
   \RequirePackage[final]{microtype}
@@ -461,9 +467,9 @@
   \ifluatex
 
   \RequirePackage{pdftexcmds}
-  %\RequirePackage{fontspec}
-   %\usepackage{fontspec}
-   %\usepackage[no-math]{fontspec}
+  \RequirePackage{amsfonts}
+  \RequirePackage{fontspec}
+   
   %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
 %\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
 %\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}

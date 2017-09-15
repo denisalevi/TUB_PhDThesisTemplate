@@ -3015,16 +3015,7 @@ ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
 	fi
 endif
 
-ifeq "$(strip $(BIB_STRATEGY))" "biblatex"
-%.bbl: %.bcf
-	$(QUIET)\
-	$(if $(filter %.bib,$^),\
-		$(call echo-build,$(filter %.bib,$?) $*.bcf,$@); \
-		$(call set-run-reason,dependencies of $@ changed); \
-		$(call run-bibtex,$*); \
-		$(TOUCH) $@.cookie; \
-	)
-endif
+
 # Create the index file - note that we do *not* depend on %.tex here, since
 # that unnecessarily restricts the kinds of indices that we can build to those
 # with exactly the same stem as the source file.  Things like splitidx create
