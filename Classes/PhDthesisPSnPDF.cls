@@ -413,15 +413,10 @@
 
   \else
   \ifxetex
-  \setmainfont[
-    Path              = ./libertine/opentype/,
-    Extension         = .otf,
-    UprightFont = LinLibertine_R,
-    BoldFont = LinLibertine_RZ, % Regular Semibold
-    ItalicFont = LinLibertine_RI,
-    BoldItalicFont = LinLibertine_RZI, % Regular Semibold Italic
-  ] {libertine}
-  \newfontfamily\libertinesystemfont{Linux Libertine O}
+    \usepackage{libertine}
+    \usepackage{unicode-math}
+    \setmainfont[RawFeature=+onum]{Linux Libertine O}
+    \setsansfont[RawFeature=+lnum]{Linux Biolinum O}
   \else % pdflatex
     \RequirePackage[mono=false]{libertine}
     \RequirePackage[libertine]{newtxmath}
@@ -451,7 +446,7 @@
 \ifxetex
   % XeLaTeX
   %\usepackage{fontspec}
-  \usepackage[no-math]{fontspec}
+  %\usepackage[no-math]{fontspec}
   \DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
 \DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
 \DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
