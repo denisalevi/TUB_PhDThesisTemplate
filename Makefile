@@ -47,7 +47,7 @@ version		:= 2.2.1-alpha9
 # This can be pdflatex or latex - you can change this by adding the following line to your Makefile.ini:
 # BUILD_STRATEGY := latex
 BUILD_STRATEGY		?= pdflatex
-BIB_STRATEGY		?= biber
+BIB_STRATEGY		?= biblatex
 #BIB_STRATEGY		?= bibtex
 # This can be used to pass extra options to latex.
 LATEX_OPTS		?=
@@ -2450,7 +2450,7 @@ endef
 ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
 run-bibtex	= $(BIBTEX) $1 | $(color_bib); $(call transcript,bibtex,$1)
 endif
-ifeq "$(strip $(BIB_STRATEGY))" "biber"
+ifeq "$(strip $(BIB_STRATEGY))" "biblatex"
 run-bibtex	= $(BIBER) $1 | $(color_bib); $(call transcript,biber,$1)
 endif
 
