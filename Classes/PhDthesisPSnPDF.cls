@@ -1,13 +1,13 @@
 % -*- root: ../../../thesis.tex -*-
 %---------------------------------------------------------------
-% PhDthesis version 3 style file by Holger Nahrstaedt, 2015, 2016
+% PhDthesis version 3 style file by Holger Nahrstaedt, 2015 - 2017
 % based on PhDthesis version 2 style file by Jakob Suckale, 2007
 % based on CUEDthesis version 1 by Harish Bhanderi 2002
 %---------------------------------------------------------------
 
 % ************************** Class Identification ******************************
-\newcommand\fileversion{3.1}
-\newcommand\filedate{2017/06/30}
+\newcommand\fileversion{3.2}
+\newcommand\filedate{2017/09/15}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{Classes/PhDthesisPSnPDF}[\filedate\space PhD thesis class
  by Holger Nahrstaedt (v\fileversion)]

@@ -20,3 +20,51 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Figure support for TikZ, pgf (with python) and asymptote.
 * Glossaries
 * siunitx
+## documentclass-options
+```
+% *********************** Choosing pdfx standard ******************************
+% `pdfa1'
+% `pdfa2'
+% `pdfx3'
+%
+% % *********************** Choosing oneside / twoside ******************************
+% `oneside' : layout is optimized for one-side print
+% `twoside' : layout is optimized for two-side print
+% *********************** Choosing print / online ******************************
+% `print' : pdf-file is optimized for print
+% `online' : pdf-file is optimized for online submission. The links are colorfull.
+% *********************** Choosing biblatex or bibtex ******************
+% `biblatex' : biblatex is used. Biblatex is automatically set when using xetex
+%
+% % *********************** Choosing the Fonts size ******************
+% `9pt'
+% `10pt'
+% `11pt'
+% `12pt'
+% % *********************** Choosing the paper size ******************
+% `letterpaper'
+% `a4paper'
+% `a5paper'
+% *********************** Choosing the Fonts in Class Options ******************
+%
+% `times' : Times font with math support. (The Cambridge University guidelines
+% recommend using times)
+%
+% `fourier': Utopia Font with Fourier Math font (Font has to be installed)
+%            It's a free font.
+% 'libertine' : Libertine Font with Math fonts (newtxmath)
+%
+% `customfont': Use `customfont' option in the document class and load the
+% package in the preamble.tex
+%
+% default or leave empty: `Latin Modern' font will be loaded.
+%
+% ************************* Custom Page Margins ********************************
+%
+% `custommargin`: Use `custommargin' in options to activate custom page margins,
+% which can be defined in the preamble.tex. Custom margin will override
+% print/online margin setup.
+%
+% ************************* other options ********************************
+% `abstract`: Only the title-page and the abstracts are generated
+```
