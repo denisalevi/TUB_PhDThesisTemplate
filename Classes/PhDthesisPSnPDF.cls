@@ -296,8 +296,10 @@
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
 
 \ifluatex
-\tikzset{external/system call={lualatex --enable-write18 --halt-on-error --interaction=batchmode
---jobname "\image" "\texsource"}}
+\tikzset{external/system call={lualatex 
+\tikzexternalcheckshellescape
+                              -halt-on-error -interaction=batchmode
+                              -jobname "\image" "\texsource"}}
 \else
 \ifxetex
 \tikzset{external/system call={xelatex
