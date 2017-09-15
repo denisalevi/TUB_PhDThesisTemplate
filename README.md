@@ -17,4 +17,6 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Build script for pdflatex, lualatex and xelatex
 * Seperated tex-files for each chapter
 * TikZ - support
-
+* Figure support for TikZ, pgf (with python) and asymptote.
+* Glossaries
+* siunitx
