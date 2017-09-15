@@ -1,9 +1,15 @@
 sudo: required
 dist: trusty
+matrix:
+  include:
+  - os: linux
+  - os: osx
+      osx_image: xcode7.3
 before_install:
   - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
 install:
-  - PATH=$HOME/texlive/bin/x86_64-linux:$PATH
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then PATH=$HOME/texlive/bin/x86_64-darwin:$PATH; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]];  then PATH=$HOME/texlive/bin/x86_64-linux:$PATH; fi
 script:
    - make clean
    - make BUILD_STRATEGY=pdflatex
