@@ -5,7 +5,7 @@
 % other page dimensions
 \ifCLASSINFOcustommargin
   %\RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
-  \RequirePackage[left=32mm,right=22mm,top=12mm,bottom=10mm,includeheadfoot]{geometry}
+  \RequirePackage[left=32mm,right=22mm,top=12mm,bottom=10mm,includeheadfoot,heightrounded]{geometry}
 
 %\setlength\marginparwidth{2.3cm} %Die wird später zum Rechnen gebraucht, wird aber durch die Angabe im geometry package nicht automatisch richtig gesetzt.
   \setFancyHdr % To apply fancy header after geometry package is loaded
@@ -26,19 +26,7 @@
   \fi
 \fi
 %\usepackage{showframe}
-\ifCLASSINFOpdfxthree
-\usepackage[
-    backend=biber,
-    style=ieee,
-    sortlocale=en_US,
-    natbib=false,
-    maxbibnames=50,
-    url=false, 
-    doi=true,
-    eprint=false
-]{biblatex}
-\addbibresource{9_backmatter/references.bib}
-\else
+\ifCLASSINFObiblatex
 \usepackage[
     backend=biber,
     style=ieee,
@@ -68,16 +56,51 @@
       %}
     }
 }
+\else
+\usepackage[sort, numbers]{natbib}
 \fi
-
 
 % ----------------------------------------------------------------------
        
 % turn of those nasty overfull and underfull hboxes
-\hbadness=10000
-\hfuzz=50pt
+
+%\hbadness=10000
+%\hfuzz=50pt
+
+\tolerance=1414
+\hbadness=1414
+\emergencystretch=1.5em
+\hfuzz=0.5pt
+%\widowpenalty=10000
+\vfuzz=\hfuzz
+\raggedbottom
+
+% TeX default is 50
+\hyphenpenalty=750
+% The TeX default is 1000
+%\hbadness=1350
+% IEEE does not use extra spacing after punctuation
+\frenchspacing
+
+\binoppenalty=1000 % default 700
+\relpenalty=800     % default 500
+   
+\interfootnotelinepenalty=10000
+
+% Don't break enumeration (etc.) across pages in an ugly manner
+\clubpenalty=10000
+\widowpenalty=10000
 
 % ********************** TOC depth and numbering depth *************************
 % levels are: 0 - chapter, 1 - section, 2 - subsection, 3 - subsection
 \setcounter{secnumdepth}{3} % organisational level that receives a numbers
 \setcounter{tocdepth}{3}    % print table of contents for level 3
+
+% Special layout for chapter numbers
+\titleformat{\chapter}[display]
+{\bfseries\sffamily\Huge}
+{\hfill\fontsize{140}{50}\selectfont\color{lightgray}\rmfamily\textbf{\thechapter}}% label
+{-0ex}
+%{\filleft moves all to the right side
+{\filleft\fontsize{50}{50}}
+[\vspace{-0ex}]

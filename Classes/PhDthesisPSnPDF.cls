@@ -43,6 +43,7 @@
 \newif\ifCLASSINFOpdfxthree             \CLASSINFOpdfxthreefalse
 \newif\ifCLASSINFOpdfax                 \CLASSINFOpdfaxfalse
 
+\newif\ifCLASSINFObiblatex                 \CLASSINFObiblatexfalse
 
 \newif\ifCLASSINFOcustommargin             \CLASSINFOcustommarginfalse
 
@@ -80,11 +81,13 @@
 \DeclareOption{twoside}{\PassOptionsToClass{twoside}{book}\@twosidetrue\@mparswitchtrue
                         \CLASSOPTIONtwosidetrue\CLASSOPTIONonesidefalse}
 \DeclareOption{print}{ \CLASSOPTIONprinttrue\CLASSOPTIONonlinefalse}
-\DeclareOption{online}{ \CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
+\DeclareOption{online}{\CLASSOPTIONprintfalse\CLASSOPTIONonlinetrue}
 
 \DeclareOption{pdfa1}{\CLASSINFOpdfaonetrue\CLASSINFOpdfxthreefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
 \DeclareOption{pdfx3}{\CLASSINFOpdfxthreetrue\CLASSINFOpdfaonefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
 \DeclareOption{pdfa2}{\CLASSINFOpdfatwotrue\CLASSINFOpdfaonefalse\CLASSINFOpdfxthreefalse\CLASSINFOpdfaxtrue}
+
+\DeclareOption{biblatex}{\CLASSINFObiblatextrue}
 
 \DeclareOption{times}{
   \ifCLASSINFOsetfont
@@ -149,21 +152,53 @@
   \PassOptionsToClass{oneside}{book}
 }
 
+
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
+
+% ************************* Conditional Statements *****************************
+\RequirePackage{ifthen}   % Conditional statements
+\RequirePackage{ifpdf}    % Check for pdfLaTeX
+\RequirePackage{ifxetex}  % XeLaTeX
+\RequirePackage{ifluatex} %luatex
+\usepackage{etoolbox}
+
 %if you use a macTeX 2008 or later, use the ifpdf package
 \RequirePackage{setspace} % Define line spacing in paragraph
 \newif\ifsetDVI\setDVIfalse
+
+\ifluatex
+\setDVIfalse
+\else %luatex
+\ifxetex
+\CLASSINFObiblatextrue
+\setDVIfalse
+\else %xetex
 \ifx\pdfoutput\undefined
   % we are not running PDFLaTeX
   \setDVItrue
-  \LoadClass[dvips,fleqn,openright]{book}%
-\else % we are running PDFLaTeX
-  \ifnum \pdfoutput>0
+  \else
+    \ifnum \pdfoutput>0
     %PDF-Output
     \setDVIfalse
+    \else
+    %DVI-output
+    \setDVItrue
+  \fi 
+\fi %dvi
+\fi %xetex
+\fi %luatex
+
+\ifsetDVI
+  % we are not running PDFLaTeX
+  \LoadClass[dvips,fleqn,openright]{book}%
+\else % we are running PDFLaTeX
+
     \LoadClass[fleqn,openright]{book}%
+
+
+
       %:-------------------------- Enable pdfa-1b generation -----------------------
     \ifCLASSINFOpdfaone
       \let\tmpa\textsuperscript
@@ -190,16 +225,13 @@
                  %\includexmp{pdfa-1b}
             \else
         
-            \fi
-          \fi
+            \fi %a2
+          \fi %x3
+    \fi %a1
     \fi
   %: ----------------------------------------------------------------------------
-  \else
-    %DVI-output
-    \setDVItrue
-    \LoadClass[fleqn,openright]{book}%
-  \fi
-\fi
+
+
 % ******************************************************************************
 % ******************************** Packages ************************************
 % ******************************************************************************
@@ -209,12 +241,14 @@
 
 \RequirePackage{calc}     % calculate vertical spacing
 \RequirePackage{tabularx}
-% ************************* Conditional Statements *****************************
-\RequirePackage{ifthen}   % Conditional statements
-\RequirePackage{ifpdf}    % Check for pdfLaTeX
-\RequirePackage{ifxetex}  % XeLaTeX
-\RequirePackage{ifluatex} %luatex
-\usepackage{etoolbox}
+
+% print bookmark for the table of contents
+\makeatletter
+\pretocmd{\tableofcontents}{%
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \pdfbookmark[0]{Table of contents}{toc}%
+}{}{}%
+\makeatother
 
 % *************************** Graphics and Figures *****************************
 %\RequirePackage[usenames, dvipsnames]{color}
@@ -228,6 +262,7 @@
       \DeclareGraphicsExtensions{.png, .jpg, .jpeg, .pdf, .gif} %GIF doesn't work??
     %\RequirePackage[pdftex]{graphicx}
 %    \pdfcompresslevel=9
+% forcing PDF v1.4 ensured compatibility
 %    \pdfminorversion=4
 %    \pdfobjcompresslevel=3
     \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
@@ -239,17 +274,7 @@
 \fi
 
 
-% TeX default is 50
-\hyphenpenalty=750
-% The TeX default is 1000
-\hbadness=1350
-% IEEE does not use extra spacing after punctuation
-\frenchspacing
 
-\binoppenalty=1000 % default 700
-\relpenalty=800     % default 500
-   
-\interfootnotelinepenalty=10000
 
 
 %:-------------------------  graphics ----------------------------
@@ -313,9 +338,7 @@
 \RequirePackage[german,english]{babel}
 %\RequirePackage[usenames, dvipsnames]{color}
 %\RequirePackage[perpage]{footmisc}
-\ifCLASSINFOpdfxthree
-\RequirePackage[sort, numbers]{natbib}
-\fi
+
 \RequirePackage{placeins}
 \RequirePackage[countmax]{subfloat}
 \RequirePackage{subfig}
@@ -344,7 +367,6 @@
   per-mode = symbol,
   binary-units = true
 }
-\RequirePackage{marvosym}
   \RequirePackage{amsmath}
   \RequirePackage{amssymb}
   \RequirePackage{mathtools}
@@ -372,8 +394,23 @@
  \ifluatex
     %\RequirePackage{libertine}
     %\RequirePackage[libertine,liby]{newtxmath}
-   \usepackage[libertine]{newtxmath}
+   %\usepackage[libertine]{newtxmath}
     \usepackage{libertine}
+    \usepackage{unicode-math}
+    %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
+
+  \setmainfont[RawFeature=+onum]{Linux Libertine O}
+\setsansfont[RawFeature=+lnum]{Linux Biolinum O}
+  %\DeclareCharacterInheritance
+   %{ encoding = {TU},
+   %  family = {LinLibertine,LinBiolinum} }
+   %{ A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
+   %  a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
+
+   %  Z = {\'Z,\.Z,\v Z},
+   %  z = {\'z,\.z,\v z}
+   %}
+
   \else
   \ifxetex
   \setmainfont[
@@ -385,8 +422,8 @@
     BoldItalicFont = LinLibertine_RZI, % Regular Semibold Italic
   ] {libertine}
   \newfontfamily\libertinesystemfont{Linux Libertine O}
-  \else
-    \RequirePackage{libertine}
+  \else % pdflatex
+    \RequirePackage[mono=false]{libertine}
     \RequirePackage[libertine]{newtxmath}
   \fi
    \fi
@@ -425,30 +462,23 @@
   
 \else
   \ifluatex
+
+  \RequirePackage{pdftexcmds}
   %\RequirePackage{fontspec}
-   \usepackage{fontspec}
+   %\usepackage{fontspec}
+   %\usepackage[no-math]{fontspec}
   %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
 %\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
 %\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
  
   % If building with PDFLaTeX, use microtype spacing adjustments
-  \RequirePackage{microtype}
-  \DeclareCharacterInheritance
-   { encoding = {TU},
-     family = {LinLibertine,LinBiolinum} }
-   { A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
-     a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
-% ...
-%     j = {\j},
-% ...
-     Z = {\'Z,\.Z,\v Z},
-     z = {\'z,\.z,\v z}
-   }
-\microtypesetup{
-  tracking   = smallcaps ,
-  protrusion = alltext ,
-  expansion  = basictext
-}
+  \RequirePackage[final]{microtype}
+
+%\microtypesetup{
+%  tracking   = smallcaps ,
+%  protrusion = alltext ,
+%  expansion  = basictext
+%}
   \else
   % default: pdfLaTeX
   %:-------------------------- packages UTF8 -----------------------
@@ -468,13 +498,11 @@
   \pdfglyphtounicode{f_f_l}{FB04}
   \pdfgentounicode=1
 
-  %\RequirePackage{amsfonts}
+  \RequirePackage{amsfonts}
    \fi
 \fi
 
-% Don't break enumeration (etc.) across pages in an ugly manner
-\clubpenalty=10000
-\widowpenalty=10000
+
 
 
 %:-------------------------- Glossary/Abbrev./Symbols -----------------------
@@ -492,17 +520,6 @@
 \RequirePackage{import}
 \RequirePackage{chapterfolder}
 
-\newif\ifusepng
-\usepngfalse
-%\usepngfalse
-%\newboolean{usepng} %Deklaration
-%\setboolean{usepng}{false} %Zuweisung
-
-\newif\ifusepgf
-\usepgftrue
-%\usepgftrue
-%\newboolean{usepgf} %Deklaration
-%\setboolean{usepgf}{false} %Zuweisung
 
 %******************************* Print / Online ********************************
 % Defines a print / online version to define page-layout and hyperrefering
@@ -609,6 +626,11 @@
       \fi
     \fi
 %                 ]{hyperref} 
+  \ifCLASSOPTIONtwoside
+    \hypersetup{pdfpagelayout=TwoPageRight}
+  \else
+    \hypersetup{pdfpagelayout=OneColumn}
+  \fi
 \fi
 
 %\else
@@ -728,13 +750,7 @@
 % {\filleft\fontsize{28}{49}\selectfont\scshape\baselineskip}
 % [\vspace{-0ex}] 
 
-\titleformat{\chapter}[display]
-{\bfseries\sffamily\Huge}
-{\hfill\fontsize{140}{50}\selectfont\color{lightgray}\rmfamily\textbf{\thechapter}}% label
-{-0ex}
-%{\filleft moves all to the right side
-{\filleft\fontsize{50}{50}}
-[\vspace{-0ex}]
+
 
 %:-------------------------- title page layout -----------------------
 

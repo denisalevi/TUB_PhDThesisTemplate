@@ -11,10 +11,10 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Print and online version
 * Three different fonts
 * One-page and two-page layout
-* Adaptive Title page
-* PDF/A-1b for online submission
-* Build script
+* Adaptive Title page for final sumbission and for the evaluation process
+* PDF/A-1b for online submission, works with pdflatex, lualatex and xelatex
+* bibtex and biblatex support
+* Build script for pdflatex, lualatex and xelatex
 * Seperated tex-files for each chapter
 * TikZ - support
-## Notes
-* pdfa-1b compatible-PDFs can only be generated with pdflatex at the moment.
+

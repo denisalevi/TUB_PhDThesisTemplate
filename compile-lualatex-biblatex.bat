@@ -20,15 +20,6 @@ DEL "%FILENAME%.pdf"
 DEL "%FILENAME%.ps"
 DEL "%FILENAME%.dvi"
 
-xelatex -shell-escape   -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000   "%FILENAME%.tex"
-bibtex "%FILENAME%.aux"
-makeindex "%FILENAME%.aux"
-makeindex "%FILENAME%.idx"
-makeglossaries "%FILENAME%"
-xelatex -shell-escape  -synctex=1  -interaction=nonstopmode  -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
-
-countErrWrnBBx.bat "%FILENAME%.log"
-
 DEL "%FILENAME%.aux"
 DEL "%FILENAME%.acn"
 DEL "%FILENAME%.acr"
@@ -53,5 +44,21 @@ DEL "%FILENAME%.nls"
 DEL "%FILENAME%.slg"
 DEL "%FILENAME%.syg"
 DEL "%FILENAME%.syi"
+
+
+lualatex --shell-escape  --draftmode --synctex=1 --interaction=nonstopmode  "%FILENAME%.tex"
+makeindex -s "%FILENAME%.ist" -o "%FILENAME%.gls" "%FILENAME%.glo"
+rem bibtex "%FILENAME%.aux"
+biber "%FILENAME%"
+rem makeindex "%FILENAME%.aux"
+rem makeindex "%FILENAME%.idx"
+makeglossaries "%FILENAME%"
+lualatex --shell-escape --draftmode --synctex=1  --interaction=nonstopmode  "%FILENAME%.tex"
+rem makeglossaries "%FILENAME%"
+lualatex --shell-escape  --synctex=1  --interaction=nonstopmode "%FILENAME%.tex"
+
+countErrWrnBBx.bat "%FILENAME%.log"
+
+
 
 
