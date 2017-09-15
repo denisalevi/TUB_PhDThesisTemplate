@@ -1192,13 +1192,6 @@ hyperref_driver_pattern		?= hdvipdf.*
 hyperref_driver_error		?= Using xelatex: specify lualatex in the hyperref options (or leave it blank).
 endif
 
-ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
-latex_bib_program		?= $(BIBTEX)
-endif
-
-ifeq "$(strip $(BIB_STRATEGY))" "biber"
-latex_bib_program		?= $(BIBER)
-endif
 
 # Files of interest
 all_files.tex		?= $(wildcard *.tex)
@@ -2453,7 +2446,12 @@ endef
 # BibTeX invocations
 #
 # $(call run-bibtex,<tex stem>)
-run-bibtex	= $(latex_bib_program) $1 | $(color_bib); $(call transcript,bibtex,$1)
+ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
+run-bibtex	= $(BIBTEX) $1 | $(color_bib); $(call transcript,bibtex,$1)
+endif
+ifeq "$(strip $(BIB_STRATEGY))" "biber"
+run-bibtex	= $(BIBER) $1 | $(color_bib); $(call transcript,biber,$1)
+endif
 
 # $(call convert-eps-to-pdf,<eps file>,<pdf file>,[gray])
 # Note that we don't use the --filter flag because it has trouble with bounding boxes that way.
@@ -3132,6 +3130,25 @@ ifeq "$(strip $(BUILD_STRATEGY))" "xelatex"
 	$(QUIET)$(call echo-graphic,$^,$@)
 	$(QUIET)$(call convert-eps-to-pdf,$<,$@,$(GRAY))
 
+ifeq "$(strip $(GPI_OUTPUT_EXTENSION))" "pdf"
+%.pdf:	%.gpi %.gpi.d $(gpi_sed) $(gpi_global)
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-gpi,$<,$@,$(GRAY))
+endif
+
+%.pdf:	%.fig
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-fig,$<,$@,$(GRAY))
+
+%.pdf:	%.asy
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-asy,$<)
+
+%.pdf:	%.svg
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-svg,$<,$@,$(GRAY))
+endif
+
 ifeq "$(strip $(BUILD_STRATEGY))" "lualatex"
 %.pdf: %.eps $(if $(GRAY),$(gray_eps_file))
 	$(QUIET)$(call echo-graphic,$^,$@)
@@ -3147,6 +3164,13 @@ endif
 	$(QUIET)$(call echo-graphic,$^,$@)
 	$(QUIET)$(call convert-fig,$<,$@,$(GRAY))
 
+%.pdf:	%.asy
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-asy,$<)
+
+%.pdf:	%.svg
+	$(QUIET)$(call echo-graphic,$^,$@)
+	$(QUIET)$(call convert-svg,$<,$@,$(GRAY))
 endif
 
 
