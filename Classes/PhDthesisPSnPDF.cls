@@ -197,8 +197,6 @@
 
     \LoadClass[fleqn,openright]{book}%
 
-
-
       %:-------------------------- Enable pdfa-1b generation -----------------------
     \ifCLASSINFOpdfaone
       \let\tmpa\textsuperscript
@@ -293,11 +291,15 @@
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
 \usetikzlibrary{external}
+
+% create the tikz every run
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
+% check and run only the changed ones
+%\tikzexternalize[shell escape=-enable-write18,  optimize=false,mode=list and make]
 
 \ifluatex
-\tikzset{external/system call={lualatex \tikzexternalcheckshellescape
-                              -halt-on-error -interaction=batchmode
+\tikzset{external/system call={lualatex 
+\tikzexternalcheckshellescape -halt-on-error -interaction=batchmode
                               -jobname "\image" "\texsource"}}
 \else
 \ifxetex
@@ -372,56 +374,71 @@
   \RequirePackage{amssymb}
   \RequirePackage{mathtools}
    \RequirePackage{upgreek}
+   \RequirePackage{amsfonts}
 % ********************************** Fonts **********************************
 \RequirePackage{textcomp}
 \RequirePackage{anyfontsize}
 % Font Selection
 \ifCLASSINFOtimes
+  \ifluatex
+    \usepackage{unicode-math}
+    \setmainfont{XITS}
+    \setmathfont{XITS Math}
+  \else
   \ifxetex
+    \usepackage{unicode-math}
+    \setmainfont{XITS}
+    \setmathfont{XITS Math}
   \else
     \RequirePackage{mathptmx}  % times roman, including math (where possible)
+  \fi
   \fi
   \message{PhDThesisPSnPDF: Using Times Roman font}
 \else
 \fi
 
 \ifCLASSINFOfourier
-    \RequirePackage{fourier} % Fourier
+  \ifluatex
+    \usepackage{unicode-math}
+    \setmainfont{TeX Gyre Pagella}
+    \setmathfont{Asana Math}
+  \else
+  \ifxetex
+    \usepackage{unicode-math}
+    \setmainfont{TeX Gyre Pagella}
+    \setmathfont{Asana Math}
+  \else
+     \RequirePackage{fourier} % Fourier  % times roman, including math (where possible)
+  \fi
+  \fi
+
     \message{PhDThesisPSnPDF: Using Fourier font}
  \else
  \fi
  
  \ifCLASSINFOlibertine
  \ifluatex
-    %\RequirePackage{libertine}
-    %\RequirePackage[libertine,liby]{newtxmath}
-   %\usepackage[libertine]{newtxmath}
-    \usepackage{libertine}
-    \usepackage{unicode-math}
-    %\setmathfont[Scale=MatchUppercase]{libertinusmath-regular.otf}
 
-  \setmainfont[RawFeature=+onum]{Linux Libertine O}
-\setsansfont[RawFeature=+lnum]{Linux Biolinum O}
-  %\DeclareCharacterInheritance
-   %{ encoding = {TU},
-   %  family = {LinLibertine,LinBiolinum} }
-   %{ A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
-   %  a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
+    \usepackage[warnings-off={mathtools-colon}]{unicode-math}
+    \usepackage{fontspec}
 
-   %  Z = {\'Z,\.Z,\v Z},
-   %  z = {\'z,\.z,\v z}
-   %}
+        \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{Libertinus Serif} 
+    \setmonofont[Scale=0.8]{Libertinus Mono} 
+    \setsansfont{Libertinus Sans} 
+    \setmathfont{Libertinus Math}
 
   \else
   \ifxetex
-    %\usepackage{libertine}
-    %\usepackage{unicode-math}
-    %\setmainfont[RawFeature=+onum]{Linux Libertine O}
-    %\setsansfont[RawFeature=+lnum]{Linux Biolinum O}
+    \usepackage[warnings-off={mathtools-colon}]{unicode-math}
+    \usepackage{fontspec}
 
-    \usepackage[libertine]{newtxmath}
-    \usepackage[no-math]{fontspec}
-    \setmainfont{Linux Libertine O}
+    \setmainfont[Mapping=tex-text,Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{Libertinus Serif} 
+    \setmonofont[Mapping=tex-text,Scale=0.8]{Libertinus Mono} 
+    \setsansfont[Mapping=tex-text]{Libertinus Sans} 
+    \setmathfont[AutoFakeBold]{Libertinus Math}
+
   \else % pdflatex
     \RequirePackage[mono=false]{libertine}
     \RequirePackage[libertine]{newtxmath}
@@ -450,8 +467,9 @@
 
 \ifxetex
   % XeLaTeX
-  \RequirePackage{amsfonts}
-  \RequirePackage{fontspec}
+  \unicodeenginetrue
+   \usepackage{xltxtra}
+  %\RequirePackage{fontspec}
   %\usepackage[no-math]{fontspec}
 
   %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
@@ -467,8 +485,7 @@
   \ifluatex
 
   \RequirePackage{pdftexcmds}
-  \RequirePackage{amsfonts}
-  \RequirePackage{fontspec}
+  %\RequirePackage{fontspec}
    
   %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
 %\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
@@ -485,10 +502,8 @@
   \else
   % default: pdfLaTeX
   %:-------------------------- packages UTF8 -----------------------
-  \RequirePackage{inputenc}
-  \inputencoding{utf8}
-  \makeatother
-
+  \RequirePackage[utf8]{inputenc}
+  %\inputencoding{utf8}
   \RequirePackage[T1]{fontenc}
   % If building with PDFLaTeX, use microtype spacing adjustments
   \RequirePackage[final]{microtype}
@@ -501,7 +516,7 @@
   \pdfglyphtounicode{f_f_l}{FB04}
   \pdfgentounicode=1
 
-  \RequirePackage{amsfonts}
+
    \fi
 \fi
 
