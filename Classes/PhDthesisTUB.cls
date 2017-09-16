@@ -1,4 +1,15 @@
-% -*- root: ../../../thesis.tex -*-
+% -*- root: ../thesis.tex -*-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                            %%
+%% Class ``PhD Thesis TUB''                                                   %%
+%%                                                                            %%
+%% A PhD thesis LaTeX template for the Technical University of Berlin         %%
+%%                                                                            %%
+%% Version: v3.2.0                                                            %%
+%% Authors: Krishna Kumar                                                     %%
+%% License: MIT License (c) 2017 Holger Nahrstaedt                            %%
+%% GitHub Repo: https://github.com/holgern/TUB_PhDThesisTemplate              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---------------------------------------------------------------
 % PhDthesis version 3 style file by Holger Nahrstaedt, 2015 - 2017
 % based on PhDthesis version 2 style file by Jakob Suckale, 2007
@@ -6,10 +17,10 @@
 %---------------------------------------------------------------
 
 % ************************** Class Identification ******************************
-\newcommand\fileversion{3.2}
+\newcommand\fileversion{3.2.0}
 \newcommand\filedate{2017/09/15}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{Classes/PhDthesisPSnPDF}[\filedate\space PhD thesis class
+\ProvidesClass{PhDthesisTUB}[\filedate\space PhD thesis class
  by Holger Nahrstaedt (v\fileversion)]
 \typeout{https://github.com/holgern/TUB_PhDThesisTemplate}
 
