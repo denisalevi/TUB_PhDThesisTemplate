@@ -43,9 +43,47 @@
 % indicates if pdf (via pdflatex) output
 \newif\ifCLASSINFOpdf               \CLASSINFOpdffalse
 
-\newif\ifCLASSINFOtimes               \CLASSINFOtimesfalse
-\newif\ifCLASSINFOfourier               \CLASSINFOfourierfalse
-\newif\ifCLASSINFOlibertine              \CLASSINFOlibertinefalse
+\newif\ifCLASSINFOfontA             \CLASSINFOfontAfalse
+\newif\ifCLASSINFOfontB             \CLASSINFOfontBfalse
+\newif\ifCLASSINFOfontC             \CLASSINFOfontCfalse
+\newif\ifCLASSINFOfontD             \CLASSINFOfontDfalse
+\newif\ifCLASSINFOfontE             \CLASSINFOfontEfalse
+\newif\ifCLASSINFOfontF             \CLASSINFOfontFfalse
+\newif\ifCLASSINFOfontG             \CLASSINFOfontGfalse
+\newif\ifCLASSINFOfontH             \CLASSINFOfontHfalse
+\newif\ifCLASSINFOfontI             \CLASSINFOfontIfalse
+\newif\ifCLASSINFOfontJ             \CLASSINFOfontJfalse
+\newif\ifCLASSINFOfontK             \CLASSINFOfontKfalse
+\newif\ifCLASSINFOfontL             \CLASSINFOfontLfalse
+\newif\ifCLASSINFOfontM             \CLASSINFOfontMfalse
+\newif\ifCLASSINFOfontN             \CLASSINFOfontNfalse
+\newif\ifCLASSINFOfontO             \CLASSINFOfontOfalse
+\newif\ifCLASSINFOfontP             \CLASSINFOfontPfalse
+\newif\ifCLASSINFOfontQ             \CLASSINFOfontQfalse
+\newif\ifCLASSINFOfontR             \CLASSINFOfontRfalse
+\newif\ifCLASSINFOfontS             \CLASSINFOfontSfalse
+\newif\ifCLASSINFOfontT             \CLASSINFOfontTfalse
+\newif\ifCLASSINFOfontU             \CLASSINFOfontUfalse
+\newif\ifCLASSINFOfontV             \CLASSINFOfontVfalse
+\newif\ifCLASSINFOfontW             \CLASSINFOfontWfalse
+\newif\ifCLASSINFOfontX             \CLASSINFOfontXfalse
+\newif\ifCLASSINFOfontY             \CLASSINFOfontYfalse
+\newif\ifCLASSINFOfontZ             \CLASSINFOfontZfalse
+
+%STIX
+%palatino
+
+%cambria
+%pagella
+%marion 
+
+%helvetia
+%chancery
+%newcent
+%courier
+%bookman
+%cmbright
+
 \newif\ifCLASSINFOsetfont             \CLASSINFOsetfontfalse
 \newif\ifCLASSINFOsetcustomfont             \CLASSINFOsetcustomfontfalse
 
@@ -100,42 +138,66 @@
 
 \DeclareOption{biblatex}{\CLASSINFObiblatextrue}
 
-\DeclareOption{times}{
+\DeclareOption{fontA}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
       aleady specified. Please check the document class options in case you 
       have defined two fonts.}
   \else
-    \CLASSINFOtimestrue
+    \CLASSINFOfontAtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontB}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOfontBtrue
     \CLASSINFOsetfonttrue
   \fi
 }
 
-\DeclareOption{fourier}{
+\DeclareOption{fontC}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
       aleady specified. Please check the document class options in case you 
       have defined two fonts.}
   \else
-    \CLASSINFOfouriertrue
+    \CLASSINFOfontCtrue
     \CLASSINFOsetfonttrue
   \fi
 }
 
-\DeclareOption{libertine}{
+\DeclareOption{fontD}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisPSnPDF}{Font selection conflict: A font package was
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
       aleady specified. Please check the document class options in case you 
       have defined two fonts.}
   \else
-    \CLASSINFOlibertinetrue
+    \CLASSINFOfontDtrue
     \CLASSINFOsetfonttrue
   \fi
 }
+\DeclareOption{fontE}{
+  \ifCLASSINFOsetfont
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOfontEtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+
+
+
+
 
 \DeclareOption{customfont}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDThesisPSnPDF}{Font selection conflict: A font package was
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
       aleady specified. Please check the document class options in case you 
       have defined two fonts.}
   \else
@@ -155,7 +217,7 @@
 \newif\ifCLASSINFOabstract\CLASSINFOabstractfalse % Enable Separate Abstract
 \DeclareOption{abstract}{
   \CLASSINFOabstracttrue
-  \ClassWarning{PhDThesisPSnPDF}{You have chosen an option that generates only
+  \ClassWarning{PhDthesisTUB}{You have chosen an option that generates only
     the Title page and an abstract with PhD title and author name, if this was
     intentional, ignore this warning. Congratulations on submitting your thesis!
     If not, please remove the option `abstract' from the document class and
@@ -175,16 +237,25 @@
 \RequirePackage{ifluatex} %luatex
 \usepackage{etoolbox}
 
+\RequirePackage{needspace}
+%\pretocmd{\chapter}{\needspace{3\baselineskip}}{}{}
+\pretocmd{\section}{\needspace{3\baselineskip}}{}{}
+%\pretocmd{\subsection}{\needspace{3\baselineskip}}{}{}
+%\pretocmd{\subsubsection}{\needspace{3\baselineskip}}{}{}
+
 %if you use a macTeX 2008 or later, use the ifpdf package
 \RequirePackage{setspace} % Define line spacing in paragraph
 \newif\ifsetDVI\setDVIfalse
+\newif\ifXeOrLua\XeOrLuafalse
 
 \ifluatex
 \setDVIfalse
+\XeOrLuatrue
 \else %luatex
 \ifxetex
 \CLASSINFObiblatextrue
 \setDVIfalse
+\XeOrLuatrue
 \else %xetex
 \ifx\pdfoutput\undefined
   % we are not running PDFLaTeX
@@ -364,6 +435,8 @@
 %\RequirePackage{nextpage}
 \RequirePackage{booktabs}
 
+\RequirePackage{ntheorem}
+\newtheorem{theorem}{Theorem}
 
 
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
@@ -390,44 +463,33 @@
 \RequirePackage{textcomp}
 \RequirePackage{anyfontsize}
 % Font Selection
-\ifCLASSINFOtimes
-  \ifluatex
-    \usepackage{unicode-math}
-    \setmainfont{XITS}
-    \setmathfont{XITS Math}
-  \else
-  \ifxetex
+\ifCLASSINFOfontA
+  \ifXeOrLua
     \usepackage{unicode-math}
     \setmainfont{XITS}
     \setmathfont{XITS Math}
   \else
     \RequirePackage{mathptmx}  % times roman, including math (where possible)
   \fi
-  \fi
-  \message{PhDThesisPSnPDF: Using Times Roman font}
+  \message{PhDthesisTUB: Using font A}
 \else
 \fi
 
-\ifCLASSINFOfourier
-  \ifluatex
+\ifCLASSINFOfontB
+  \ifXeOrLua
     \usepackage{unicode-math}
-    \setmainfont{TeX Gyre Pagella}
-    \setmathfont{Asana Math}
-  \else
-  \ifxetex
-    \usepackage{unicode-math}
-    \setmainfont{TeX Gyre Pagella}
-    \setmathfont{Asana Math}
+    \setmainfont{Cambria}
+    \setsansfont{Calibri}
+    \setmathrm{Cambria Math}
+    \setmonofont{Consolas}
   \else
      \RequirePackage{fourier} % Fourier  % times roman, including math (where possible)
   \fi
-  \fi
-
-    \message{PhDThesisPSnPDF: Using Fourier font}
+    \message{PhDthesisTUB: font B}
  \else
  \fi
  
- \ifCLASSINFOlibertine
+ \ifCLASSINFOfontC
  \ifluatex
 
     \usepackage[warnings-off={mathtools-colon}]{unicode-math}
@@ -455,19 +517,57 @@
     \RequirePackage[libertine]{newtxmath}
   \fi
    \fi
-    \message{PhDThesisPSnPDF: Using libertine font}
+    \message{PhDthesisTUB: Using Font C }
  \else
  \fi
 
+\ifCLASSINFOfontD
+  \ifXeOrLua
+      \usepackage{fontspec}
+      \usepackage{mathpazo}
+      \setmainfont
+           [ BoldFont       = texgyrepagella-bold.otf ,
+             ItalicFont     = texgyrepagella-italic.otf ,
+             BoldItalicFont = texgyrepagella-bolditalic.otf ]
+           {texgyrepagella-regular.otf}
+  \else %pdflatex
+     \usepackage{mathpazo} % add possibly `sc` and `osf` options
+     \usepackage[T1,small,euler-digits]{eulervm}
+  \fi
+
+    \message{PhDthesisTUB: Using  font D}
+ \else
+ \fi
+
+ \ifCLASSINFOfontE
+  \ifXeOrLua
+    \usepackage{fontspec}
+    \usepackage{unicode-math}
+    \setmainfont[Ligatures=TeX, Numbers=OldStyle,
+    SmallCapsFeatures={LetterSpace=10, WordSpace={1.5}}]{TeX Gyre Pagella}
+    \setmathfont[math-style=ISO, bold-style=ISO]{TeX Gyre Pagella Math}
+    % put limits over the integral
+    \removenolimits{\int}
+    \setsansfont[Scale=MatchLowercase,Ligatures=TeX]{URWClassico}
+    \setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \else %pdflatex
+     \usepackage{courier} % add possibly `sc` and `osf` options
+     \usepackage[T1,small,euler-digits]{eulervm}
+  \fi
+    \message{PhDthesisTUB: Using font E}
+ \else
+ \fi
+
+
 \ifCLASSINFOsetcustomfont
-  \message{PhDThesisPSnPDF: Using custom font}
+  \message{PhDthesisTUB: Using custom font}
 \else
 \fi % custom font
 
 % If Font is not set throw a warning.
 \ifCLASSINFOsetfont
 \else
-  \ClassWarning{PhDThesisPSnPDF}{Using default font Latin Modern. If you
+  \ClassWarning{PhDthesisTUB}{Using default font Latin Modern. If you
     would like to use other pre-defined fonts use `times' (The Cambridge 
     University PhD thesis guidelines recommend using Times font)  or `fourier'
     or load a custom font in the preamble.tex file by specifying `customfont' 
@@ -478,7 +578,6 @@
 
 \ifxetex
   % XeLaTeX
-  \unicodeenginetrue
    \usepackage{xltxtra}
   %\RequirePackage{fontspec}
   %\usepackage[no-math]{fontspec}
@@ -754,7 +853,7 @@
 \ifCLASSINFOcustommargin
 \makeatletter
 \AtBeginDocument{
-\@ifpackageloaded{geometry}{}{\ClassWarning{PhDThesisPSnPDF}{%
+\@ifpackageloaded{geometry}{}{\ClassWarning{PhDthesisTUB}{%
   Custom margin is chosen, but geometry package is not loaded. Please load the
   `geometry' package in the preamble.}}
 }

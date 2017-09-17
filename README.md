@@ -63,14 +63,27 @@ BIB_STRATEGY can be either biblatex or bibtex
 % `letterpaper'
 % `a4paper'
 % `a5paper'
-% *********************** Choosing the Fonts in Class Options ******************
+% *********************** Choosing the Fonts in Class Options when using pdflatex ******************
 %
-% `times' : Times font with math support. (The Cambridge University guidelines
-% recommend using times)
+% `fontA' : Times font with math support (mathptmx).
+% `fontB': Utopia Font with Fourier Math font (Font has to be installed)
+%            It's a free font (fourier).
+% 'fontC' : Libertine Font with Math fonts (newtxmath)
+% 'fontD': mathpazo - eulervm
+% 'fontE': courier - eulervm
 %
-% `fourier': Utopia Font with Fourier Math font (Font has to be installed)
-%            It's a free font.
-% 'libertine' : Libertine Font with Math fonts (newtxmath)
+% `customfont': Use `customfont' option in the document class and load the
+% package in the preamble.tex
+%
+% default or leave empty: `Latin Modern' font will be loaded.
+%
+% *********************** Choosing the Fonts in Class Options when using xelatex/lualatex ***********
+%
+% `fontA' :  XITS - XITS Math
+% `fontB': Cambria - Cambria Math
+% 'fontC': Libertinus
+% 'fontD': texgyrepagella - mathpazo
+% 'fontE': TeX Gyre Pagella - TeX Gyre Pagella Math
 %
 % `customfont': Use `customfont' option in the document class and load the
 % package in the preamble.tex

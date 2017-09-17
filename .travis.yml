@@ -10,6 +10,7 @@ before_install:
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       brew update
       brew install coreutils
+      brew install xz
       brew install gnu-tar --with-default-names
     fi
   - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
@@ -21,3 +22,8 @@ script:
    - make BUILD_STRATEGY=pdflatex BIB_STRATEGY=biblatex
    - make clean
    - make
+   - make clean
+   - make BUILD_STRATEGY=xelatex BIB_STRATEGY=biblatex
+   - make clean
+   - make BUILD_STRATEGY=lualatex BIB_STRATEGY=biblatex
+   - make clean
