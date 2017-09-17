@@ -236,12 +236,7 @@
 \RequirePackage{ifxetex}  % XeLaTeX
 \RequirePackage{ifluatex} %luatex
 \usepackage{etoolbox}
-
 \RequirePackage{needspace}
-%\pretocmd{\chapter}{\needspace{3\baselineskip}}{}{}
-\pretocmd{\section}{\needspace{3\baselineskip}}{}{}
-%\pretocmd{\subsection}{\needspace{3\baselineskip}}{}{}
-%\pretocmd{\subsubsection}{\needspace{3\baselineskip}}{}{}
 
 %if you use a macTeX 2008 or later, use the ifpdf package
 \RequirePackage{setspace} % Define line spacing in paragraph
@@ -463,11 +458,12 @@
 \RequirePackage{textcomp}
 \RequirePackage{anyfontsize}
 % Font Selection
+
 \ifCLASSINFOfontA
   \ifXeOrLua
     \usepackage{unicode-math}
     \setmainfont{XITS}
-    \setmathfont{XITS Math}
+    \setmathfont{STIX Math}
   \else
     \RequirePackage{mathptmx}  % times roman, including math (where possible)
   \fi
@@ -541,15 +537,12 @@
 
  \ifCLASSINFOfontE
   \ifXeOrLua
-    \usepackage{fontspec}
-    \usepackage{unicode-math}
-    \setmainfont[Ligatures=TeX, Numbers=OldStyle,
-    SmallCapsFeatures={LetterSpace=10, WordSpace={1.5}}]{TeX Gyre Pagella}
-    \setmathfont[math-style=ISO, bold-style=ISO]{TeX Gyre Pagella Math}
-    % put limits over the integral
-    \removenolimits{\int}
-    \setsansfont[Scale=MatchLowercase,Ligatures=TeX]{URWClassico}
-    \setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \usepackage{fontspec}
+  \setromanfont[Ligatures=TeX]{TeX Gyre Pagella}
+  \usepackage{unicode-math}
+  \setmathfont{Asana Math}
+
+    %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
   \else %pdflatex
      \usepackage{courier} % add possibly `sc` and `osf` options
      \usepackage[T1,small,euler-digits]{eulervm}
@@ -557,6 +550,7 @@
     \message{PhDthesisTUB: Using font E}
  \else
  \fi
+
 
 
 \ifCLASSINFOsetcustomfont
@@ -572,6 +566,9 @@
     University PhD thesis guidelines recommend using Times font)  or `fourier'
     or load a custom font in the preamble.tex file by specifying `customfont' 
     in the class options}
+    \ifXeOrLua
+    \usepackage{unicode-math}
+    \fi
   \RequirePackage{lmodern}
 \fi
 
