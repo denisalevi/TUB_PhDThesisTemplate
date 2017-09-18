@@ -15,7 +15,7 @@ before_install:
       brew install ghostscript
     fi
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
-      apt-get install ghostscript
+      sudo apt-get install ghostscript
     fi
   - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
 install:
