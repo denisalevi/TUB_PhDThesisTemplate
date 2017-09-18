@@ -8,6 +8,15 @@
 cache:
   - c:\miktex -> appveyor.yml
 
+environment:
+    matrix:
+     - LATEXBIN: pdflatex
+     - LATEXBIN: lualatex
+     - LATEXBIN: xelatex
+
+matrix:
+    fast_finish: false
+
 install:
   # Install miktex to get pdflatex, if we don't get it from the cache
   - if not exist c:\miktex\texmfs\install\miktex\bin\pdflatex.exe appveyor DownloadFile http://mirrors.ctan.org/systems/win32/miktex/setup/miktex-portable.exe
@@ -16,12 +25,11 @@ install:
   # autoinstall latex packages (0=no, 1=autoinstall, 2=ask)
   # this adds this to the registry!
   - initexmf --set-config-value "[MPM]AutoInstall=1"
+  - mpm --install=cm-super
  
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - compile-pdflatex-biblatex.bat
-  - compile-lualatex-biblatex.bat
-  - compile-xelatex-biblatex.bat
+  - compile-${LATEXBIN}-biblatex.bat
 
 artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.

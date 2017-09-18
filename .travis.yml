@@ -5,20 +5,21 @@ matrix:
   include:
   - os: linux
   - os: osx
+
 before_install:
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       brew update
-      brew upgrade coreutils
       brew install xz
       brew install gnu-tar --with-default-names
       brew install ghostscript
+      wget --retry-connrefused --waitretry=1 -O $HOME/texlive.tar.xz  https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz 
+      tar -JxC $HOME/texlive.tar.xz
     fi
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       sudo apt-get install ghostscript
+      curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
     fi
-  - wget --retry-connrefused --waitretry=1 https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz 
-  - tar -JxC texlive.tar.xz
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then PATH=$HOME/texlive/bin/x86_64-darwin:$PATH; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]];  then PATH=$HOME/texlive/bin/x86_64-linux:$PATH; fi
