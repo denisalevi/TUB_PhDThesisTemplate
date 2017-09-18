@@ -17,6 +17,7 @@ before_install:
       tar xJf $HOME/texlive.tar.xz
     fi
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
+      sudo apt-get update
       sudo apt-get install ghostscript
       curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
     fi

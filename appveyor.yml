@@ -1,13 +1,5 @@
 # AppVeyor.com is a Continuous Integration service to build and run tests under
-# Windows
-# https://ci.appveyor.com/project/holgern/pyedflib
-
-# This file is built on the template here:
-# http://python-packaging-user-guide.readthedocs.org/en/latest/appveyor/
-
-cache:
-  - c:\miktex -> appveyor.yml
-
+# https://ci.appveyor.com/project/HolgerNahrstaedt/tub-phdthesistemplate/
 environment:
     matrix:
      - LATEXBIN: "pdflatex"
