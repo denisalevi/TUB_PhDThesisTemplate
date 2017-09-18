@@ -56,12 +56,10 @@ DEL /Q "%FILENAME%.aux.blg" >nul 2>&1
 cd %ROOT_DIR%
 
 xelatex -shell-escape   -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000   "%FILENAME%.tex"
-makeindex -s "%FILENAME%.ist" -o "%FILENAME%.gls" "%FILENAME%.glo"
+makeglossaries "%FILENAME%"
 biber "%FILENAME%"
 rem bibtex "%FILENAME%"
-rem makeindex "%FILENAME%.aux"
-rem makeindex "%FILENAME%.idx"
-makeglossaries "%FILENAME%"
+
 xelatex -shell-escape  -synctex=1  -interaction=nonstopmode  -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 xelatex -shell-escape  -synctex=1  -interaction=nonstopmode  -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 

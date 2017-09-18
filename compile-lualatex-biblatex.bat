@@ -57,12 +57,9 @@ cd %ROOT_DIR%
 
 
 lualatex --shell-escape  --draftmode --synctex=1 --interaction=nonstopmode  "%FILENAME%.tex"
-makeindex -s "%FILENAME%.ist" -o "%FILENAME%.gls" "%FILENAME%.glo"
+makeglossaries "%FILENAME%"
 rem bibtex "%FILENAME%.aux"
 biber "%FILENAME%"
-rem makeindex "%FILENAME%.aux"
-rem makeindex "%FILENAME%.idx"
-makeglossaries "%FILENAME%"
 lualatex --shell-escape --draftmode --synctex=1  --interaction=nonstopmode  "%FILENAME%.tex"
 rem makeglossaries "%FILENAME%"
 lualatex --shell-escape  --synctex=1  --interaction=nonstopmode "%FILENAME%.tex"

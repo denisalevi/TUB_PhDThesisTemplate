@@ -56,11 +56,8 @@ DEL /Q "%FILENAME%.aux.blg" >nul 2>&1
 cd %ROOT_DIR%
 
 pdflatex -shell-escape  -draftmode -synctex=1 -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
-rem makeindex "%FILENAME%.aux"
-rem makeindex "%FILENAME%.idx"
-makeindex -s "%FILENAME%.ist" -o "%FILENAME%.gls" "%FILENAME%.glo"
-bibtex "%FILENAME%"
 makeglossaries "%FILENAME%"
+bibtex "%FILENAME%"
 pdflatex -shell-escape -draftmode -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000  "%FILENAME%.tex"
 rem makeglossaries "%FILENAME%"
 pdflatex -shell-escape  -synctex=1 -interaction=nonstopmode -interaction=nonstopmode -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
