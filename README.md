@@ -65,12 +65,30 @@ BIB_STRATEGY can be either biblatex or bibtex
 % `a5paper'
 % *********************** Choosing the Fonts in Class Options when using pdflatex ******************
 %
-% `fontA' : Times font with math support (mathptmx).
-% `fontB': Utopia Font with Fourier Math font (Font has to be installed)
-%            It's a free font (fourier).
-% 'fontC' : Libertine Font with Math fonts (newtxmath)
-% 'fontD': mathpazo - eulervm
-% 'fontE': courier - eulervm
+% `' :  computer modern
+% `fontA' :  newtxmath
+% `fontB' :  cmbright
+% `fontC' :  libertine,newtxmath
+% `fontD' :  concmath
+% `fontE' :  iwona
+% `fontF' :  kurier	
+% `fontG' :  anttor
+% `fontH' :  kmath,kerkis
+% `fontI' :   mathdesign (Utopia)
+% `fontJ' :  fouriernc
+% `fontK' :  pxfonts
+% `fontL' :  mathpazo
+% `fontM' :  mathpple
+% `fontN' :  txfonts
+% `fontO' :  mathtime (Belleek)
+% `fontP' :  mathptmx	times	
+% `fontQ' :  mbtimes	omega
+% `fontR' :  arev
+% `fontS' :  mathdesign (Charter)	
+% `fontT' :  comicsans
+% `fontU' :  mathdesign (Garamond)
+% `fontV' :  fourier	utopia
+% `fontW' :  ccfonts,eulervm
 %
 % `customfont': Use `customfont' option in the document class and load the
 % package in the preamble.tex
@@ -79,11 +97,16 @@ BIB_STRATEGY can be either biblatex or bibtex
 %
 % *********************** Choosing the Fonts in Class Options when using xelatex/lualatex ***********
 %
+% `' :  computer modern
 % `fontA' :  XITS - XITS Math
 % `fontB': Cambria - Cambria Math
-% 'fontC': Libertinus
-% 'fontD': texgyrepagella - mathpazo
+% 'fontC': Libertinus - Libertinus Math
+% 'fontD': TeX Gyre Pagella - Asana Math
 % 'fontE': TeX Gyre Pagella - TeX Gyre Pagella Math
+% 'fontF': TeX Gyre Schola - TeX Gyre Schola Math
+% 'fontG': TeX Gyre Termes - TeX Gyre Termes Math
+% 'fontH': TeX Gyre Bonum - TeX Gyre Bonum Math
+% 'fontI': DejaVu Sans - TeX Gyre DejaVu Math
 %
 % `customfont': Use `customfont' option in the document class and load the
 % package in the preamble.tex

@@ -138,11 +138,12 @@
 
 \DeclareOption{biblatex}{\CLASSINFObiblatextrue}
 
+\newif\ifCLASSINFOsetsecondfont             \CLASSINFOsetsecondfontfalse
+
 \DeclareOption{fontA}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
-      aleady specified. Please check the document class options in case you 
-      have defined two fonts.}
+    \CLASSINFOsetsecondfonttrue
+
   \else
     \CLASSINFOfontAtrue
     \CLASSINFOsetfonttrue
@@ -150,9 +151,7 @@
 }
 \DeclareOption{fontB}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
-      aleady specified. Please check the document class options in case you 
-      have defined two fonts.}
+\CLASSINFOsetsecondfonttrue
   \else
     \CLASSINFOfontBtrue
     \CLASSINFOsetfonttrue
@@ -161,9 +160,7 @@
 
 \DeclareOption{fontC}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
-      aleady specified. Please check the document class options in case you 
-      have defined two fonts.}
+\CLASSINFOsetsecondfonttrue
   \else
     \CLASSINFOfontCtrue
     \CLASSINFOsetfonttrue
@@ -172,9 +169,7 @@
 
 \DeclareOption{fontD}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
-      aleady specified. Please check the document class options in case you 
-      have defined two fonts.}
+\CLASSINFOsetsecondfonttrue
   \else
     \CLASSINFOfontDtrue
     \CLASSINFOsetfonttrue
@@ -182,18 +177,186 @@
 }
 \DeclareOption{fontE}{
   \ifCLASSINFOsetfont
-    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
-      aleady specified. Please check the document class options in case you 
-      have defined two fonts.}
+\CLASSINFOsetsecondfonttrue
   \else
     \CLASSINFOfontEtrue
     \CLASSINFOsetfonttrue
   \fi
 }
+\DeclareOption{fontF}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontFtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontG}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontGtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontH}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontHtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontI}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontItrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontJ}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontJtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontK}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontKtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontL}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontLtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontM}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontMtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontN}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontNtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontO}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontOtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontP}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontPtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontQ}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontQtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontR}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontRtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontS}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontStrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontT}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontTtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontU}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontUtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontV}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontVtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontW}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontWtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontX}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontXtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontY}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontYtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
+\DeclareOption{fontZ}{
+  \ifCLASSINFOsetfont
+\CLASSINFOsetsecondfonttrue
+  \else
+    \CLASSINFOfontZtrue
+    \CLASSINFOsetfonttrue
+  \fi
+}
 
-
-
-
+\ifCLASSINFOsetsecondfont
+      \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+\fi
 
 \DeclareOption{customfont}{
   \ifCLASSINFOsetfont
@@ -455,17 +618,25 @@
    \RequirePackage{upgreek}
    \RequirePackage{amsfonts}
 % ********************************** Fonts **********************************
-\RequirePackage{textcomp}
 \RequirePackage{anyfontsize}
 % Font Selection
+\ifXeOrLua
+  \usepackage{fontspec}
+   \usepackage[warnings-off={mathtools-colon}]{unicode-math}
+\else
+  \RequirePackage[utf8]{inputenc}
+  %\inputencoding{utf8}
+  \RequirePackage[T1]{fontenc}
+\fi
+
 
 \ifCLASSINFOfontA
   \ifXeOrLua
-    \usepackage{unicode-math}
-    \setmainfont{XITS}
-    \setmathfont{STIX Math}
+    \setmainfont[Numbers={OldStyle},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{XITS}
+    \setmathfont{XITS Math}
   \else
-    \RequirePackage{mathptmx}  % times roman, including math (where possible)
+    \usepackage{newtxtext,newtxmath}  % times roman, including math (where possible)
   \fi
   \message{PhDthesisTUB: Using font A}
 \else
@@ -473,13 +644,13 @@
 
 \ifCLASSINFOfontB
   \ifXeOrLua
-    \usepackage{unicode-math}
-    \setmainfont{Cambria}
+    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{Cambria}
     \setsansfont{Calibri}
     \setmathrm{Cambria Math}
     \setmonofont{Consolas}
   \else
-     \RequirePackage{fourier} % Fourier  % times roman, including math (where possible)
+     \RequirePackage{cmbright} % Fourier  % times roman, including math (where possible)
   \fi
     \message{PhDthesisTUB: font B}
  \else
@@ -488,10 +659,7 @@
  \ifCLASSINFOfontC
  \ifluatex
 
-    \usepackage[warnings-off={mathtools-colon}]{unicode-math}
-    \usepackage{fontspec}
-
-        \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{Libertinus Serif} 
     \setmonofont[Scale=0.8]{Libertinus Mono} 
     \setsansfont{Libertinus Sans} 
@@ -499,17 +667,14 @@
 
   \else
   \ifxetex
-    \usepackage[warnings-off={mathtools-colon}]{unicode-math}
-    \usepackage{fontspec}
-
-    \setmainfont[Mapping=tex-text,Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{Libertinus Serif} 
     \setmonofont[Mapping=tex-text,Scale=0.8]{Libertinus Mono} 
     \setsansfont[Mapping=tex-text]{Libertinus Sans} 
     \setmathfont[AutoFakeBold]{Libertinus Math}
 
   \else % pdflatex
-    \RequirePackage[mono=false]{libertine}
+      \RequirePackage[mono=false]{libertine}
     \RequirePackage[libertine]{newtxmath}
   \fi
    \fi
@@ -519,39 +684,227 @@
 
 \ifCLASSINFOfontD
   \ifXeOrLua
-      \usepackage{fontspec}
-      \usepackage{mathpazo}
-      \setmainfont
-           [ BoldFont       = texgyrepagella-bold.otf ,
-             ItalicFont     = texgyrepagella-italic.otf ,
-             BoldItalicFont = texgyrepagella-bolditalic.otf ]
-           {texgyrepagella-regular.otf}
+  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{TeX Gyre Pagella}
+     \setmathfont{Asana Math}
   \else %pdflatex
-     \usepackage{mathpazo} % add possibly `sc` and `osf` options
-     \usepackage[T1,small,euler-digits]{eulervm}
+     \usepackage{ccfonts}
   \fi
 
     \message{PhDthesisTUB: Using  font D}
  \else
  \fi
 
- \ifCLASSINFOfontE
-  \ifXeOrLua
-  \usepackage{fontspec}
-  \setromanfont[Ligatures=TeX]{TeX Gyre Pagella}
-  \usepackage{unicode-math}
-  \setmathfont{Asana Math}
 
+  \ifCLASSINFOfontE
+  \ifXeOrLua
+  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{TeX Gyre Pagella}
+     \setmathfont{TeX Gyre Pagella Math}
     %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
   \else %pdflatex
-     \usepackage{courier} % add possibly `sc` and `osf` options
-     \usepackage[T1,small,euler-digits]{eulervm}
+     \usepackage[math]{iwona}
   \fi
     \message{PhDthesisTUB: Using font E}
  \else
  \fi
 
+ \ifCLASSINFOfontF
+  \ifXeOrLua
+  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{TeX Gyre Schola}
+     \setmathfont{TeX Gyre Schola Math}
+    %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \else %pdflatex
+     \usepackage[math]{kurier}
+  \fi
+    \message{PhDthesisTUB: Using font F}
+ \else
+ \fi
 
+  \ifCLASSINFOfontG
+  \ifXeOrLua
+  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{TeX Gyre Termes}
+     \setmathfont{TeX Gyre Termes Math}
+    %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \else %pdflatex
+     \usepackage[math]{anttor}
+  \fi
+    \message{PhDthesisTUB: Using font G}
+ \else
+ \fi
+
+ \ifCLASSINFOfontH
+  \ifXeOrLua
+  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{TeX Gyre Bonum}
+     \setmathfont{TeX Gyre Bonum Math}
+    %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \else %pdflatex
+     \usepackage{kmath,kerkis}
+  \fi
+    \message{PhDthesisTUB: Using font H}
+ \else
+ \fi
+
+  \ifCLASSINFOfontI
+  \ifXeOrLua
+  \setmainfont[Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    }]{DejaVu Sans}
+  %  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  %  }]{TeX Gyre Pagella}
+  \setmathfont{TeX Gyre DejaVu Math}
+
+    %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
+  \else %pdflatex
+     \usepackage[utopia]{mathdesign}
+  \fi
+    \message{PhDthesisTUB: Using font I}
+ \else
+ \fi
+
+  \ifCLASSINFOfontJ
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{fouriernc}
+  \fi
+    \message{PhDthesisTUB: Using font J}
+ \else
+ \fi
+
+  \ifCLASSINFOfontK
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{pxfonts}
+  \fi
+    \message{PhDthesisTUB: Using font K}
+ \else
+ \fi
+
+   \ifCLASSINFOfontL
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{mathpazo}
+  \fi
+    \message{PhDthesisTUB: Using font L}
+ \else
+ \fi
+
+   \ifCLASSINFOfontM
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{mathpple}
+  \fi
+    \message{PhDthesisTUB: Using font M}
+ \else
+ \fi
+
+   \ifCLASSINFOfontN
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage[varg]{txfonts}
+  \fi
+    \message{PhDthesisTUB: Using font N}
+ \else
+ \fi
+
+   \ifCLASSINFOfontO
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{mathtime}
+  \fi
+    \message{PhDthesisTUB: Using font O}
+ \else
+ \fi
+
+    \ifCLASSINFOfontP
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{mathptmx}
+  \fi
+    \message{PhDthesisTUB: Using font P}
+ \else
+ \fi
+
+    \ifCLASSINFOfontQ
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{mbtimes}
+  \fi
+    \message{PhDthesisTUB: Using font Q}
+ \else
+ \fi
+
+    \ifCLASSINFOfontR
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{arev}
+  \fi
+    \message{PhDthesisTUB: Using font R}
+ \else
+ \fi
+
+    \ifCLASSINFOfontS
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage[charter]{mathdesign}
+  \fi
+    \message{PhDthesisTUB: Using font S}
+ \else
+ \fi
+
+    \ifCLASSINFOfontT
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{comicsans}
+  \fi
+    \message{PhDthesisTUB: Using font T}
+ \else
+ \fi
+
+
+    \ifCLASSINFOfontU
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage[garamond]{mathdesign}
+  \fi
+    \message{PhDthesisTUB: Using font U}
+ \else
+ \fi
+
+
+    \ifCLASSINFOfontV
+  \ifXeOrLua
+
+  \else %pdflatex
+     \usepackage{fourier}
+  \fi
+    \message{PhDthesisTUB: Using font V}
+ \else
+ \fi
+
+\ifCLASSINFOfontW
+  \ifXeOrLua
+
+  \else %pdflatex
+         \usepackage{ccfonts,eulervm}
+  \fi
+    \message{PhDthesisTUB: Using font W}
+ \else
+ \fi
 
 \ifCLASSINFOsetcustomfont
   \message{PhDthesisTUB: Using custom font}
@@ -566,10 +919,8 @@
     University PhD thesis guidelines recommend using Times font)  or `fourier'
     or load a custom font in the preamble.tex file by specifying `customfont' 
     in the class options}
-    \ifXeOrLua
-    \usepackage{unicode-math}
-    \fi
   \RequirePackage{lmodern}
+
 \fi
 
 
@@ -609,9 +960,6 @@
   \else
   % default: pdfLaTeX
   %:-------------------------- packages UTF8 -----------------------
-  \RequirePackage[utf8]{inputenc}
-  %\inputencoding{utf8}
-  \RequirePackage[T1]{fontenc}
   % If building with PDFLaTeX, use microtype spacing adjustments
   \RequirePackage[final]{microtype}
   
