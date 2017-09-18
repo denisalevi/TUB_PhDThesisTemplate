@@ -14,7 +14,7 @@ before_install:
       brew install gnu-tar --with-default-names
       brew install ghostscript
       wget --retry-connrefused --waitretry=1 -O $HOME/texlive.tar.xz  https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz 
-      tar -JxC $HOME/texlive.tar.xz
+      tar xJf $HOME/texlive.tar.xz
     fi
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       sudo apt-get install ghostscript
