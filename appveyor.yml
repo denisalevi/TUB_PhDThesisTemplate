@@ -25,8 +25,10 @@ install:
   # autoinstall latex packages (0=no, 1=autoinstall, 2=ask)
   # this adds this to the registry!
   - initexmf --set-config-value "[MPM]AutoInstall=1"
+  - mpm --verbose --update-db
+  - mpm --verbose --update
   - mpm --install=cm-super
- 
+
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - compile-%LATEXBIN%-biblatex.bat
