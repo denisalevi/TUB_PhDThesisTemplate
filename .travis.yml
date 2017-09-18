@@ -17,7 +17,8 @@ before_install:
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       sudo apt-get install ghostscript
     fi
-  - wget --retry-connrefused --waitretry=1  https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
+  - wget --retry-connrefused --waitretry=1 https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz 
+  - tar -JxC texlive.tar.xz
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then PATH=$HOME/texlive/bin/x86_64-darwin:$PATH; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]];  then PATH=$HOME/texlive/bin/x86_64-linux:$PATH; fi
