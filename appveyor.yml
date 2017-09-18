@@ -10,9 +10,9 @@ cache:
 
 environment:
     matrix:
-     - LATEXBIN: pdflatex
-     - LATEXBIN: lualatex
-     - LATEXBIN: xelatex
+     - LATEXBIN: "pdflatex"
+     - LATEXBIN: "lualatex"
+     - LATEXBIN: "xelatex"
 
 matrix:
     fast_finish: false
@@ -29,7 +29,7 @@ install:
  
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - compile-${LATEXBIN}-biblatex.bat
+  - compile-%LATEXBIN%-biblatex.bat
 
 artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
