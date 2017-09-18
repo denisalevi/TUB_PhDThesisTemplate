@@ -9,9 +9,12 @@ before_install:
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       brew update
-      brew install coreutils
+      brew upgrade coreutils
       brew install xz
       brew install gnu-tar --with-default-names
+      brew install ghostscript
+    else
+      apt-get install ghostscript
     fi
   - curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
 install:
