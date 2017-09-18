@@ -19,7 +19,7 @@ install:
   - initexmf --set-config-value "[MPM]AutoInstall=1"
   - mpm --install=cm-super
   - mpm --update-db
-  - mpm --update
+  - mpm --update=fontspec
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
