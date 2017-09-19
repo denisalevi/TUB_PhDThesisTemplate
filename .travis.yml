@@ -10,19 +10,18 @@ before_install:
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       brew update
-      brew install xz
-      brew install gnu-tar --with-default-names
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      brew tap miktex/miktex
+      brew install miktex
       brew install ghostscript
-      wget --retry-connrefused --waitretry=1 -O $HOME/texlive.tar.xz  https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz 
-      tar xJf $HOME/texlive.tar.xz
+      initexmf --set-config-value "[MPM]AutoInstall=1"
     fi
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       sudo apt-get update
       sudo apt-get install ghostscript
-      curl -L https://github.com/holgern/travis-texlive/releases/download/2017-07-05_09/texlive.tar.xz | tar -JxC ~
+      curl -L https://github.com/holgern/travis-texlive/releases/download/2017-09-18_02/texlive.tar.xz | tar -JxC ~
     fi
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then PATH=$HOME/texlive/bin/x86_64-darwin:$PATH; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]];  then PATH=$HOME/texlive/bin/x86_64-linux:$PATH; fi
 script:
    - make clean
