@@ -53,6 +53,7 @@
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 % ************************* Math packages **************************
+
 \usepackage{ntheorem}
 \newtheorem{theorem}{Theorem}
 % ********************Captions and Hyperreferencing / URL **********************
@@ -60,13 +61,16 @@
 %\RequirePackage{wrapfig} % to include figure with text wrapping around it
 \usepackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
 % *************************** Graphics and figures *****************************
-
+\usepackage{placeins}
+\usepackage[countmax]{subfloat}
+\usepackage{subfig}
 % ********************************** Tables ************************************
 \usepackage{booktabs}
 \usepackage{multicol} % for pages with multiple text columns, e.g. References
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{longtable}
+\usepackage{hhline}
 % *********************************** SI Units *********************************
 
 \usepackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
@@ -116,7 +120,7 @@
 }
 \fi
 
-% ----------------------------------------------------------------------
+% ************************ Formatting / Footnote *******************************
        
 % turn of those nasty overfull and underfull hboxes
 
@@ -147,3 +151,4 @@
 \clubpenalty=10000
 \widowpenalty=10000
 
+%\usepackage[perpage]{footmisc}

@@ -512,39 +512,24 @@
   \pdfbookmark[0]{\contentsname}{toc}%
 }{}{}%
 \makeatother
+% ********************************** Math-Fonts **********************************
 
-
-
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{upgreek}
+\usepackage{amsfonts}
 
 %:-------------------------- packages for fancy things -----------------------
 
-%\RequirePackage{fancyhdr} % for better header layout
 \RequirePackage[german,english]{babel}
 %\RequirePackage[usenames, dvipsnames]{color}
-%\RequirePackage[perpage]{footmisc}
-
-\RequirePackage{placeins}
-\RequirePackage[countmax]{subfloat}
-\RequirePackage{subfig}
 
 \setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
-
-%\RequirePackage{nextpage}
-
-%\RequirePackage{regexpatch}
-
-%\RequirePackage{showframe}
-
-\RequirePackage{hhline}
 \RequirePackage{titlesec}
 
-  \RequirePackage{amsmath}
-  \RequirePackage{amssymb}
-  \RequirePackage{mathtools}
-   \RequirePackage{upgreek}
-   \RequirePackage{amsfonts}
-
 % ********************************** Fonts **********************************
+
 \RequirePackage{anyfontsize}
 % Font Selection
 \ifXeOrLua
@@ -1335,14 +1320,12 @@
 {\usebox{\@PHDtitle}} % subtitle is defined
 \ifdefempty{\@subtitle}{}{\usebox{\@PHDsubtitle}} % subtitle is defined
 
-
-
 \vspace{.15\titlepagespacing}
 {\usebox{\@PHDauthor}}
 \vspace*{0.5em}
-\vspace{.2\titlepagespacing}
+\vspace{.15\titlepagespacing}
  {\usebox{\@PHDdegree}}
-\vspace*{.2\titlepagespacing}
+\vspace*{.15\titlepagespacing}
 \vspace*{0.5em}
 {\usebox{\@PHDcomitee}}
 \vspace*{0.5em}
@@ -1371,7 +1354,7 @@
 \newsavebox{\@PHDtitle}
 \begin{lrbox}{\@PHDtitle}
   \begin{minipage}[c]{0.98\textwidth}
-  \vspace*{-10ex}
+  %\vspace*{-10ex}
     \centering \Huge \singlespacing \bfseries{\@title}
     \\
   \end{minipage}
