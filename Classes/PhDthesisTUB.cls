@@ -414,18 +414,17 @@
 %If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
-
+% ******************************************************************************
+% ******************************** Packages ************************************
+% ******************************************************************************
 % ************************* Conditional Statements *****************************
 \RequirePackage{ifthen}   % Conditional statements
 \RequirePackage{ifpdf}    % Check for pdfLaTeX
 \RequirePackage{ifxetex}  % XeLaTeX
 \RequirePackage{ifluatex} %luatex
-\usepackage{etoolbox}
+\RequirePackage{etoolbox}
 \RequirePackage{needspace}
-
-%if you use a macTeX 2008 or later, use the ifpdf package
-\RequirePackage{setspace} % Define line spacing in paragraph
-
+% ********************************* book class *********************************
 
 \newif\ifsetDVI\setDVIfalse
 \newif\ifXeOrLua\XeOrLuafalse
@@ -470,14 +469,14 @@
       \RequirePackage{xmpincl}
       %\includexmp{pdfa-1b}
     \else
-           \ifCLASSINFOpdfxthree
+        \ifCLASSINFOpdfxthree
                \let\tmpa\textsuperscript
                \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
               %\RequirePackage[a-1b]{pdfx}
               \RequirePackage[x-3]{pdfx}
               \RequirePackage{xmpincl}
                %\includexmp{pdfa-1b}
-           \else
+        \else
               \ifCLASSINFOpdfatwo
                  \let\tmpa\textsuperscript
                  \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
@@ -488,29 +487,76 @@
             \else
         
             \fi %a2
-          \fi %x3
+        \fi %x3
     \fi %a1
-    \fi
-  %: ----------------------------------------------------------------------------
+\fi
 
-% ******************************************************************************
-% ******************************** Packages ************************************
-% ******************************************************************************
 % ************************** Layout and Formatting *****************************
-
 \RequirePackage{lscape}   % Supports Landscape Layout
-
+\RequirePackage{setspace} % Define line spacing in paragraph
 \RequirePackage{calc}     % calculate vertical spacing
-\RequirePackage{tabularx}
 
+% *********************** Table of Contents & Appendices ***********************
+\RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
+% Add appendices
+\RequirePackage[title,titletoc]{appendix}
+
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
 
 % print bookmark for the table of contents
 \makeatletter
 \pretocmd{\tableofcontents}{%
   \if@openright\cleardoublepage\else\clearpage\fi
-  \pdfbookmark[0]{Table of contents}{toc}%
+  \pdfbookmark[0]{\contentsname}{toc}%
 }{}{}%
 \makeatother
+
+
+
+
+%:-------------------------- packages for fancy things -----------------------
+
+%\RequirePackage{fancyhdr} % for better header layout
+\RequirePackage[german,english]{babel}
+%\RequirePackage[usenames, dvipsnames]{color}
+%\RequirePackage[perpage]{footmisc}
+
+\RequirePackage{placeins}
+\RequirePackage[countmax]{subfloat}
+\RequirePackage{subfig}
+
+\setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
+
+%\RequirePackage{nextpage}
+
+%\RequirePackage{regexpatch}
+
+%\RequirePackage{showframe}
+
+\RequirePackage{hhline}
+\RequirePackage{titlesec}
+
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  \RequirePackage{mathtools}
+   \RequirePackage{upgreek}
+   \RequirePackage{amsfonts}
+
+% ********************************** Fonts **********************************
+\RequirePackage{anyfontsize}
+% Font Selection
+\ifXeOrLua
+  \usepackage{fontspec}
+   \usepackage[warnings-off={mathtools-colon}]{unicode-math}
+\else
+  \RequirePackage[utf8]{inputenc}
+  %\inputencoding{utf8}
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{textcomp}
+\fi
+
 
 % *************************** Graphics and Figures *****************************
 %\RequirePackage[usenames, dvipsnames]{color}
@@ -527,19 +573,59 @@
 % forcing PDF v1.4 ensured compatibility
 %    \pdfminorversion=4
 %    \pdfobjcompresslevel=3
-    \graphicspath{{0_frontmatter/figures/PNG/}{0_frontmatter/figures/PDF/}{0_frontmatter/figures/}}
+    \graphicspath{{figures/}}
 \else
      \DeclareGraphicsExtensions{.eps, .ps}
     \RequirePackage{epsfig}
     \RequirePackage{graphicx}
-    \graphicspath{{0_frontmatter/figures/EPS/}{0_frontmatter/figures/}}
+    \graphicspath{{figures/}}
 \fi
 
 
+%:-------------------------- microtype -----------------------
+\ifxetex
+  % XeLaTeX
+   \usepackage{xltxtra}
+  \RequirePackage[final]{microtype}
+\else
+  \ifluatex
+  \RequirePackage{pdftexcmds}
+  \RequirePackage[final]{microtype}
+  \else
+  % default: pdfLaTeX
+  %:-------------------------- packages UTF8 -----------------------
+  % If building with PDFLaTeX, use microtype spacing adjustments
+  \RequirePackage[final]{microtype}
+  
+  \input{glyphtounicode}
+  \pdfglyphtounicode{f_f}{FB00}
+  \pdfglyphtounicode{f_i}{FB01}
+  \pdfglyphtounicode{f_l}{FB02}
+  \pdfglyphtounicode{f_f_i}{FB03}
+  \pdfglyphtounicode{f_f_l}{FB04}
+  \pdfgentounicode=1
+
+
+   \fi
+\fi
+%:-------------------------- Glossary/Abbrev./Symbols -----------------------
+
+\RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
+\glsdisablehyper
+\newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
 
 
 
-%:-------------------------  graphics ----------------------------
+%:-------------------------- BibLatex ---------------------------
+
+\RequirePackage{csquotes}
+%:-------------------------- PDF/PS setup -----------------------
+% png or pfg/pdf graphics?
+%\RequirePackage{pgf}
+\RequirePackage{import}
+\RequirePackage{chapterfolder}
+
+%:-------------------------  tikz ----------------------------
 \RequirePackage{tikz}
 
 %\RequirePackage{pgf}
@@ -598,62 +684,7 @@
 %\tikzexternalize[shell escape=-enable-write18]
 
 
-%:-------------------------- packages for fancy things -----------------------
-\RequirePackage{graphics} % for improved inclusion of graphics
-%\RequirePackage{wrapfig} % to include figure with text wrapping around it
-\RequirePackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
-%\RequirePackage{fancyhdr} % for better header layout
-\RequirePackage[german,english]{babel}
-%\RequirePackage[usenames, dvipsnames]{color}
-%\RequirePackage[perpage]{footmisc}
-
-\RequirePackage{placeins}
-\RequirePackage[countmax]{subfloat}
-\RequirePackage{subfig}
-\RequirePackage{multicol} % for pages with multiple text columns, e.g. References
-\setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
-\RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
-% Add appendices
-\RequirePackage[title,titletoc]{appendix}
-%\RequirePackage{nextpage}
-\RequirePackage{booktabs}
-
-\RequirePackage{ntheorem}
-\newtheorem{theorem}{Theorem}
-
-
-\usepackage{algorithm}% http://ctan.org/pkg/algorithms
-\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
-
-%\RequirePackage{regexpatch}
-
-%\RequirePackage{showframe}
-\RequirePackage{multirow}
-\RequirePackage{hhline}
-\RequirePackage{titlesec}
-\RequirePackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
-\sisetup{
-  locale = US ,
-  per-mode = symbol,
-  binary-units = true
-}
-  \RequirePackage{amsmath}
-  \RequirePackage{amssymb}
-  \RequirePackage{mathtools}
-   \RequirePackage{upgreek}
-   \RequirePackage{amsfonts}
-% ********************************** Fonts **********************************
-\RequirePackage{anyfontsize}
-% Font Selection
-\ifXeOrLua
-  \usepackage{fontspec}
-   \usepackage[warnings-off={mathtools-colon}]{unicode-math}
-\else
-  \RequirePackage[utf8]{inputenc}
-  %\inputencoding{utf8}
-  \RequirePackage[T1]{fontenc}
-  \RequirePackage{textcomp}
-\fi
+%:-------------------------  fonts ----------------------------
 
 
 \ifCLASSINFOfontA
@@ -951,67 +982,6 @@
 \fi
 
 
-\ifxetex
-  % XeLaTeX
-   \usepackage{xltxtra}
-  %\RequirePackage{fontspec}
-  %\usepackage[no-math]{fontspec}
-
-  %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
-  %\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
-  %\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
-  
-  %\usepackage[]{unicode-math}
-  
-  \RequirePackage[final]{microtype}
-
-  
-\else
-  \ifluatex
-
-  \RequirePackage{pdftexcmds}
-  %\RequirePackage{fontspec}
-   
-  %\DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{\mddefault}{n}
-%\DeclareMathAlphabet{\mathit}{\encodingdefault}{\familydefault}{\mddefault}{it}
-%\DeclareMathAlphabet{\mathbf}{\encodingdefault}{\familydefault}{\bfdefault}{n}
- 
-  % If building with PDFLaTeX, use microtype spacing adjustments
-  \RequirePackage[final]{microtype}
-
-%\microtypesetup{
-%  tracking   = smallcaps ,
-%  protrusion = alltext ,
-%  expansion  = basictext
-%}
-  \else
-  % default: pdfLaTeX
-  %:-------------------------- packages UTF8 -----------------------
-  % If building with PDFLaTeX, use microtype spacing adjustments
-  \RequirePackage[final]{microtype}
-  
-  \input{glyphtounicode}
-  \pdfglyphtounicode{f_f}{FB00}
-  \pdfglyphtounicode{f_i}{FB01}
-  \pdfglyphtounicode{f_l}{FB02}
-  \pdfglyphtounicode{f_f_i}{FB03}
-  \pdfglyphtounicode{f_f_l}{FB04}
-  \pdfgentounicode=1
-
-
-   \fi
-\fi
-%:-------------------------- Glossary/Abbrev./Symbols -----------------------
-
-\RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
-\glsdisablehyper
-\newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
-\RequirePackage{longtable}
-
-
-%:-------------------------- BibLatex ---------------------------
-
-\RequirePackage{csquotes}
 
 
 \ifCLASSINFObibauthoryear
@@ -1054,11 +1024,7 @@
   \fi %numbered
   \fi %authoryear
 
-%:-------------------------- PDF/PS setup -----------------------
-% png or pfg/pdf graphics?
-%\RequirePackage{pgf}
-\RequirePackage{import}
-\RequirePackage{chapterfolder}
+
 
 
 
@@ -1180,8 +1146,6 @@
 
 %\fi
 
-
-%:-------------------------- page layout -----------------------
 
 
 

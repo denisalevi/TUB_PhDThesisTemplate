@@ -46,6 +46,36 @@
 {\filleft\fontsize{50}{50}}
 [\vspace{-0ex}]
 %
+% ******************************************************************************
+% ******************************** Custom Packages *****************************
+% ******************************************************************************
+% ************************* Algorithms and Pseudocode **************************
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+% ************************* Math packages **************************
+\usepackage{ntheorem}
+\newtheorem{theorem}{Theorem}
+% ********************Captions and Hyperreferencing / URL **********************
+\usepackage{graphics} % for improved inclusion of graphics
+%\RequirePackage{wrapfig} % to include figure with text wrapping around it
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
+% *************************** Graphics and figures *****************************
+
+% ********************************** Tables ************************************
+\usepackage{booktabs}
+\usepackage{multicol} % for pages with multiple text columns, e.g. References
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{longtable}
+% *********************************** SI Units *********************************
+
+\usepackage[separate-uncertainty = true,multi-part-units=single]{siunitx}
+\sisetup{
+  locale = US ,
+  per-mode = symbol,
+  binary-units = true
+}
+
 % ********************** bibtex/biblatex *************************
 %\usepackage{showframe}
 \ifCLASSINFOcustombibstyle
