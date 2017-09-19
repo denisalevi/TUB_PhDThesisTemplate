@@ -70,21 +70,9 @@
 \newif\ifCLASSINFOfontY             \CLASSINFOfontYfalse
 \newif\ifCLASSINFOfontZ             \CLASSINFOfontZfalse
 
-%STIX
-%palatino
-
-%cambria
-%pagella
-%marion 
-
-%helvetia
-%chancery
-%newcent
-%courier
-%bookman
-%cmbright
 
 \newif\ifCLASSINFOsetfont             \CLASSINFOsetfontfalse
+\newif\ifCLASSINFOsetsecondfont             \CLASSINFOsetsecondfontfalse
 \newif\ifCLASSINFOsetcustomfont             \CLASSINFOsetcustomfontfalse
 
 \newif\ifCLASSINFOpdfaone               \CLASSINFOpdfaonefalse
@@ -95,6 +83,11 @@
 \newif\ifCLASSINFObiblatex                 \CLASSINFObiblatexfalse
 
 \newif\ifCLASSINFOcustommargin             \CLASSINFOcustommarginfalse
+
+\newif\ifCLASSINFOsetbibstyle                 \CLASSINFOsetbibstylefalse
+\newif\ifCLASSINFObibnumbered                 \CLASSINFObibnumberedfalse
+\newif\ifCLASSINFObibauthoryear                 \CLASSINFObibauthoryearfalse
+\newif\ifCLASSINFOcustombibstyle             \CLASSINFOcustombibstylefalse
 
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
@@ -138,7 +131,36 @@
 
 \DeclareOption{biblatex}{\CLASSINFObiblatextrue}
 
-\newif\ifCLASSINFOsetsecondfont             \CLASSINFOsetsecondfontfalse
+\DeclareOption{numbered}{
+  \ifCLASSINFOsetbibstyle
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOsetbibstyletrue
+    \CLASSINFObibnumberedtrue
+  \fi
+}
+\DeclareOption{authoryear}{
+  \ifCLASSINFOsetbibstyle
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOsetbibstyletrue
+    \CLASSINFObibauthoryeartrue
+  \fi
+}
+\DeclareOption{custombib}{
+  \ifCLASSINFOsetbibstyle
+    \ClassWarning{PhDthesisTUB}{Font selection conflict: A font package was
+      aleady specified. Please check the document class options in case you 
+      have defined two fonts.}
+  \else
+    \CLASSINFOsetbibstyletrue
+    \CLASSINFOcustombibstyletrue
+  \fi
+}
 
 \DeclareOption{fontA}{
   \ifCLASSINFOsetfont
@@ -403,6 +425,8 @@
 
 %if you use a macTeX 2008 or later, use the ifpdf package
 \RequirePackage{setspace} % Define line spacing in paragraph
+
+
 \newif\ifsetDVI\setDVIfalse
 \newif\ifXeOrLua\XeOrLuafalse
 
@@ -469,7 +493,6 @@
     \fi
   %: ----------------------------------------------------------------------------
 
-
 % ******************************************************************************
 % ******************************** Packages ************************************
 % ******************************************************************************
@@ -479,6 +502,7 @@
 
 \RequirePackage{calc}     % calculate vertical spacing
 \RequirePackage{tabularx}
+
 
 % print bookmark for the table of contents
 \makeatletter
@@ -573,6 +597,7 @@
 
 %\tikzexternalize[shell escape=-enable-write18]
 
+
 %:-------------------------- packages for fancy things -----------------------
 \RequirePackage{graphics} % for improved inclusion of graphics
 %\RequirePackage{wrapfig} % to include figure with text wrapping around it
@@ -627,12 +652,13 @@
   \RequirePackage[utf8]{inputenc}
   %\inputencoding{utf8}
   \RequirePackage[T1]{fontenc}
+  \RequirePackage{textcomp}
 \fi
 
 
 \ifCLASSINFOfontA
   \ifXeOrLua
-    \setmainfont[Numbers={OldStyle},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{XITS}
     \setmathfont{XITS Math}
   \else
@@ -644,7 +670,7 @@
 
 \ifCLASSINFOfontB
   \ifXeOrLua
-    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{Cambria}
     \setsansfont{Calibri}
     \setmathrm{Cambria Math}
@@ -659,7 +685,7 @@
  \ifCLASSINFOfontC
  \ifluatex
 
-    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{Libertinus Serif} 
     \setmonofont[Scale=0.8]{Libertinus Mono} 
     \setsansfont{Libertinus Sans} 
@@ -667,7 +693,7 @@
 
   \else
   \ifxetex
-    \setmainfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+    \setmainfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{Libertinus Serif} 
     \setmonofont[Mapping=tex-text,Scale=0.8]{Libertinus Mono} 
     \setsansfont[Mapping=tex-text]{Libertinus Sans} 
@@ -684,7 +710,7 @@
 
 \ifCLASSINFOfontD
   \ifXeOrLua
-  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  \setromanfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{TeX Gyre Pagella}
      \setmathfont{Asana Math}
   \else %pdflatex
@@ -698,7 +724,7 @@
 
   \ifCLASSINFOfontE
   \ifXeOrLua
-  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  \setromanfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{TeX Gyre Pagella}
      \setmathfont{TeX Gyre Pagella Math}
     %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
@@ -711,7 +737,7 @@
 
  \ifCLASSINFOfontF
   \ifXeOrLua
-  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  \setromanfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{TeX Gyre Schola}
      \setmathfont{TeX Gyre Schola Math}
     %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
@@ -724,7 +750,7 @@
 
   \ifCLASSINFOfontG
   \ifXeOrLua
-  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  \setromanfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{TeX Gyre Termes}
      \setmathfont{TeX Gyre Termes Math}
     %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
@@ -737,7 +763,7 @@
 
  \ifCLASSINFOfontH
   \ifXeOrLua
-  \setromanfont[Numbers={OldStyle,Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
+  \setromanfont[Numbers={Proportional},Ligatures={TeX, Common%, Historic, Contextual, Rare, Discretionary 
     }]{TeX Gyre Bonum}
      \setmathfont{TeX Gyre Bonum Math}
     %\setmonofont[Scale=MatchLowercase]{Lucida Sans Typewriter}
@@ -906,6 +932,8 @@
  \else
  \fi
 
+  
+
 \ifCLASSINFOsetcustomfont
   \message{PhDthesisTUB: Using custom font}
 \else
@@ -915,8 +943,7 @@
 \ifCLASSINFOsetfont
 \else
   \ClassWarning{PhDthesisTUB}{Using default font Latin Modern. If you
-    would like to use other pre-defined fonts use `times' (The Cambridge 
-    University PhD thesis guidelines recommend using Times font)  or `fourier'
+    would like to use other pre-defined fonts use `fontA' to `fontW'
     or load a custom font in the preamble.tex file by specifying `customfont' 
     in the class options}
   \RequirePackage{lmodern}
@@ -974,10 +1001,6 @@
 
    \fi
 \fi
-
-
-
-
 %:-------------------------- Glossary/Abbrev./Symbols -----------------------
 
 \RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
@@ -985,13 +1008,58 @@
 \newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
 \RequirePackage{longtable}
 
+
 %:-------------------------- BibLatex ---------------------------
+
 \RequirePackage{csquotes}
+
+
+\ifCLASSINFObibauthoryear
+  \ifCLASSINFObiblatex
+      \RequirePackage[backend=biber, style=authoryear, citestyle=alphabetic, 
+      sorting=nty, natbib=true]{biblatex}
+  \else
+      \RequirePackage[round, sort, numbers, authoryear]{natbib} %author year
+  \fi
+\else
+   \ifCLASSINFObibnumbered
+     \ifCLASSINFObiblatex
+             \RequirePackage[backend=biber, style=numeric-comp, 
+        citestyle=numeric, sorting=none, natbib=true]{biblatex}
+     \else
+        \RequirePackage[numbers,compress]{natbib} % numbered citation
+    \fi
+   \else
+      \ifCLASSINFOcustombibstyle
+        \makeatletter
+        \AtBeginDocument{
+          \@ifpackageloaded{natbib}{}{
+            \@ifpackageloaded{biblatex}{}{
+              \ClassWarning{PhDThesisTUB}{%
+                You chose custom bibliography, but no corresponding package 
+                (biblatex/natbib) has been loaded. Please load the
+                appropriate bibliography package in the preamble.}
+            }
+          }
+        }
+        \makeatother
+     \else %default
+        \ifCLASSINFObiblatex
+           \RequirePackage[backend=biber, style=numeric-comp, 
+        citestyle=numeric, sorting=none, natbib=true]{biblatex}
+     \else
+        \RequirePackage[numbers,compress]{natbib} % numbered citation
+    \fi %default
+  \fi %custombib
+  \fi %numbered
+  \fi %authoryear
+
 %:-------------------------- PDF/PS setup -----------------------
 % png or pfg/pdf graphics?
 %\RequirePackage{pgf}
 \RequirePackage{import}
 \RequirePackage{chapterfolder}
+
 
 
 %******************************* Print / Online ********************************
@@ -1263,6 +1331,13 @@
 \def\secondreviewer#1{\gdef\@secondreviewer{#1}}
 \def\thirdreviewer#1{\gdef\@thirdreviewer{#1}}
 \def\forthreviewer#1{\gdef\@forthreviewer{#1}}
+\def\fifthreviewer#1{\gdef\@fifthreviewer{#1}}
+\def\comiteeheadidentifier#1{\gdef\@comiteeheadidentifier{#1}}
+\def\firstrevieweridentifier#1{\gdef\@firstrevieweridentifier{#1}}
+\def\secondrevieweridentifier#1{\gdef\@secondrevieweridentifier{#1}}
+\def\thirdrevieweridentifier#1{\gdef\@thirdrevieweridentifier{#1}}
+\def\forthrevieweridentifier#1{\gdef\@forthrevieweridentifier{#1}}
+\def\fifthrevieweridentifier#1{\gdef\@fifthrevieweridentifier{#1}}
 \makeatother
 % These macros define an environment for front matter that is always 
 % single column even in a double-column document.
@@ -1294,7 +1369,7 @@
     \thispagestyle{empty}
 
 {\usebox{\@PHDtitle}} % subtitle is defined
-{\usebox{\@PHDsubtitle}} % subtitle is defined
+\ifdefempty{\@subtitle}{}{\usebox{\@PHDsubtitle}} % subtitle is defined
 
 
 
@@ -1338,6 +1413,7 @@
   \end{minipage}
 \end{lrbox}
 
+\ifdefempty{\@subtitle}{}{
 \newsavebox{\@PHDsubtitle}
 \begin{lrbox}{\@PHDsubtitle}
   \begin{minipage}[c]{0.98\textwidth}
@@ -1345,6 +1421,7 @@
     \\
   \end{minipage}
 \end{lrbox}
+}
 
 \newsavebox{\@PHDauthor}
 \begin{lrbox}{\@PHDauthor}
@@ -1382,11 +1459,12 @@
 \begin{minipage}[c]{\textwidth}
  {\Large \singlespacing
   {{Promotionsausschuss:} \par}
-  {{Vorsitzender: {\@comiteehead}} \par}
-  {{Gutachter: {\@firstreviewer}} \par}
-  {{Gutachterin: {\@secondreviewer}} \par}
-  {{Gutachter: {\@thirdreviewer}} \par}
-  %{{Gutachter: {\@forthreviewer}} \par}
+  {{{\@comiteeheadidentifier}: {\@comiteehead}} \par}
+  {{{\@firstrevieweridentifier}: {\@firstreviewer}} \par}
+  \ifdefempty{\@secondreviewer}{}{{{{\@secondrevieweridentifier}: {\@secondreviewer}} \par}}
+  \ifdefempty{\@thirdreviewer}{}{{{{\@thirdrevieweridentifier}: {\@thirdreviewer}} \par}}
+  \ifdefempty{\@forthreviewer}{}{{{{\@forthrevieweridentifier}: {\@forthreviewer}} \par}}
+  \ifdefempty{\@fifthreviewer}{}{{{{\@fifthrevieweridentifier}: {\@fifthreviewer}} \par}}
   \vspace*{1ex}
   {\@degreedate}
 }%end large
@@ -1407,13 +1485,24 @@
 
 %  Now to compute the free vertical space
 \newlength{\titlepagespacing}
-\setlength{\titlepagespacing}{ \textheight %
-                                           - \totalheightof{\usebox{\@PHDtitle}}
-                                           - \totalheightof{\usebox{\@PHDsubtitle}}
-                                           - \totalheightof{\usebox{\@PHDauthor}}
-                                           - \totalheightof{\usebox{\@PHDdegree}}
-                                           - \totalheightof{\usebox{\@PHDcomitee}}
-                                           - \totalheightof{\usebox{\@PHDdate}}
+\ifdefempty{\@subtitle}{
+  \setlength{\titlepagespacing}{ \textheight %
+                                             - \totalheightof{\usebox{\@PHDtitle}}
+                                             - \totalheightof{\usebox{\@PHDauthor}}
+                                             - \totalheightof{\usebox{\@PHDdegree}}
+                                             - \totalheightof{\usebox{\@PHDcomitee}}
+                                             - \totalheightof{\usebox{\@PHDdate}}
+  }
+}
+{
+    \setlength{\titlepagespacing}{ \textheight %
+                                             - \totalheightof{\usebox{\@PHDtitle}}
+                                             - \totalheightof{\usebox{\@PHDsubtitle}}
+                                             - \totalheightof{\usebox{\@PHDauthor}}
+                                             - \totalheightof{\usebox{\@PHDdegree}}
+                                             - \totalheightof{\usebox{\@PHDcomitee}}
+                                             - \totalheightof{\usebox{\@PHDdate}}
+  }
 }
 }
 \makeatother
@@ -1433,7 +1522,7 @@
     \thispagestyle{empty}
 
 {\usebox{\@PHDtitle}} % subtitle is defined
-{\usebox{\@PHDsubtitle}} % subtitle is defined
+\ifdefempty{\@subtitle}{}{\usebox{\@PHDsubtitle}} % subtitle is defined
 \vspace{.15\titlepagespacing}
 
 {\usebox{\@PHDauthor}}
@@ -1471,6 +1560,7 @@
   \end{minipage}
 \end{lrbox}
 
+\ifdefempty{\@subtitle}{}{
 \newsavebox{\@PHDsubtitle}
 \begin{lrbox}{\@PHDsubtitle}
   \begin{minipage}[c]{0.98\textwidth}
@@ -1478,6 +1568,7 @@
     \\
   \end{minipage}
 \end{lrbox}
+}
 
 \newsavebox{\@PHDauthor}
 \begin{lrbox}{\@PHDauthor}
@@ -1521,12 +1612,22 @@
 
 %  Now to compute the free vertical space
 \newlength{\titlepagespacing}
-\setlength{\titlepagespacing}{ \textheight %
+\ifdefempty{\@subtitle}{
+  \setlength{\titlepagespacing}{ \textheight %
+                                             - \totalheightof{\usebox{\@PHDtitle}}
+                                             - \totalheightof{\usebox{\@PHDsubtitle}}
+                                             - \totalheightof{\usebox{\@PHDauthor}}
+                                             - \totalheightof{\usebox{\@PHDdegree}}
+                                              - \totalheightof{\usebox{\@PHDdate}}
+  }
+}
+{
+  \setlength{\titlepagespacing}{ \textheight %
                                            - \totalheightof{\usebox{\@PHDtitle}}
-                                           - \totalheightof{\usebox{\@PHDsubtitle}}
                                            - \totalheightof{\usebox{\@PHDauthor}}
                                            - \totalheightof{\usebox{\@PHDdegree}}
                                             - \totalheightof{\usebox{\@PHDdate}}
+  }
 }
 }
 \makeatother
@@ -1643,7 +1744,7 @@
   \setsinglecolumn
   \begin{center}
     { \Large {\bfseries {\@title}} \par}
-    { \large {\bfseries {\@subtitle}} \par}
+    \ifdefempty{\@subtitle}{}{ \large {\bfseries {\@subtitle}} \par}
     {{\large \vspace*{1em} \@author} \par}
   \end{center}
 \else
@@ -1673,7 +1774,7 @@
   \setsinglecolumn
   \begin{center}
     { \Large {\bfseries {\@title}} \par}
-    { \large {\bfseries {\@subtitle}} \par}
+    \ifdefempty{\@subtitle}{}{ \large {\bfseries {\@subtitle}} \par}
     {{\large \vspace*{1em} \@author} \par}
   \end{center}
 \else

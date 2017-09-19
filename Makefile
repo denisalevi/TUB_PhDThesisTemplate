@@ -3014,7 +3014,11 @@ ifeq "$(strip $(BIB_STRATEGY))" "bibtex"
 		$(call run-latex,$*); \
 	fi
 endif
-
+ifeq "$(strip $(BIB_STRATEGY))" "biblatex"
+%.bbl: %.bcf
+	$(QUIET)$(call echo-build,$<,$@)
+	$(QUIET)$(call run-bibtex,$<,$@,$*.bcf)
+endif
 
 # Create the index file - note that we do *not* depend on %.tex here, since
 # that unnecessarily restricts the kinds of indices that we can build to those

@@ -14,6 +14,8 @@
 \fi
 %\overfullrule=5pt
 
+
+
 %: ----------------------------------------------------------------------
 %:                  TITLE PAGE: name, degree,..
 % ----------------------------------------------------------------------
@@ -23,11 +25,30 @@
 \ifpdf  
   \ifCLASSINFOpdfxthree
   \else
-      \pdfcatalog { /PageMode (/UseOutlines)
-                    /OpenAction (fitbh)  }
+    \pdfcatalog { /PageMode (/UseOutlines)
+                  /OpenAction (fitbh)  }
   \fi
 \fi
+
+% ********************** TOC depth and numbering depth *************************
+% levels are: 0 - chapter, 1 - section, 2 - subsection, 3 - subsection
+\setcounter{secnumdepth}{3} % organisational level that receives a numbers
+\setcounter{tocdepth}{3}    % print table of contents for level 3
+%
+% ********************** New Chapter layout *************************
+\renewcommand{\chaptername}{} % uncomment to print only "1" not "Chapter 1"
+% Special layout for chapter numbers
+\titleformat{\chapter}[display]
+{\bfseries\sffamily\Huge}
+{\hfill\fontsize{140}{50}\selectfont\color{lightgray}\rmfamily\textbf{\thechapter}}% label
+{-0ex}
+%{\filleft moves all to the right side
+{\filleft\fontsize{50}{50}}
+[\vspace{-0ex}]
+%
+% ********************** bibtex/biblatex *************************
 %\usepackage{showframe}
+\ifCLASSINFOcustombibstyle
 \ifCLASSINFObiblatex
 \usepackage[
     backend=biber,
@@ -39,6 +60,11 @@
     doi=true,
     eprint=false
 ]{biblatex}
+\else
+\usepackage[sort, numbers]{natbib}
+\fi
+\fi
+\ifCLASSINFObiblatex
 \addbibresource{9_backmatter/references.bib}
 \DeclareSourcemap{ 
     \maps[datatype=bibtex]{
@@ -58,8 +84,6 @@
       %}
     }
 }
-\else
-\usepackage[sort, numbers]{natbib}
 \fi
 
 % ----------------------------------------------------------------------
@@ -93,16 +117,3 @@
 \clubpenalty=10000
 \widowpenalty=10000
 
-% ********************** TOC depth and numbering depth *************************
-% levels are: 0 - chapter, 1 - section, 2 - subsection, 3 - subsection
-\setcounter{secnumdepth}{3} % organisational level that receives a numbers
-\setcounter{tocdepth}{3}    % print table of contents for level 3
-
-% Special layout for chapter numbers
-\titleformat{\chapter}[display]
-{\bfseries\sffamily\Huge}
-{\hfill\fontsize{140}{50}\selectfont\color{lightgray}\rmfamily\textbf{\thechapter}}% label
-{-0ex}
-%{\filleft moves all to the right side
-{\filleft\fontsize{50}{50}}
-[\vspace{-0ex}]

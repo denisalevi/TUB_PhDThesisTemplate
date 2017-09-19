@@ -13,7 +13,7 @@
 % Most style definitions are in the external file PhDthesisTUB.
 % In this template package, it can be found in ./Classes/
 
-\documentclass[twoside,11pt,online,a4paper,pdfa1,custommargin,biblatex]{Classes/PhDthesisTUB}
+\documentclass[twoside,11pt,online,a4paper,pdfa1,custommargin,numbered,biblatex]{Classes/PhDthesisTUB}
 % *********************** Choosing pdfx standard ******************************
 % `pdfa1'
 % `pdfa2'
@@ -28,12 +28,16 @@
 % *********************** Choosing biblatex or bibtex ******************
 % `biblatex' : biblatex is used. Biblatex is automatically set when using xetex
 %
-% % *********************** Choosing the Fonts size ******************
+% *********************** Choosing bibliographystyle ******************
+% `numbered' : (default option) e.g. [1], [2]
+% `authoryear' :  e.g. Name (2008)
+% `custombib' : Use your own style, which is defined in preamble.tex
+% *********************** Choosing the Fonts size ******************
 % `9pt'
 % `10pt'
 % `11pt'
 % `12pt'
-% % *********************** Choosing the paper size ******************
+% *********************** Choosing the paper size ******************
 % `letterpaper'
 % `a4paper'
 % `a5paper'
@@ -126,6 +130,7 @@
 \frontmatter
 % \maketitle generates a title page for the final submission
 % \makepretitle generates a title page for evaluation process
+% title and author... can be set in thesis-info.tex
 \maketitle  
 %\makepretitle
 
@@ -184,8 +189,6 @@
 % --------------------------------------------------------------
 
 \mainmatter
-
-\renewcommand{\chaptername}{} % uncomment to print only "1" not "Chapter 1"
 
 %: ----------------------- subdocuments ------------------------
 

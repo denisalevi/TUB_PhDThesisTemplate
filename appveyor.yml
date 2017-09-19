@@ -20,6 +20,7 @@ install:
   - mpm --install=cm-super
   - mpm --update-db
   - mpm --update=fontspec
+  - initexmf --update-fndb
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
