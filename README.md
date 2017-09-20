@@ -54,16 +54,22 @@ BIB_STRATEGY can be either biblatex or bibtex
 % *********************** Choosing biblatex or bibtex ******************
 % `biblatex' : biblatex is used. Biblatex is automatically set when using xetex
 %
-% % *********************** Choosing the Fonts size ******************
+% *********************** Choosing bibliographystyle ******************
+% `numbered' : (default option) e.g. [1], [2]
+% `authoryear' :  e.g. Name (2008)
+% `custombib' : Use your own style, which is defined in preamble.tex
+% *********************** Choosing the Fonts size ******************
 % `9pt'
 % `10pt'
 % `11pt'
 % `12pt'
-% % *********************** Choosing the paper size ******************
+% *********************** Choosing the paper size ******************
 % `letterpaper'
 % `a4paper'
 % `a5paper'
 % *********************** Choosing the Fonts in Class Options when using pdflatex ******************
+% 
+%  On Windows, the packge cm-super has to be installed!
 %
 % `' :  computer modern
 % `fontA' :  newtxmath
@@ -121,4 +127,5 @@ BIB_STRATEGY can be either biblatex or bibtex
 %
 % ************************* other options ********************************
 % `abstract`: Only the title-page and the abstracts are generated
+%
 ```
