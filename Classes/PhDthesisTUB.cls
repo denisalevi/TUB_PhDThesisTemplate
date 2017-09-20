@@ -497,11 +497,15 @@
 \RequirePackage{calc}     % calculate vertical spacing
 
 % *********************** Table of Contents & Appendices ***********************
+\RequirePackage[german,english]{babel}
 \RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
 % Add appendices
 \RequirePackage[title,titletoc]{appendix}
 
-\renewcommand{\contentsname}{Table of Contents}
+\addto\captionsenglish{% Replace "english" with the language you use
+  \renewcommand{\contentsname}%
+    {Table of Contents}%
+}
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
 
@@ -522,7 +526,7 @@
 
 %:-------------------------- packages for fancy things -----------------------
 
-\RequirePackage[german,english]{babel}
+
 %\RequirePackage[usenames, dvipsnames]{color}
 
 \setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow

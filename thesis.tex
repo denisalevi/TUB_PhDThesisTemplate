@@ -233,6 +233,11 @@
 
 
 \renewcommand{\bibname}{References} % changes the header; default: Bibliography
+% add bib to toc
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+
 \ifCLASSINFObiblatex
 \printbibliography
 \else
