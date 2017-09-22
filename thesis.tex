@@ -18,6 +18,9 @@
 % `pdfa1'
 % `pdfa2'
 % `pdfx3'
+% *********************** Change Thesis-Language to German ******************************
+% default is english
+% `german' : language is set to german
 %
 % % *********************** Choosing oneside / twoside ******************************
 % `oneside' : layout is optimized for one-side print
@@ -107,8 +110,11 @@
 \include{thesis-info}
 
 %: ----------------------- set languange ------------------------
+\ifCLASSINFOlangDE
+\selectlanguage{german}
+\else
 \selectlanguage{english}
-
+\fi
 % ***************************** Abstract Separate ******************************
 % To printout only the titlepage and the abstract with the PhD title and the
 % author name for submission to the Student Registry, use the `abstract' option in
@@ -171,7 +177,11 @@
 %\chapter{Glossary}
 \begin{multicols}{2} % \begin{multicols}{#columns}[header text][space]
 \begin{footnotesize} % scriptsize(7) < footnotesize(8) < small (9) < normal (10)
+\ifCLASSINFOlangDE
+\printglossary[type=\acronymtype,title=Abkürzungsverzeichnis]
+\else
 \printglossary[type=\acronymtype,title=Abbreviations]
+\fi
 %\printglossary
 %\printnomenclature[1.5cm] % [] = distance between entry and description
 %\printglossery
@@ -231,8 +241,11 @@
 
 \begin{footnotesize} % tiny(5) < scriptsize(7) < footnotesize(8) < small (9)
 
-
+\ifCLASSINFOlangDE
+%\renewcommand{\bibname}{References}
+\else
 \renewcommand{\bibname}{References} % changes the header; default: Bibliography
+\fi
 % add bib to toc
 \cleardoublepage
 \phantomsection

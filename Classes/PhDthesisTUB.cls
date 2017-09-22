@@ -17,7 +17,7 @@
 %---------------------------------------------------------------
 
 % ************************** Class Identification ******************************
-\newcommand\fileversion{3.2.0}
+\newcommand\fileversion{3.2.1}
 \newcommand\filedate{2017/09/15}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{PhDthesisTUB}[\filedate\space PhD thesis class
@@ -89,6 +89,8 @@
 \newif\ifCLASSINFObibauthoryear                 \CLASSINFObibauthoryearfalse
 \newif\ifCLASSINFOcustombibstyle             \CLASSINFOcustombibstylefalse
 
+\newif\ifCLASSINFOlangDE             \CLASSINFOlangDEfalse
+
 % LaTeX does not support 9pt, so we set \@ptsize to 0 - same as that of 10pt
 \DeclareOption{9pt}{\PassOptionsToClass{9pt}{book}\def\CLASSOPTIONpt{9}}
 \DeclareOption{10pt}{\PassOptionsToClass{10pt}{book}\def\CLASSOPTIONpt{10}}
@@ -128,6 +130,8 @@
 \DeclareOption{pdfa1}{\CLASSINFOpdfaonetrue\CLASSINFOpdfxthreefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
 \DeclareOption{pdfx3}{\CLASSINFOpdfxthreetrue\CLASSINFOpdfaonefalse\CLASSINFOpdfatwofalse\CLASSINFOpdfaxtrue}
 \DeclareOption{pdfa2}{\CLASSINFOpdfatwotrue\CLASSINFOpdfaonefalse\CLASSINFOpdfxthreefalse\CLASSINFOpdfaxtrue}
+
+\DeclareOption{german}{\CLASSINFOlangDEtrue}
 
 \DeclareOption{biblatex}{\CLASSINFObiblatextrue}
 
@@ -497,18 +501,30 @@
 \RequirePackage{calc}     % calculate vertical spacing
 
 % *********************** Table of Contents & Appendices ***********************
+\ifCLASSINFOlangDE
+\RequirePackage[english,german]{babel}
+\else
 \RequirePackage[german,english]{babel}
+\fi
 \RequirePackage[nottoc]{tocbibind} % correct page numbers for bib in TOC, nottoc suppresses an entry for TOC itself
 % Add appendices
 \RequirePackage[title,titletoc]{appendix}
 
+\ifCLASSINFOlangDE
+%\addto\captionsgerman{% Replace "english" with the language you use
+%  \renewcommand{\contentsname}%
+%    {Inhaltsverzeichnis}%
+%}
+%\renewcommand{\listfigurename}{List of Figures}
+%\renewcommand{\listtablename}{List of Tables}
+\else
 \addto\captionsenglish{% Replace "english" with the language you use
   \renewcommand{\contentsname}%
     {Table of Contents}%
 }
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
-
+\fi
 % print bookmark for the table of contents
 \makeatletter
 \pretocmd{\tableofcontents}{%
@@ -518,11 +534,10 @@
 \makeatother
 % ********************************** Math-Fonts **********************************
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
-\usepackage{upgreek}
-\usepackage{amsfonts}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{amsfonts}
 
 %:-------------------------- packages for fancy things -----------------------
 
@@ -1051,18 +1066,22 @@
   % For Print version
   \hypersetup{
     final=true,
-    plainpages=false,
-    pdfstartview=FitV,
-    pdftoolbar=true,
-    pdfmenubar=true,
-    bookmarksopen=false,
-    bookmarksnumbered=true,
+   pdfdisplaydoctitle = false,
+   plainpages = false, 
+   pdfstartview=,
+   pdftoolbar=true,
+   pdfmenubar=true,
+   bookmarksopen = true,
+   bookmarksopenlevel = 0,
+   bookmarksnumbered = true,
     breaklinks=true,
     linktocpage,
     colorlinks=true,
     linkcolor=black,
     urlcolor=black,
     citecolor=black,
+    pdflang=Englisch,
+    pdfpagelayout = OneColumn,
     anchorcolor=black
   }
   \ifCLASSINFOcustommargin
@@ -1077,17 +1096,26 @@
         vmarginratio=1:1,scale=0.75,bindingoffset=5mm]{geometry}
     \fi
   \fi
-
-  \ifCLASSOPTIONtwoside
-    \hypersetup{pdfpagelayout=TwoPageRight}
-  \else
-    \hypersetup{pdfpagelayout=OneColumn}
-  \fi
+  \ifCLASSINFOlangDE
+        \hypersetup{pdflang=German}
+   \fi
+ % always OneColumn
+  %\ifCLASSOPTIONtwoside
+  %  \hypersetup{pdfpagelayout=TwoPageRight}
+  %\else
+  %  \hypersetup{pdfpagelayout=OneColumn}
+  %\fi
 %-->
 \else
  % For PDF Online version
-    \hypersetup{ plainpages = false, 
+    \hypersetup{ final=true,
+                 pdfdisplaydoctitle = false,
+                 plainpages = false, 
+                 pdfstartview=,
+                 pdftoolbar=true,
+                 pdfmenubar=true,
                  bookmarksopen = true,
+                 bookmarksopenlevel = 0,
                  bookmarksnumbered = true,
                  breaklinks = true,
                  linktocpage,
@@ -1096,18 +1124,15 @@
                  urlcolor  = blue,
                  citecolor = red,
                  anchorcolor = green,
-                 pdfdisplaydoctitle = false,
                  pdflang=Englisch,
-                 pdfview = FitB,
                  %bookmarks=true,
                  %pdfpagelabels,
                  %pagebackref,
                  %hyperindex = true,
                  %hyperfigures,
-                 %pdfpagelayout = SinglePage,
-                 pdfpagelayout=OneColumn,
-                 pdfpagemode = UseOutlines, 
-                 pdfencoding=unicode
+                 pdfpagelayout = OneColumn
+                 %pdfpagemode = UseOutlines, 
+                 %pdfencoding=unicode
 }
   \ifCLASSINFOcustommargin
     % Margin to be define in preamble using geometry package
@@ -1121,12 +1146,15 @@
           vmarginratio=1:1,scale=0.75]{geometry}
       \fi
     \fi
-%                 ]{hyperref} 
-  \ifCLASSOPTIONtwoside
-    \hypersetup{pdfpagelayout=TwoPageRight}
-  \else
-    \hypersetup{pdfpagelayout=OneColumn}
-  \fi
+    \ifCLASSINFOlangDE
+        \hypersetup{pdflang=German}
+    \fi
+  % always OneColumn
+  %\ifCLASSOPTIONtwoside
+  %  \hypersetup{pdfpagelayout=TwoPageRight}
+  %\else
+  %  \hypersetup{pdfpagelayout=OneColumn}
+  %\fi
 \fi
 
 %\else

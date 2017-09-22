@@ -20,6 +20,7 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * Figure support for TikZ, pgf (with python) and asymptote.
 * Glossaries
 * siunitx
+* german language support
 ## Make for linux and Mac
 
 ```
@@ -44,7 +45,9 @@ BIB_STRATEGY can be either biblatex or bibtex
 % `pdfa1'
 % `pdfa2'
 % `pdfx3'
-%
+% *********************** Change Thesis-Language to German ******************************
+% default is english
+% `german' : language is set to german
 % % *********************** Choosing oneside / twoside ******************************
 % `oneside' : layout is optimized for one-side print
 % `twoside' : layout is optimized for two-side print
