@@ -1130,9 +1130,9 @@
                  %pagebackref,
                  %hyperindex = true,
                  %hyperfigures,
-                 pdfpagelayout = OneColumn
+                 pdfpagelayout = OneColumn,
                  %pdfpagemode = UseOutlines, 
-                 %pdfencoding=unicode
+                 pdfencoding=unicode
 }
   \ifCLASSINFOcustommargin
     % Margin to be define in preamble using geometry package
