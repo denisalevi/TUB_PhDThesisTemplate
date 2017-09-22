@@ -1082,7 +1082,8 @@
     citecolor=black,
     pdflang=Englisch,
     pdfpagelayout = OneColumn,
-    anchorcolor=black
+    anchorcolor=black,
+    pdfencoding=unicode
   }
   \ifCLASSINFOcustommargin
   % Margin to be define in preamble using geometry package
