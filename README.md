@@ -23,17 +23,36 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * german language support
 ## Make for linux and Mac
 
-```
-make BUILD_STRATEGY=pdflatex BIB_STRATEGY=biblatex
-```
-BUILD_STRATEGY can be latex, pdflatex, xelatex or lualatex
-BIB_STRATEGY can be either biblatex or bibtex
+To build the `PDF` version of your thesis, run:
 
-run
-```
-make clean
-```
-to clean the directory.
+    make
+
+This build procedure uses `pdflatex` with `bibtex` and will produce `thesis.pdf`.
+To use `pdflatex` with `biblatex`, you should run:
+
+    make BIB_STRATEGY=biblatex
+
+To use `XeLaTeX`, you should run:
+
+    make BUILD_STRATEGY=xelatex
+
+or with `biblatex`
+
+    make BUILD_STRATEGY=xelatex BIB_STRATEGY=biblatex
+
+To use `LuaLaTeX`, you should run:
+
+    make BUILD_STRATEGY=lualatex
+
+or with `biblatex`
+
+    make BUILD_STRATEGY=lualatex BIB_STRATEGY=biblatex
+
+To clean the directory, run:
+
+    make clean
+
+
 ## Make for windows
 just run compile-{BUILD_STRATEGY}-{BIB_STRATEGY}.bat
 BUILD_STRATEGY can be latex, pdflatex, xelatex or lualatex
@@ -132,3 +151,13 @@ BIB_STRATEGY can be either biblatex or bibtex
 % `abstract`: Only the title-page and the abstracts are generated
 %
 ```
+
+--------------------------------------------------------------------------------
+
+## Inspirations/Based on
+
+*   CUED PhD thesis template by Krishna Kumar
+
+*   PhDthesis version 2 by Jakob Suckale
+
+*   CUED Version 1.1 Template by H. Banderi

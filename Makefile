@@ -1,4 +1,6 @@
 # Copyright 2004 Chris Monson (shiblon@gmail.com)
+#           2011 Andrew McNabb
+#           2013 Krishna Kumar
 #           2017 Holger Nahrstaedt
 # Latest version available at http://www.bouncingchairs.net/oss
 #
@@ -31,7 +33,7 @@
 #
 fileinfo	:= LaTeX Makefile
 author		:= Chris Monson
-version		:= 2.2.1-alpha9
+version		:= 2.2.1-alpha10
 #
 .DEFAULT_GOAL	:= all
 # Note that the user-global version is imported *after* the source directory,
@@ -120,6 +122,13 @@ export LC_ALL		?= C
 #
 #
 # CHANGES:
+# Holger Nahrstaedt (2017-09-25):
+# * Bumped version to 2.2.1-alpha10
+# * Added XELATEX and LUALATEX to BUILD_STRATEGY
+# * New option BIB_STRATEGY, can be biblatex or bibtex
+# * Added all Authors to Copyright section
+# * Added asymptote file generation
+# * Added shell-escape to pdflatex, xelatex and lualatex
 # Krishna Kumar (2013-11-27):
 # * Added PS to rm_ext to remove PS files generated during LaTeX output
 # Krishna Kumar (2013-11-26):

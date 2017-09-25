@@ -469,14 +469,12 @@
       \let\tmpa\textsuperscript
       \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
       \RequirePackage[a-1b]{pdfx}
-      %\RequirePackage[x-3]{pdfx}
       \RequirePackage{xmpincl}
       %\includexmp{pdfa-1b}
     \else
         \ifCLASSINFOpdfxthree
                \let\tmpa\textsuperscript
                \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
-              %\RequirePackage[a-1b]{pdfx}
               \RequirePackage[x-3]{pdfx}
               \RequirePackage{xmpincl}
                %\includexmp{pdfa-1b}
@@ -485,11 +483,11 @@
                  \let\tmpa\textsuperscript
                  \DeclareTextCommandDefault{\textsuperscript}{\tmpa}
                 \RequirePackage[a-2b]{pdfx}
-                %\RequirePackage[x-3]{pdfx}
                 \RequirePackage{xmpincl}
                  %\includexmp{pdfa-1b}
             \else
-        
+              \RequirePackage{xmpincl}
+              \RequirePackage[unicode=true]{hyperref}
             \fi %a2
         \fi %x3
     \fi %a1
@@ -1082,8 +1080,7 @@
     citecolor=black,
     pdflang=Englisch,
     pdfpagelayout = OneColumn,
-    anchorcolor=black,
-    pdfencoding=unicode
+    anchorcolor=black
   }
   \ifCLASSINFOcustommargin
   % Margin to be define in preamble using geometry package
@@ -1131,9 +1128,9 @@
                  %pagebackref,
                  %hyperindex = true,
                  %hyperfigures,
-                 pdfpagelayout = OneColumn,
+                 pdfpagelayout = OneColumn
                  %pdfpagemode = UseOutlines, 
-                 pdfencoding=unicode
+                 %pdfencoding=unicode
 }
   \ifCLASSINFOcustommargin
     % Margin to be define in preamble using geometry package
