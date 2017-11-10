@@ -17,8 +17,8 @@
 %---------------------------------------------------------------
 
 % ************************** Class Identification ******************************
-\newcommand\fileversion{3.2.1}
-\newcommand\filedate{2017/09/15}
+\newcommand\fileversion{3.2.2}
+\newcommand\filedate{2017/11/10}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{PhDthesisTUB}[\filedate\space PhD thesis class
  by Holger Nahrstaedt (v\fileversion)]
