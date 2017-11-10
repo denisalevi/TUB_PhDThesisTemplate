@@ -137,6 +137,8 @@
 % \maketitle generates a title page for the final submission
 % \makepretitle generates a title page for evaluation process
 % title and author... can be set in thesis-info.tex
+\phantomsection
+\addcontentsline{toc}{chapter}{Title Page}
 \maketitle  
 %\makepretitle
 
@@ -148,6 +150,7 @@
 %: ----------------------- abstract ------------------------
 
 % Your institution may have specific regulations if you need an abstract and where it is to be placed in the document. The default here is just after title.
+
 \include{0_frontmatter/zusammenfassung}
 \include{0_frontmatter/abstract}
 

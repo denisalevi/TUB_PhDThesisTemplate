@@ -415,8 +415,14 @@
 }
 
 
-%If you want to use a Book style document then uncomment the following 3 lines and comment the above 8 report style lines:
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
+% Generates Warning for unknown options
+\DeclareOption*{
+  \ClassWarning{PhDThesisTUB}{Unknown or non-standard option
+'\CurrentOption'. I'll see if I can load it from the book class. If you get a
+warning unused global option(s): `\CurrentOption` then the option is not
+supported!}
+  \PassOptionsToClass{\CurrentOption}{book}
+}
 \ProcessOptions\relax
 % ******************************************************************************
 % ******************************** Packages ************************************
@@ -462,6 +468,8 @@
   \LoadClass[dvips,fleqn,openright]{book}%
 \else % we are running PDFLaTeX
 
+    %left aligned equations
+    %chapter starts on the right
     \LoadClass[fleqn,openright]{book}%
 
       %:-------------------------- Enable pdfa-1b generation -----------------------
@@ -537,13 +545,7 @@
 \RequirePackage{mathtools}
 \RequirePackage{amsfonts}
 
-%:-------------------------- packages for fancy things -----------------------
 
-
-%\RequirePackage[usenames, dvipsnames]{color}
-
-\setlength{\columnsep}{20pt} % space between columns; default 10pt quite narrow
-\RequirePackage{titlesec}
 
 % ********************************** Fonts **********************************
 
@@ -612,20 +614,11 @@
 \fi
 %:-------------------------- Glossary/Abbrev./Symbols -----------------------
 
-\RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
+%\RequirePackage[toc,acronym,nomain,indexonlyfirst]{glossaries}
+\RequirePackage[toc,abbreviations,nomain,indexonlyfirst]{glossaries-extra}
 \glsdisablehyper
 \newglossary[slg]{symbolslist}{syi}{syg}{Symbols}
-
-
-
-%:-------------------------- BibLatex ---------------------------
-
-\RequirePackage{csquotes}
-%:-------------------------- PDF/PS setup -----------------------
-% png or pfg/pdf graphics?
-%\RequirePackage{pgf}
-\RequirePackage{import}
-\RequirePackage{chapterfolder}
+%\renewcommand*{\acrshort}[1][]{\glsxtrshort[noindex,#1]}
 
 %:-------------------------  tikz ----------------------------
 \RequirePackage{tikz}
@@ -643,8 +636,9 @@
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
 \usetikzlibrary{external}
-
 % create the tikz every run
+%\tikzset{external/force remake}
+
 \tikzexternalize[shell escape=-enable-write18,  optimize=false]
 % check and run only the changed ones
 %\tikzexternalize[shell escape=-enable-write18,  optimize=false,mode=list and make]
@@ -1123,6 +1117,7 @@
                  citecolor = red,
                  anchorcolor = green,
                  pdflang=Englisch,
+                 pdfborderstyle={/S/U/W 1},
                  %bookmarks=true,
                  %pdfpagelabels,
                  %pagebackref,
@@ -1132,6 +1127,7 @@
                  %pdfpagemode = UseOutlines, 
                  %pdfencoding=unicode
 }
+
   \ifCLASSINFOcustommargin
     % Margin to be define in preamble using geometry package
     \else
@@ -1158,11 +1154,9 @@
 %\else
 
 
-
 %\fi
-
-
-
+% ************************ URL Package and Definition **************************
+\RequirePackage{url}
 
 % *************************** Setting PDF Meta-Data ****************************
 \ifpdf
@@ -1205,12 +1199,14 @@
 \newcommand{\setFancyHdr}{
 % ------------------------------
   \pagestyle{fancy}
-  \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. ##1 }}{}}
-  \renewcommand{\sectionmark}[1]{\markright{\thesection\ ##1}}
+  \renewcommand{\chaptermark}[1]{\markboth{\small {\thechapter. ##1 }}{}}
+  \renewcommand{\sectionmark}[1]{\markright{\small\thesection\ ##1}}
   \fancyhf{}
   \fancyhead[RO]{\bfseries\rightmark}
   \fancyhead[LE]{\bfseries\leftmark}
   \fancyfoot[C]{\thepage}
+  %\fancyfoot[RO,LE]{\thepage}
+  
   \renewcommand{\headrulewidth}{0.5pt}
   \renewcommand{\footrulewidth}{0pt}
   \addtolength{\headheight}{0.5pt}
@@ -1219,7 +1215,7 @@
     \renewcommand{\headrulewidth}{0pt}
   }
 }
-\setlength{\headheight}{25pt}
+\setlength{\headheight}{14.5pt}
 \else
 \newcommand{\setFancyHdr}{
 % ------------------------------
@@ -1229,9 +1225,10 @@
   \fancyhf{}
   \fancyhead[R]{\bfseries\rightmark}
   \fancyfoot[C]{\thepage}
-  \renewcommand{\headrulewidth}{0.5pt}
-  \renewcommand{\footrulewidth}{0pt}
-  \addtolength{\headheight}{0.5pt}
+
+  %\renewcommand{\headrulewidth}{0.5pt}
+  %\renewcommand{\footrulewidth}{0pt}
+  %\addtolength{\headheight}{0.5pt}
   \fancypagestyle{plain}{
     \fancyhead{}
     \renewcommand{\headrulewidth}{0pt}
@@ -1641,18 +1638,6 @@
 % themselves appear in a quote environment, i.e. tabbed in at both sides, and
 % on its own page.
 
-\newenvironment{acknowledgementsOld}
-{\thispagestyle{empty}
-
-\begin{center}
-\cleardoublepage
-\setsinglecolumn
-\vspace*{1.5cm}
-{\Large \bfseries Acknowledgements}
-\end{center}
-\vspace{0.5cm}
-\begin{quote}}
-{\end{quote}}
 
 \newenvironment{acknowledgements}
 {  
@@ -1703,15 +1688,6 @@
 \fi
 
 
-\newenvironment{abstractsOld} {\pagestyle{empty}
-  \begin{center}\begin{alwayssingle}
-  \cleardoublepage
-  \vspace*{1.5cm}
-  {\Large \bfseries  Abstract}
-  \end{center}
-  \vspace{0.5cm}
-   \begin{quote}}
-{\end{quote}\end{alwayssingle}}
 
 \makeatletter
 \newenvironment{abstracts} {
@@ -1734,15 +1710,6 @@
   }
 \makeatother
 
-\newenvironment{zusammenfassungOld} {\pagestyle{empty}
-  \begin{center}\begin{alwayssingle}
-  \cleardoublepage
-  \vspace*{1.5cm}
-  {\Large \bfseries  Zusammenfassung}
-  \end{center}
-  \vspace{0.5cm}
-   \begin{quote}}
-{\end{quote}\end{alwayssingle}}
 \makeatletter
 \newenvironment{zusammenfassung} {
 \ifCLASSINFOabstract
@@ -1811,28 +1778,135 @@
   \vspace{0.5cm}
    \begin{quote}}
 {\end{quote}}
-%Deutsche Zusammenfassung
 
 
 
-%:-------------------------- page numbers: roman+arabic -----------------------
 
-% ROMANPAGES
-%
-% The romanpages environment set the page numbering to lowercase roman one
-% for the contents and figures lists. It also resets
-% page-numbering for the remainder of the dissertation (arabic, starting at 1).
 
-%\newenvironment{romanpages}
-%{
-% \setcounter{page}{1}
-% \renewcommand{\thepage}{\roman{page}}
-%} % close romanpage env't
- 
-{\newpage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
+\makeatletter
+\let\save@mathaccent\mathaccent
+\newcommand*\if@single[3]{%
+  \setbox0\hbox{${\mathaccent"0362{#1}}^H$}%
+  \setbox2\hbox{${\mathaccent"0362{\kern0pt#1}}^H$}%
+  \ifdim\ht0=\ht2 #3\else #2\fi
+  }
+%The bar will be moved to the right by a half of \macc@kerna, which is computed by amsmath:
+\newcommand*\rel@kern[1]{\kern#1\dimexpr\macc@kerna}
+%If there's a superscript following the bar, then no negative kern may follow the bar;
+%an additional {} makes sure that the superscript is high enough in this case:
+\newcommand*\widebar[1]{\@ifnextchar^{{\wide@bar{#1}{0}}}{\wide@bar{#1}{1}}}
+%Use a separate algorithm for single symbols:
+\newcommand*\wide@bar[2]{\if@single{#1}{\wide@bar@{#1}{#2}{1}}{\wide@bar@{#1}{#2}{2}}}
+\newcommand*\wide@bar@[3]{%
+  \begingroup
+  \def\mathaccent##1##2{%
+%Enable nesting of accents:
+    \let\mathaccent\save@mathaccent
+%If there's more than a single symbol, use the first character instead (see below):
+    \if#32 \let\macc@nucleus\first@char \fi
+%Determine the italic correction:
+    \setbox\z@\hbox{$\macc@style{\macc@nucleus}_{}$}%
+    \setbox\tw@\hbox{$\macc@style{\macc@nucleus}{}_{}$}%
+    \dimen@\wd\tw@
+    \advance\dimen@-\wd\z@
+%Now \dimen@ is the italic correction of the symbol.
+    \divide\dimen@ 9
+    \@tempdima\wd\tw@
+    \advance\@tempdima-\scriptspace
+%Now \@tempdima is the width of the symbol.
+    \divide\@tempdima 10
+    \advance\dimen@-\@tempdima
+%Now \dimen@ = (italic correction / 3) - (Breite / 10)
+    \ifdim\dimen@>\z@ \dimen@0pt\fi
+%The bar will be shortened in the case \dimen@<0 !
+    \rel@kern{0.8}\kern-\dimen@
+    \if#31
+      \overline{\rel@kern{-0.8}\kern\dimen@\macc@nucleus\rel@kern{0.4}\kern\dimen@}%
+      \advance\dimen@0.4\dimexpr\macc@kerna
+%Place the combined final kern (-\dimen@) if it is >0 or if a superscript follows:
+      \let\final@kern#2%
+      \ifdim\dimen@<\z@ \let\final@kern1\fi
+      \if\final@kern1 \kern-\dimen@\fi
+    \else
+      \overline{\rel@kern{-0.8}\kern\dimen@#1}%
+    \fi
+  }%
+  \macc@depth\@ne
+  \let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+  \mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+  \macc@set@skewchar\relax
+  \let\mathaccentV\macc@nested@a
+%The following initialises \macc@kerna and calls \mathaccent:
+  \if#31
+    \macc@nested@a\relax111{#1}%
+  \else
+%If the argument consists of more than one symbol, and if the first token is
+%a letter, use that letter for the computations:
+    \def\gobble@till@marker##1\endmarker{}%
+    \futurelet\first@char\gobble@till@marker#1\endmarker
+    \ifcat\noexpand\first@char A\else
+      \def\first@char{}%
+    \fi
+    \macc@nested@a\relax111{\first@char}%
+  \fi
+  \endgroup
+}
 
-%\DeclareMathVersion{mathchartertext}
-%\SetSymbolFont{letters}{mathchartertext}{OML}{mdbch}{m}{n}
-%\newcommand{\gchar}[1]{\mathversion{mathchartertext}$#1$\mathversion{normal}}
-\newcommand{\gchar}[1]{$#1$}
-
+\newcommand*\wideunderbar[1]{\@ifnextchar^{{\wide@underbar{#1}{0}}}{\wide@underbar{#1}{1}}}
+%Use a separate algorithm for single symbols:
+\newcommand*\wide@underbar[2]{\if@single{#1}{\wide@underbar@{#1}{#2}{1}}{\wide@underbar@{#1}{#2}{2}}}
+\newcommand*\wide@underbar@[3]{%
+  \begingroup
+  \def\mathaccent##1##2{%
+%Enable nesting of accents:
+    \let\mathaccent\save@mathaccent
+%If there's more than a single symbol, use the first character instead (see below):
+    \if#32 \let\macc@nucleus\first@char \fi
+%Determine the italic correction:
+    \setbox\z@\hbox{$\macc@style{\macc@nucleus}_{}$}%
+    \setbox\tw@\hbox{$\macc@style{\macc@nucleus}{}_{}$}%
+    \dimen@\wd\tw@
+    \advance\dimen@-\wd\z@
+%Now \dimen@ is the italic correction of the symbol.
+    \divide\dimen@ 3
+    \@tempdima\wd\tw@
+    \advance\@tempdima-\scriptspace
+%Now \@tempdima is the width of the symbol.
+    \divide\@tempdima 10
+    \advance\dimen@-\@tempdima
+%Now \dimen@ = (italic correction / 3) - (Breite / 10)
+    \ifdim\dimen@>\z@ \dimen@0pt\fi
+%The bar will be shortened in the case \dimen@<0 !
+    \rel@kern{0.6}\kern-\dimen@
+    \if#31
+      \underline{\rel@kern{-0.6}\kern\dimen@\macc@nucleus\rel@kern{0.4}\kern\dimen@}%
+      \advance\dimen@0.4\dimexpr\macc@kerna
+%Place the combined final kern (-\dimen@) if it is >0 or if a superscript follows:
+      \let\final@kern#2%
+      \ifdim\dimen@<\z@ \let\final@kern1\fi
+      \if\final@kern1 \kern-\dimen@\fi
+    \else
+      \underline{\rel@kern{-0.6}\kern\dimen@#1}%
+    \fi
+  }%
+  \macc@depth\@ne
+  \let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+  \mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+  \macc@set@skewchar\relax
+  \let\mathaccentV\macc@nested@a
+%The following initialises \macc@kerna and calls \mathaccent:
+  \if#31
+    \macc@nested@a\relax111{#1}%
+  \else
+%If the argument consists of more than one symbol, and if the first token is
+%a letter, use that letter for the computations:
+    \def\gobble@till@marker##1\endmarker{}%
+    \futurelet\first@char\gobble@till@marker#1\endmarker
+    \ifcat\noexpand\first@char A\else
+      \def\first@char{}%
+    \fi
+    \macc@nested@a\relax111{\first@char}%
+  \fi
+  \endgroup
+}
+\makeatother

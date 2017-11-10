@@ -62,7 +62,7 @@ bibtex "%FILENAME%.aux"
 rem biber "%FILENAME%"
 
 lualatex --shell-escape --draftmode --synctex=1  --interaction=nonstopmode  "%FILENAME%.tex"
-rem makeglossaries "%FILENAME%"
+makeglossaries "%FILENAME%"
 lualatex --shell-escape  --synctex=1  --interaction=nonstopmode "%FILENAME%.tex"
 
 countErrWrnBBx.bat "%FILENAME%.log"

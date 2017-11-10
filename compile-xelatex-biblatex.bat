@@ -61,6 +61,7 @@ biber "%FILENAME%"
 rem bibtex "%FILENAME%"
 
 xelatex -shell-escape  -synctex=1  -interaction=nonstopmode  -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
+makeglossaries "%FILENAME%"
 xelatex -shell-escape  -synctex=1  -interaction=nonstopmode  -extra-mem-top=50000000  -extra-mem-bot=10000000  -main-memory=90000000 "%FILENAME%.tex"
 
 countErrWrnBBx.bat "%FILENAME%.log"
