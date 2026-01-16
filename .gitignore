@@ -156,3 +156,6 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
+
+# Ignore everything in output directory
+output
