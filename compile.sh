@@ -51,6 +51,19 @@ BASENAME=$(basename "$TARGET" .tex)
 OUTPUT_DIR="$SCRIPT_DIR/output"
 mkdir -p "$OUTPUT_DIR"
 
+# Target PDF in root directory
+TARGET_PDF="$SCRIPT_DIR/$BASENAME.pdf"
+OUTPUT_PDF="$OUTPUT_DIR/output.pdf"
+
+# If target PDF is missing but output PDF exists, remove output PDF to trigger fresh compilation
+if [ ! -f "$TARGET_PDF" ] && [ -f "$OUTPUT_PDF" ]; then
+    echo "Target PDF missing but output PDF exists - forcing recompilation"
+    rm -f "$OUTPUT_PDF"
+    # Also remove auxiliary files to ensure clean rebuild
+    rm -f "$OUTPUT_DIR/output.aux"
+    rm -f "$OUTPUT_DIR/output.fdb_latexmk"
+fi
+
 # Latexmk arguments matching Overleaf's behavior
 # Use -jobname=output so latexmkrc works correctly (expects output.pdf)
 LATEXMK_ARGS=(
@@ -73,28 +86,32 @@ echo "Output directory: $OUTPUT_DIR"
 echo "=========================================="
 
 # Run latexmk
-if latexmk "${LATEXMK_ARGS[@]}"; then
+EXIT_CODE=0
+latexmk "${LATEXMK_ARGS[@]}" || EXIT_CODE=$?
+
+# Check for actual errors (exit codes other than 0 or 12)
+# Exit code 12 means "nothing to do" which is success
+if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 12 ]; then
     echo "=========================================="
     echo "✓ Compilation successful!"
+    [ $EXIT_CODE -eq 12 ] && echo "  (up-to-date, no changes needed)"
     echo "=========================================="
     
     # Copy PDF to root directory with proper name
-    OUTPUT_PDF="$OUTPUT_DIR/output.pdf"
-    TARGET_PDF="$SCRIPT_DIR/$BASENAME.pdf"
-    
     if [ -f "$OUTPUT_PDF" ]; then
         cp "$OUTPUT_PDF" "$TARGET_PDF"
         echo "PDF copied to: $TARGET_PDF"
+    else
+        echo "Warning: $OUTPUT_PDF not found"
+        exit 1
     fi
 else
-    EXIT_CODE=$?
     echo "=========================================="
     echo "✗ Compilation failed (exit code: $EXIT_CODE)"
     echo "Check $OUTPUT_DIR/output.log for details"
     echo "=========================================="
     
     # Remove old PDF to indicate failure
-    TARGET_PDF="$SCRIPT_DIR/$BASENAME.pdf"
     [ -f "$TARGET_PDF" ] && rm "$TARGET_PDF"
     
     exit $EXIT_CODE
