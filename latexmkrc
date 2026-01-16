@@ -2,6 +2,12 @@
 # For TU Berlin PhD Thesis Template
 
 # ============================================================================
+# Environment settings
+# ============================================================================
+# Set timezone (dates in PDF will use this timezone)
+$ENV{'TZ'} = 'Europe/Berlin';
+
+# ============================================================================
 # Compilation engine
 # ============================================================================
 # Use pdflatex to generate PDF directly
