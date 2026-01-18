@@ -2,9 +2,41 @@ TUB_PhDThesisTemplate
 =====================
 A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 
-[![Build Status](https://travis-ci.org/holgern/TUB_PhDThesisTemplate.svg?branch=master)](https://travis-ci.org/holgern/TUB_PhDThesisTemplate)
-[![Build status](https://ci.appveyor.com/api/projects/status/4yx7qvdf11dwsynr?svg=true)](https://ci.appveyor.com/project/HolgerNahrstaedt/tub-phdthesistemplate)
+<!-- [![Build Status](https://travis-ci.org/holgern/TUB_PhDThesisTemplate.svg?branch=master)](https://travis-ci.org/holgern/TUB_PhDThesisTemplate) -->
+<!-- [![Build status](https://ci.appveyor.com/api/projects/status/4yx7qvdf11dwsynr?svg=true)](https://ci.appveyor.com/project/HolgerNahrstaedt/tub-phdthesistemplate) -->
 [![License MIT](http://img.shields.io/badge/license-MIT-brightgreen.svg)](license.md)
+
+--------------------------------------------------------------------------------
+
+## About This Version
+
+This template is based on the [original TUB PhD Thesis Template](https://github.com/holgern/TUB_PhDThesisTemplate), but has been updated to use `latexmk` for compilation, ensuring full compatibility with Overleaf. The original Makefile-based build system is still available and fully functional (see [Make for linux and Mac](#make-for-linux-and-mac) and [Make for windows](#make-for-windows) sections below).
+
+### Quick Start with latexmk
+
+**Local compilation (Linux/macOS):**
+```bash
+./compile.sh                    # Compile thesis.tex
+./compile.sh -pvc thesis.tex    # Continuous preview mode (recompiles on save)
+```
+
+**On Windows:**
+- Use Git Bash to run `compile.sh`
+- Or use `latexmk` directly: `latexmk thesis.tex`
+- Or use the Windows batch files (see [Make for windows](#make-for-windows))
+
+**On Overleaf:**
+1. Upload the entire folder to Overleaf
+2. Set **Main document** to `thesis.tex` in Menu → Settings
+3. Click Recompile
+
+### Output Jobname Explanation
+
+This template uses `output` as the jobname (instead of `thesis`) to match Overleaf's default behavior. This means:
+- Compiled PDF is named `output.pdf` (Overleaf compatibility)
+- Auxiliary files are named `output.aux`, `output.log`, etc.
+- The `compile.sh` script makes sure all files are generated in the `output/` directory and then copies `output/output.pdf` → `thesis.pdf` in the root directory for local use. On Overleaf, latexmkrc is used directly and the Overleaf system hides the output files in the root directory.
+- The `latexmkrc` configuration file ensures consistent behavior across local and Overleaf environments
 
 --------------------------------------------------------------------------------
 ## Features
@@ -22,6 +54,8 @@ A PDF/A - unofficial PhD Thesis template for the Technical University of Berlin
 * siunitx
 * german language support
 ## Make for linux and Mac
+
+**Note:** The Makefile-based build system is still available and fully functional. This is the original build method from the template.
 
 To build the `PDF` version of your thesis, run:
 
@@ -54,10 +88,19 @@ To clean the directory, run:
 
 
 ## Make for windows
-just run compile-{BUILD_STRATEGY}-{BIB_STRATEGY}.bat
-BUILD_STRATEGY can be latex, pdflatex, xelatex or lualatex
-BIB_STRATEGY can be either biblatex or bibtex
-##
+
+**Note:** The Windows batch files are still available and fully functional. This is the original build method for Windows.
+
+Just run `compile-{BUILD_STRATEGY}-{BIB_STRATEGY}.bat`:
+- `BUILD_STRATEGY` can be `latex`, `pdflatex`, `xelatex` or `lualatex`
+- `BIB_STRATEGY` can be either `biblatex` or `bibtex`
+
+Examples:
+- `compile-pdflatex-biblatex.bat`
+- `compile-lualatex-bibtex.bat`
+- `compile-xelatex-biblatex.bat`
+
+--------------------------------------------------------------------------------
 ## documentclass-options
 ```
 % *********************** Choosing pdfx standard ******************************
