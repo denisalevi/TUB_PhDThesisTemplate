@@ -38,6 +38,10 @@ This template uses `output` as the jobname (instead of `thesis`) to match Overle
 - The `compile.sh` script makes sure all files are generated in the `output/` directory and then copies `output/output.pdf` → `thesis.pdf` in the root directory for local use. On Overleaf, latexmkrc is used directly and the Overleaf system hides the output files in the root directory.
 - The `latexmkrc` configuration file ensures consistent behavior across local and Overleaf environments
 
+**TikZ externalization note (important):**
+- TikZ externalization re-runs the main document using `\input{<jobname>}` (here: `\input{output}`), so an `output.tex` wrapper file is included that delegates to the real main document (`thesis.tex`).
+- If you rename your main document away from `thesis.tex`, update `output.tex` accordingly (or disable externalization).
+
 --------------------------------------------------------------------------------
 ## Features
 * Print and online version

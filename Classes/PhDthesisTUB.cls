@@ -639,7 +639,7 @@ supported!}
 % create the tikz every run
 %\tikzset{external/force remake}
 
-\tikzexternalize[shell escape=-enable-write18,  optimize=false]
+\tikzexternalize[shell escape=-shell-escape,  optimize=false]
 % check and run only the changed ones
 %\tikzexternalize[shell escape=-enable-write18,  optimize=false,mode=list and make]
 
@@ -650,20 +650,12 @@ supported!}
 \else
 \ifxetex
 \tikzset{external/system call={xelatex
-\tikzexternalcheckshellescape -save-size=80000 
-                               -pool-size=10000000 
-                               -extra-mem-top=50000000 
-                               -extra-mem-bot=10000000 
-                               -main-memory=90000000 
+\tikzexternalcheckshellescape
                                -halt-on-error -interaction=batchmode
                                -jobname "\image" "\texsource"}}
 \else
 %\tikzexternalize[shell escape=-shell-escape,  optimize=false]
-\tikzset{external/system call= {pdflatex \tikzexternalcheckshellescape  -save-size=80000 
-                               -pool-size=10000000 
-                               -extra-mem-top=50000000 
-                               -extra-mem-bot=10000000 
-                               -main-memory=90000000 
+\tikzset{external/system call= {pdflatex \tikzexternalcheckshellescape
                                -halt-on-error 
                                -interaction=batchmode
                                -jobname "\image" "\texsource"}} 
