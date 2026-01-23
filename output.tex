@@ -1,0 +1,7 @@
+% Wrapper for TikZ externalization on systems that compile with `-jobname=output`
+% (e.g. Overleaf's latexmk). TikZ externalization re-runs the "real job" via
+% `\input{<real job>}`; with `-jobname=output` that becomes `\input{output}`.
+%
+% This file makes that work by delegating to the actual main document.
+\input{thesis}
+
