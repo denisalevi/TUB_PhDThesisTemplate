@@ -68,6 +68,9 @@ $force_mode = 1;
 # Maximum number of compilation runs
 $max_repeat = 5;
 
+# Allow creation of subdirectories in output directory (needed for tikzexternalize)
+$allow_subdir_creation = 2;
+
 # Use nonstopmode (matches Overleaf default)
 $pdflatex = 'pdflatex -interaction=nonstopmode -shell-escape %O %S';
 
