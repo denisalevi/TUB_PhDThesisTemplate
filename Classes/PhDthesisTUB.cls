@@ -632,7 +632,7 @@ supported!}
 \usetikzlibrary{calc}
 
 \RequirePackage{pgfplots}
-\pgfplotsset{compat=1.9}
+\pgfplotsset{compat=1.18}
 \usepgfplotslibrary{external} 
 %\usetikzlibrary{arrows,pgfplots.groupplots,external}
 \usetikzlibrary{external}
