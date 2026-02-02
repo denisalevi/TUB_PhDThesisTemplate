@@ -1,0 +1,349 @@
+%%% RESULTS %%%
+\section*{Results}
+
+\subsection*{A mechanistic basis for systems memory consolidation}
+The suggested parallel pathway theory (PPT) relies on a parallel structure of feedforward connections onto the same output area: a direct, monosynaptic and an indirect, multisynaptic pathway. We propose that memories are initially stored in the indirect pathway and are subsequently transferred to the direct pathway via Hebbian plasticity. Because the indirect pathway is multisynaptic, it transmits signals with a longer time delay than the direct pathway (Fig~\ref{fig:mechanism}A). \replaced{A timing-dependent plasticity rule}{This} allows the indirect pathway to act as a teacher for the direct pathway.
+
+% Original figure 1 (to change title/caption etc., change the macros defined at top of file)
+%\makeStandardFigure
+%\makeWideFigure
+\figureCaptionOnly
+  {\figureOneFigureTitle}
+  {\figureOneFigureLabel}
+  {\figureOneFigureCaption}
+  {\figureOneFigureFilename}
+
+
+The proposed mechanism 
+can be exemplified in the hippocampal formation\added{, by considering direct and indirect pathways to area CA1. CA1 receives a direct, monosynaptic pathway from the entorhinal cortex (EC), which is called perforant path (\ppca, Fig~\ref{fig:mechanism}B, red; \cite{Amaral93})}.
+\deleted{We assume that CA3 is involved in the original storage of declarative memories (Marr, 1969; Treves and Rolls, 1994;
+Nakazawa et al., 2003)}
+In addition, EC input is relayed to CA1 via the classical trisynaptic pathway \replaced{via }{from entorhinal cortex (EC) through} dentate gyrus (DG) and CA3, reaching CA1 through the Schaffer collaterals (SC; Fig~\ref{fig:mechanism}B, blue; \cite{Amaral93}). 
+
+
+\added{
+As in earlier theories, we assume that the indirect pathway via CA3 is involved in the original storage of memories \cite{Marr69, Treves94}, an assumption that is supported by experiments, e.g. \cite{Brun02,Nakazawa03,Nakashiba08}. 
+We neglect, for simplicity, any encoding-related change in the direct pathway, even though in animals this pathway might also show some, putative much lower, plasticity during memory acquisition. This simplification does not affect our proposed mechanism on the consolidation-related transfer of memories.
+% HS: I'd rather discuss this later, too much detail here. 
+% RK: I somehow agree, but could not find a good place where this can be mentioned. I think it is important to say right from the beginning. And it was mentioned by the reviewers. Therefore I would keep it here. To make it shorter, I deleted the names of the experimenters...
+}
+
+\replaced{We assume encoding in such a way that a}{A} memory can be recalled by a specific neural activity pattern in EC --- a cue --- that triggers spikes in a subset of CA1 cells through this indirect pathway \added{via the SC}, representing the associated response.
+The same cue reaches CA1 also through the \deleted{perforant path, a parallel,} direct pathway \replaced{via the }{(}\ppca\deleted{, Fig~\ref{fig:mechanism}B, red)}.
+We assume that this direct input from EC initially fails to trigger spikes because the synaptic weight pattern in the \ppca~does not match the cue.
+However, \ppca~inputs that are activated by the cue precede the spikes in CA1 pyramidal cells that are triggered by the indirect pathway by 5--15~ms \cite{Yeckel90} \added{due to transmission delays}. Presynaptic spikes preceding postsynaptic spikes with a short delay favor selective long-term potentiation by spike timing-dependent plasticity (STDP, Fig~\ref{fig:mechanism}C) \cite{Bi98, Markram97, Gerstner96}.
+Consequently, cue-driven \ppca~synapses onto activated CA1 cells are strengthened until the memory that was initially stored in the indirect pathway can be recalled via the direct pathway alone. The indirect pathway thus acts as a teacher for the direct pathway.
+
+To illustrate this mechanism, we \deleted{first} used a simple integrate-and-fire neuron model \added{(for details, see {\em Methods})} of a CA1 cell that receives inputs through the SC and the \ppca.
+We also considered the two pathways to contain the same number of synapses and transmit identical spike patterns apart from a 5-ms delay in the SC (Fig~\ref{fig:mechanism}D).
+Consolidation then corresponds to copying the synaptic weight pattern of the SC to the \ppca.
+In line with our hypothesis, such a consolidation was indeed achieved by STDP in the \ppca~synapses (Fig~\ref{fig:mechanism}E). A consolidation in the opposite direction, i.e., from the \ppca to the SC cannot be achieved by STDP because the temporal order of spiking activity is reversed and hence does not favour synaptic potentiation (\deleted{Supplementary}Fig~\ref{fig:mechanism}\added{F}).
+\added{Note that in this simple example, the EC-to-DG/CA3 synapses don't store any memory, but only introduce the transmission delay. In the following, we will show that all synapses of the indirect pathway can be involved in the original storage of memories.}
+
+\replaced{To understand the conditions under which the suggested PPT can achieve a consolidation of associative memories, we performed a mathematical analysis, which shows that consolidation is robust to differences in the neural representation in the two pathways and  illustrates its dependence on the temporal input statistics in the two pathways. Readers who are less interested in the mathematical details are welcome to jump to section {\it\nameref{sec:results_linear_track}}, where we show in simulations that the mechanism is robust to neuronal complexities; in subsequent sections, we also show that the mechanism accounts for lesion studies in rodents, and that it can be hierarchically iterated. }
+{ 
+\\
+A mathematical analysis suggests that STDP in the direct pathway implements a linear regression that approximates the input-output mapping of the indirect pathway by that of the direct pathway (Supplementary Sec. 1, 2).}
+%
+
+\subsubsection*{\added{Theory of spike timing-dependent plasticity (STDP) for parallel input pathways}}
+
+%\label{ssec:theory_stdp}
+\added{
+In the following mathematical analysis, we consider a single cell  that receives inputs through two pathways, as in Fig~\ref{fig:mechanism}A. 
+The cell could be located, for example, in CA1, as in Fig~\ref{fig:mechanism}B.
+We assume that memories, i.e., cue-response associations, are stored  in the synaptic weight vector~$\V$ of the indirect path, and that consolidation occurs by transferring this information into the weights~$\W$ of the direct path. In the simulation in Fig.~\ref{fig:mechanism}, the weight vector~$\V$ represents the SC pathway, and the vector~$\W$ the \ppca~pathway. For simplicity, we consider the case of a single rate-based neuron, which represents one of the output neurons in the simulated network. 
+Very similar theoretical results can be obtained for the spiking case of linear Poisson neurons, apart from additional contributions from spike-spike correlations, which can be neglected for a large number of synapses \cite{Kempter_1999}.
+}
+
+\added{
+The output $\y$ of the rate-based neuron is assumed to be given by a linear function of the input
+}
+\begin{equation}
+\added{
+\y(t) = \W^\mathsf{T} \x(t) + \V^\mathsf{T} \z(t-D) 
+}
+\label{eq:output}
+\end{equation}
+\added{where the vectors~$\x$ and $\z$ denote the input arising from the direct and indirect pathways, respectively, and $\mathsf{T}$ denotes the transpose of a vector (or matrix). We assume that the inputs~$\x$ and $\z$ are both representations of the cue and therefore are related by some kind of (potentially nonlinear) statistical dependency. Moreover, we assume that~$\z$ arises from an indirect pathway and is therefore delayed by a time interval~$D>0$. The notation is chosen such that the case where the two inputs to the two pathways are the same (apart from the delay) reduces to the condition $\x(t)=\z(t)$, which is the case, e.g., in Fig~\ref{fig:mechanism}D.}
+
+\added{
+We now consider the learning dynamics of a simple additive  (STDP) rule that would result from a rate picture (neglecting spike-spike correlations; cf. \cite{Kempter_1999}),
+}
+
+\begin{align}
+\added{\frac{\Delta \W}{T} }& = 
+\added{\eta \int_{-\infty}^{\infty} \mathrm{d} \tau \, \frac{1}{T} \int_0^T \mathrm{d}t \, \LW(\tau)\, \x(t) \,\y(t+\tau)
+= \eta \int_{-\infty}^{\infty} \mathrm{d} \tau \, \LW(\tau) \, \left\langle \x(t) \y(t+\tau) \right\rangle_T \ ,
+\label{eq:rate_based_additive_STDP}}
+\end{align}
+
+\added{
+\noindent
+where~$\LW(\tau)$ is the learning window (example in Fig~\ref{sfig:theory_timing}), which determines how much a pair of pre- and postsynaptic activity pulses (i.e., spikes) with a time difference~$\tau$ changes the synaptic weight, and~$\eta$ is a learning rate that scales the size of these changes. We adopt the convention that the time difference~$\tau$ is positive when a presynaptic spike occurs before a postsynaptic spike. 
+}
+
+\added{
+The notation $\langle\dotsi \rangle_T = \frac{1}{T} \int_0^T \dotsi \mathrm{d}t$ indicates averaging over an interval of length~$T$. We assume that the integration time $T$ can be chosen such that the weights do not change significantly during the integration time (i.e., a small learning rate $\eta$), but that the statistics of the input are sufficiently well sampled so that boundary effects in the temporal integration are negligible. We also assume that the statistics of the inputs $\x$ and $\z$ are stationary, i.e., they do not change over time. Under these assumptions, we can insert the output firing rate $\y$ from Eq~\eqref{eq:output} into the learning rule in Eq~\eqref{eq:rate_based_additive_STDP} and get
+}
+
+
+\begin{align}
+\added{\frac{\Delta \W}{T} 
+} & 
+\added{= \eta \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau) \left\langle \x(t) \left[ \W^\mathsf{T} \x(t+\tau) + \V^\mathsf{T} \z(t+\tau-D) \right]\right\rangle_T } \label{eq:update STDP}
+\\ & 
+\added{\approx \quad 
+\eta \left[ \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau)\, \langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t \right] \W} \nonumber 
+\\ & 
+\quad 
+\added{+ \eta \left[ \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau) \, \langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t \right] \V}  \nonumber
+\end{align}
+%}
+
+\noindent
+\added{where~$\langle \dotsi \rangle_t$ denotes the average over \emph{all} times. Equation~\eqref{eq:update STDP} describes the dynamics of the weights~$\W$ in the direct pathway, which are driven by an interplay of the correlation structures within  the direct pathway (through $\langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t$) and between the two pathways (through $\langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t$); the dynamics of $\W$ depends also on the shape of the learning window~$\LW$ and the weights $\V$ in the indirect pathway.
+
+It is important to emphasize that in this analysis of the learning dynamics we consider the input arising during consolidation, e.g., during sleep, and this input may be statistically different from the input during memory storage or recall. If the correlation structure between the two pathways is different during consolidation and during storage/recall, the consolidation process leads to a distortion of the memory in the sense that a different cue would be required to retrieve the memory. Here, we consider only the case where the correlation structure during consolidation is the same as during storage and recall.
+
+Let us now study under which conditions this weight update generates a consolidation of the input-output associations stored initially in the weights~$\V$ of the indirect pathway into the weights~$\W$ of the direct pathway.
+}
+
+
+\subsubsection*{\added{Learning dynamics implement memory consolidation as a linear regression}}
+
+
+\added{
+In general, the learning dynamics is hard to analyze if the covariance matrices $\langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t$ and $\langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t$ are arbitrary objects. A case that can be studied analytically is that of separable statistics in which each of the two correlation matrices can be written as a product of scalar functions $f$ and $g$ of the delay~$\tau$ and the covariance matrices for zero delay, $\Cxx$ and $\Cxz$:
+}
+
+\begin{align}
+\added{
+\langle  \x(t) \x(t+\tau )^\mathsf{T} \rangle_t} & =: 
+\added{\Cxx \, f(\tau)
+\label{eq:definition_f}
+}
+\\
+\added{\langle  \x(t) \z(t+\tau-D )^\mathsf{T} \rangle_t} &=: 
+\added{\Cxz \, g(\tau-D)
+\label{eq:definition_g}
+}
+\end{align}
+
+\added{
+\noindent
+For simplicity, we omitted the lower index $t$ in $\Cxx$ and $\Cxz$.
+Note that this separability assumption is consistent with all simulations shown, except the one in Fig~\ref{fig:spatial}; see there for details.
+
+For separable input statistics, the learning dynamics in Eq.~\eqref{eq:update STDP} can be simplified to
+}
+
+\begin{align}
+\added{\frac{1}{\eta} \frac{\Delta \W}{T}} & =
+\added{\underbrace{\left[\int_{-\infty}^{\infty} \mathrm {d} \tau\, \LW(\tau) f(\tau) \right]}_{=:A} \Cxx \W + \underbrace{\left[\int_{-\infty}^{\infty} \mathrm{d} \tau \,\LW(\tau) g(\tau-D)\right]}_{=:B}\Cxz \, \V \,. \label{eq:update STDP2}
+}
+\end{align}
+%
+
+\added{
+\noindent
+If the scalar constant~$A$ is negative (see below for conditions when this is the case), the learning dynamics is stable and converges to a unique fixed point that is given by
+}
+
+\begin{align}
+\added{\W = - \frac{B}{A} \left[ \Cxx \right]^{-1} \Cxz \V \,. \label{eq:fixed point dynamics}}
+\end{align}
+
+
+\added{
+\noindent
+Note that apart from the factor $- \frac{B}{A} =: \beta$, this fixed point has the same structure as the closed-form solution of a linear regression. In fact, it is straightforward to show that the learning dynamics in~Eq~\eqref{eq:update STDP2} performs a gradient descent on the error function
+}
+
+
+\begin{align}
+\added{E(\W) := \left  \langle \left( \W^\mathsf{T} \x - \beta\, \V^\mathsf{T} \z \right)^2 \right \rangle_t \,. \label{eq:error function dynamics}}
+\end{align}
+
+\added{
+\noindent
+If $A$ is negative and $B$ is positive (and thus $\beta$ is positive), the learning dynamics in the direct path converges to a weight configuration for which the input~$\W^\mathsf{T} \x$ from the direct path is an optimal linear approximation of the input $\V^\mathsf{T} \z$ from the indirect path, in the sense of minimal mean squared error $E$. 
+If $\beta>1$, the direct pathway would contribute more to a potential recall than the original memory trace in the indirect pathway. 
+A sign reversal of $\beta$ (i.e. $\beta<0$) implies a sign reversal of $\V$.
+Then, however, a constraint on the sign change of weights (see below for details) would prohibit consolidation; memories in the indirect path could even be actively deleted from the direct path. In summary, memory consolidation in the PPT is supported by $A<0$ (stable dynamics) and $B>0$ (consolidation possible), which implies $\beta:= - \frac{B}{A} >0$.
+
+Note that we assumed storage of original memories only in the weight vector $V$ representing the SC pathway. But since learning in the direct pathway is driven by the input from the entire indirect pathway, these results also hold if original memories are stored in any other plastic synapses of the indirect pathway (e.g. EC to DG/CA3 in Fig.~\ref{fig:mechanism}B).
+
+Let us relate the theoretical results obtained so far to  the simulations shown in Fig~\ref{fig:mechanism}; although the simulations are performed for integrate-and-fire neurons, our theory on rate-based neurons accounts for the main findings: Because two inputs $\x$ and $\z$ are the same apart from the delay, the fixed point condition Eq~\eqref{eq:fixed point dynamics}  reduces to $\W = -\frac{B} {A}
+\V$, in line with the result that the weights are copied into the direct pathway. Because the learning window is dominated by depression we have $A<0$ while the delay in combination with the shorter autocorrelation time of the Poisson processes in the input ensures $B>0$. A consolidation from the direct to the indirect pathway is not possible because this inverts the delay and pushes the cross-correlation between the two pathways into the depression component of STDP. As a result, the factor~$B$ is negative and consolidation fails.
+
+
+
+
+In terms of systems memory consolidation in general, the weights~$\V$ of the indirect path change as new memories are acquired, so the fixed point in Eq~\eqref{eq:fixed point dynamics} for the weights~$\W$ of the direct path is usually never reached. If it were, the direct pathway would merely represent a copy of the memories that are currently stored in the indirect path rather than retaining older memories, as intended. The time scale of the learning dynamics of the direct path [determined by $\eta$ in Eq~\eqref{eq:update STDP2}] should therefore be longer than the memory retention time in the indirect path, which is determined, e.g., by the rate at which new memories are stored. In case of a small enough $\eta$, the transient dynamics of the system is more important for the consolidation process than the fixed point. %The fact that the dynamics is a gradient descent (albeit only for separable statistics) suggests that even these transient dynamics are optimal in the sense that they try to perform the regression in the least possible time.
+
+Another important aspect to emphasize is that the consolidation is influenced by the correlation structure~$\Cxz$ between the two pathways that is encountered during the consolidation period. Intuitively and according to Eq~\eqref{eq:error function dynamics}, consolidation is achieved by matching the input~$\V^\mathsf{T} \z$ that is caused by ``cues" $\z$ in the indirect path with the input $\W^\mathsf{T} \x$ caused by the associated ``cues" $\x$ in the direct path. In order for the consolidated memories to be accessible during recall, the relation between the ``cues" in the two pathways (i.e., the correlation $\Cxz$ between the two pathways) should be the same during recall as during consolidation.
+
+The objective function argument in Eq~\eqref{eq:error function dynamics} only holds when the constant~$A$ is negative. For positive~$A$, the learning dynamics in Eq~\eqref{eq:fixed point dynamics} suffers from the common Hebbian instability and thus has to be complemented by a weight-limiting mechanism. The choice of this weight limitation (e.g., subtractive or divisive normalization, weight bounds) will then have an impact on the dynamics and the fixed point of the learning process \cite{Miller_1994,Dayan_2001}. For the simulations, the parameters were therefore always chosen such that the learning dynamics were stable ($A<0$). Although this suggests that no weight limiting mechanism was required in principle, upper and lower bounds for the weights were nevertheless used in simulations, with no qualitative impact on the results.
+}
+
+\subsubsection*{\added{Effects of temporal input statistics on systems memory consolidation}}
+\added{
+%\label{ssec:theory_timing}
+
+The constants~$A$ and $B$, which were defined in Eq~\eqref{eq:update STDP2} as
+$A := \int \mathrm {d} \tau\, \LW(\tau) f(\tau)$ and
+$B := \int \mathrm {d} \tau\, \LW(\tau) g(\tau-D)$, play an important role for the learning dynamics. 
+As already elaborated, the sign of $A$ determines stability  while $B$ should be positive to obtain consolidation. 
+Sign and magnitude depend on the interplay between the learning window~$\LW$ and the temporal input statistics, characterized by the correlation functions~$f$ and $g$
+defined in Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}, respectively. For the assumed separable statistics, $f$ is fully determined by the autocorrelation of the input in the direct path, and $f(\tau)$ is therefore symmetric in time~$\tau$.
+
+A first interesting observation is that for the special case of an antisymmetric learning window~$L$, we obtain $A=0$ for symmetry reasons. Mathematically, this implies that the first term of the learning dynamics in Eq~\eqref{eq:update STDP2}  --- the dependence of the change of the weights $\W$ in the direct path on their actual value --- vanishes. 
+Intuitively, the balance of potentiation and depression in an antisymmetric learning window implies that the direct path, although able to drive the postsynaptic neuron, is causing equal amounts of potentiation and depression in all of its synapses. On average, synaptic changes are caused only by the indirect pathway with weights $\V$, which therefore acts as a supervisor for the learning dynamics of $\W$ in the direct path. A thorough analysis under which conditions STDP can be used for supervised learning has been provided elsewhere \cite{Legenstein05,Pfister06}, and the results of this analysis are applicable in the present case. Functionally, the depressing part of an STDP learning window serves to neutralize the impact of the direct pathway on its own learning dynamics, effectively creating a supervised learning scenario.
+}
+
+%\makeStandardFigure[!htp]
+\figureCaptionOnly
+  {\added{Interaction of temporal correlations and the STDP learning window}}
+  {sfig:theory_timing}
+  {\added{The weight dynamics of the direct path [Eq~(\ref{eq:update STDP2})] is driven by inputs from the direct and indirect paths: weight changes are determined by the integrated products of the STDP learning window $\LW$ with the autocorrelation~$f$ [Eq~\eqref{eq:definition_f}] and the cross-correlation $g$  [Eq~\eqref{eq:definition_g}], respectively. 
+  (A)~Examples of a learning window $\LW(\tau)$ and an autocorrelation $f(\tau)$, both plotted as a function of the ``relative timing'' $\tau$. For separable statistics, $f$  is symmetric. If the learning window $\LW$ has a stronger negative part for $\tau<0$ and a weaker positive part for $\tau>0$, the coefficient $A:= \int {\rm d}\tau\, \LW(\tau)f(\tau)$ is typically negative. 
+  (B)--(D)~Learning window $\LW$ as in (A) and three example cross-correlations $g$.
+  (B)~The indirect path primarily induces potentiation in the direct path if $B:=\int {\rm d}\tau\, \LW(\tau)g(\tau-D)>0$. This is the case if (i) the delay $D$ between the paths is positive, (ii) the learning window is positive for positive delays, and (iii) the time scale of the decay of cross-correlations $g$ is shorter than the delay $D$ and the width of the learning window $\LW$. These three conditions favor consolidation. 
+  (C)~If the cross-correlation $g$ decays on a time scale that is much longer than the width of the learning window and the delay $D$, the indirect path can drive both potentiation and depression, and consolidation is weaker (i.e., the coefficient~$B$ is smaller) than for shorter correlations. 
+  (D)~If the delay $D$ between the direct and the indirect paths is longer than the width of the learning window~$\LW$, the indirect path cannot induce systematic changes in the weights of the direct path (coefficient~$B\approx 0$), and consolidation is ineffective.}}
+  {Fig_2.pdf}
+
+\added{
+Another interesting observation relates to the magnitude of the terms~$A$ and $B$, which is determined by the time scale on which the inputs change (reflected, e.g., in the time constants of the decay of the correlation functions~$f$ and $g$). Let us assume that both correlation functions~$f(\tau)$ and $g(\tau)$ are maximal for $\tau=0$ and that they decay  to $0$ for large~$|\tau|$; such conditions are reasonable for most correlation structures. We also assume that the learning window has the typical structure of potentiation for causal timing, $\LW(\tau)>0$ for $\tau>0$, and depression for acausal timing, $\LW(\tau)<0$ for $\tau<0$ \cite{Bi98,Markram97,Sjostrom_2008}. 
+Then the delay~$D>0$ in the indirect path shifts the maximum of the cross-correlation $g(\tau -D)$ into the potentiating part of the learning window (Fig~\ref{sfig:theory_timing}B) while the maximum of $f(\tau)$ remains in the transition region of potentiation and depression (Fig~\ref{sfig:theory_timing}A). The following three observations can be made concerning the constant~$B$ as defined by the integral in~Eq~\eqref{eq:update STDP2}:
+}
+\begin{itemize}
+\item [(1)]
+\added{
+If the cross-correlation $g$ has a narrow enough peak (i.e., narrower than the time scale of the learning window and the delay~$D$), $B$ is positive, suggesting that consolidation can occur (Fig~\ref{sfig:theory_timing}B). The sharp localization of $g$ corresponds to rapidly changing input signals.
+}
+\item [(2)]
+\added{
+If the decay time constant of the cross-correlation $g$ is large compared to that of the learning window, the depressing component of the learning window has more impact and reduces the constant~$B$ and thus the efficiency of consolidation (Fig~\ref{sfig:theory_timing}C). In the case where the learning window is dominated by depression, $B$ can even get negative for large time constants of $g$, abolishing consolidation altogether. 
+}
+\item [(3)] 
+\added{If the delay $D$ along the indirect path is much longer than the decay time constant of the learning window, we obtain $B \approx 0$, meaning that consolidation is abolished (Fig~\ref{sfig:theory_timing}D). In other words, the delayed correlations between the two pathways are too large to be exploited by STDP. This will limit the ability to consolidate from too long indirect paths into shortcuts. 
+}
+\end{itemize}
+
+\subsection*{Consolidation of spatial representations}
+\label{sec:results_linear_track}
+
+\deleted{So far, we illustrated the PPT in a simple integrate-and-fire model, in which the neural representations in the two pathways were identical, leading to a very strong correlation between the inputs to CA1. 
+We next show the robustness of the suggested mechanism in a more biologically plausible setting.}
+
+\added{The mathematical analysis of the PPT makes two key predictions. First, it suggests that STDP in a parallel direct pathway achieves consolidation by performing a linear regression between inputs in the direct and the indirect pathways [Eqs~\eqref{eq:fixed point dynamics} and~\eqref{eq:error function dynamics}]. Therefore, the proposed mechanism should generalize to situations in which the cue representations in the direct and indirect pathways differ. Second, the theory suggests that consolidation is most effective when the correlation time constants of the input during consolidation is matched to the coincidence time scale of STDP (Fig~\ref{sfig:theory_timing}B). In the following, we will show in simulations that those predictions hold and, moreover, that the mechanism is robust to neuronal nonlinearities.}
+
+
+
+\replaced{To begin with}{ Firstly}, we show that the mechanism is robust to differing cue representations in the two pathways and to weaker correlations among them \cite{ONeill17}. To this end, we used place cell representations \cite{OKeefe71} for the SC input from CA3 and grid cell representations \cite{hafting05,Moser08} for the \ppca input from EC (Fig~\ref{fig:spatial}A).
+\replaced{Moreover}{ Secondly}, we show that the suggested mechanism is compatible with the biophysical properties of CA1 neurons, which receive inputs in different subcellular compartments. To this end, we simulated a multicompartmental CA1 pyramidal cell (Fig~\ref{fig:spatial}B) that was endowed with active ion channels supporting backpropagating action potentials and dendritic calcium spikes (Fig~\ref{fig:spatial}C, {\em Methods}).
+
+% Original figure 2 (to change title/caption etc., change the macros defined at top of file)
+%\makeStandardFigure[!htbp]
+%\makeWideFigure
+\figureCaptionOnly
+  {\figureTwoFigureTitle}
+  {\figureTwoFigureLabel}
+  {\figureTwoFigureCaption}
+  {\figureTwoFigureFilename}
+
+The use of spatial representations in the input pathways allows us to consider simple forms of memories in a navigational context in which a given location on a linear track is associated with the activity of a given CA1 cell. Effectively, such an association generates a CA1 place cell. In line with the PPT, we assumed that the spatial selectivity of this CA1 place cell is initially determined solely by the indirect pathway via the SC, i.e., by place cell input from CA3. The goal of systems memory consolidation is then to transfer this spatial association to the direct input, which reaches the CA1 cell via the \ppca\ derived from grid cells in EC. In other words, place-cell input should supervise grid-cell input to develop a place-cell tuning. 
+\added{Note that we use the spatial setup primarily as an illustration of the theory. We do not make claims regarding the temporal development of CA1 place cells \emph{in vivo}, which is not fully understood \cite{Solstad_2006,O'Keefe21, Tukker21}.}
+
+SC place field inputs were modelled by synapses that were active only in a small region of the track, whereas individual \ppca~grid cell inputs were active in multiple, evenly spaced regions along the track (Fig~\ref{fig:spatial}A). \added{In terms of the theory, the cue representation in the two pathways is now different, but correlated, because the same location is encoded.}
+The SC and \ppca~inputs projected to proximal and distal dendrites, respectively (Fig~\ref{fig:spatial}B, \cite{Stuart07}).
+Synapses were initialized such that the SC input conductances were spatially tuned and resulted in place field-like activity in the CA1 cell while the \ppca~input had no spatial tuning (Fig~\ref{fig:spatial}D).
+
+During consolidation, SC and \ppca~input to the CA1 cell consisted of replays of previously encountered sequences of locations \cite{Skaggs96,Lee02}, with a replay speed 20 times faster than physical motion \cite{Lee02}.
+During replay, the SC input led to somatic spikes, which in turn triggered backpropagating action potentials that caused calcium spikes in the distal dendrites where the \ppca~synapses arrive (Fig~\ref{fig:spatial}\added{C and}~E, \cite{larkum99}).
+Through synaptic plasticity, \ppca~synapses active in the place field of the neuron were potentiated.
+Over time, the \ppca~input adopted the spatial tuning of the SC input (Fig~\ref{fig:spatial}F, left) and reproduced the original SC-induced place field output (Fig~\ref{fig:spatial}F, right) \added{with high correlation (Fig~\ref{fig:spatial}G). The fact that the spatial tuning of two inputs is not perfectly matched does not contradict with theoretical results, which merely state that the direct input should attain the best possible linear approximation of the indirect pathway. In the present setting, this approximation is bounded by the finite range of frequencies of the entorhinal inputs (in analogy to reconstructing a high-frequency signal, e.g. a narrow peak, with a finite set of Fourier components), which causes the ringing next to the target peak in Fig~\ref{fig:spatial}F (left). In summary}, the PPT mechanism \added{therefore} consolidated associations even though the spatial representations in the two pathways differed\deleted{(cf.~also mathematical analysis in Supplementary Sec.)} and although the two pathways targeted different neuronal compartments \added{with different numbers of synapses} in the CA1 neuron with complex morphology.
+
+\added{The theory also predicts that consolidation is most effective when the correlation time in the input is matched to the time scale of STDP (Fig~\ref{sfig:theory_timing}B). In line with this prediction,} consolidation failed when replay speed was reduced to that of physical motion (Fig~\ref{fig:spatial}G) because the time scale of rate changes in place and grid cell activity is then much longer than the delay between the two pathways and the time scale of STDP (\deleted{Supplementary Sec. \& Supplementary}Fig~\ref{sfig:theory_timing}C). Accelerated replay during sleep \cite{Lee02} hence supports systems memory consolidation within the PPT by aligning the time scales of neural activity and synaptic plasticity \cite{DAlbis15}\added{, and this alignment is similar to the effect of phase precession during memory acquisition} \cite{Reifenstein21}.
+
+
+\added{
+Finally, we note that the theoretical analysis relied on a separability assumption for the statistics in the two pathways; cf.~Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}. This condition
+is not fulfilled for sequence replay during consolidation because the time-delayed covariance of different place cells depends on the relative spatial location of their place fields; such correlations are non-separable even for slower replay or during memory acquisition with real-time physical motion. The observation that consolidation was successful nevertheless illustrates that the separability assumption does not need to be fulfilled for the PPT to achieve a successful consolidation.
+}
+
+\subsection*{Consolidation of place-object associations in multiple hippocampal stages}
+
+Ultimately, to consolidate memories into neocortex, they have to move beyond the \ppca.
+Notably, the \ppca~is itself part of an indirect pathway from EC to the subiculum (SUB) that is shortcut by a direct connection from EC to SUB (referenced as \ppsub; Fig~\ref{fig:lesion}A, left; \cite{Amaral93}).
+This suggests that the PPT can be reiterated to further consolidate memories from the \ppca~to the \ppsub~and beyond.
+
+To illustrate this idea, we considered a standard paradigm for memory research in rodents: the Morris water maze 
+\replaced{\cite{morris1982place}}
+{(Morris and Lecar, 1981)}.
+In the water maze, the rodent needs to find a submerged platform (object), i.e., it must store an object-place association.
+Thus this paradigm requires neural representations of objects (such as the submerged platform) and places.
+We hence constructed a model in which subregions of the hippocampal formation included neurons that encode places and neurons that encoded the identity of objects (Fig~\ref{fig:lesion}A, right).
+
+%\makeWideFigure
+%\makeStandardFigure[htp]
+\figureCaptionOnly
+  {\figureThreeFigureTitle}
+  {\figureThreeFigureLabel}
+  {\figureThreeFigureCaption}
+  {\figureThreeFigureFilename}
+
+For simplicity and computational efficiency we switched to a rate-based neuron model ({\em{Methods}}). An object was chosen from a set of 128 different objects and placed in a circular open field environment (Fig~\ref{fig:lesion}B, top). 
+\added{As motivated by experiments \cite{Brun02,Nakazawa03, Nakashiba08},} we implemented object-to-place associations in our model by enhancing, as before, synaptic connections in the SC, but now between object-encoding neurons in CA3 and place-specific neurons in CA1 (Fig~\ref{fig:lesion}A, right). Here, we did not consider place-to-object associations. These are less relevant for the water maze task, where the task is to recall the location of a given object --- the platform --- rather than to recall which object was encountered at a given location. We tested object-to-place associations stored in the SC by activating the object representation in EC --- as a memory cue --- and determining the activities in CA1, triggered by the SC alone.
+From these activities we inferred a spatial probability map of the recalled object location (Fig~\ref{fig:lesion}B; {\em Methods}).
+
+We first stored a single object-place association in the SC. During a subsequent consolidation  cycle --- representing one night --- place and object representations in EC were then randomly and independently activated.
+Consistent with our previous results, the object-place association was gradually consolidated from the SC to the \ppca: after one night of consolidation, the correct spatial probability map of an object location was inferrable from CA1 activity triggered by the \ppca~alone (Fig~\ref{fig:lesion}B).
+
+To track the consolidation process over longer times, we assumed that a new random object-place association is stored in the SC every day.
+This caused a decay of previous SC memory traces due to interference with newly stored associations (Fig~\ref{fig:lesion}C, \cite{Lux16,fusi07}).
+During the night following each day, associations in the SC were partially consolidated into the \ppca, such that the consolidated association could be decoded from the \ppca~after a single night, but previously consolidated associations were not entirely overwritten.
+As a result, object-place associations were maintained in the \ppca~for longer periods than in the SC, thus extending their memory lifetime (Fig~\ref{fig:lesion}C).
+Eventually, a  given \ppca~memory trace would also degrade as new interfering memories from the SC are consolidated.
+However, as noted above, the \ppca~itself is part of an indirect pathway from EC to the SUB, for which there is in turn a parallel, direct perforant pathway \ppsub.
+The association in the \ppca~(and SC) could therefore, in turn, be partially consolidated into the \ppsub, further extending memory lifetime (Fig~\ref{fig:lesion}C).
+\added{Note that the extension of memory lifetime is supported in the model by a reduced plasticity (i.e. halved learning rate in Eq~\eqref{eq:STDPrule}) in \ppsub\ compared to \ppca.}
+
+The model suggests that the \ppca~serves as a transient memory buffer that mediates a further consolidation into additional shortcut pathways downstream.
+This hypothesis is supported by navigation studies in rats.
+Using \ppca~lesions, Remondes and Schuman \cite{Remondes04} have shown that the \ppca~is not required for the original acquisition of spatial memories, but that it is critically involved in their long-term maintenance.
+However, lesioning the \ppca~21 days after acquiring a memory did not disrupt spatial memories, suggesting that the \ppca~is not the final storage site (Fig~\ref{fig:lesion}D) and further supporting the idea that the \ppca\ is important to enable a transition from short-term to long-term memories.
+
+To test whether our model could reproduce these experimental results, we simulated \ppca~lesions either before the acquisition of an object-place association or 21 days later.
+Assuming that the rat's spatial exploration is determined by the probability map of the object location \cite{Herrnstein61}, the model provided predictions for the time spent in different quadrants of the environment, which were in quantitative agreement with the data for all experimental conditions (Fig~\ref{fig:lesion}D).
+Our model thus suggests that a hierarchical reiteration of parallel shortcuts --- the central circuit motif of the PPT --- could explain these experiments. 
+
+\added{Similar to lesioning the \ppca, we predict that lesioning  \ppsub\ also has an impact on memory consolidation: \ppsub\ should act as a transient memory buffer but on a longer timescale than \ppca. In general, lesioning a pathway with a set of synapses that cover a specific range of time scales such that there is a ``gap'' should result in an impairment of consolidation if the lesion is done before the memory has ``moved on''. To illustrate this idea in more detail, we study in the next section a model with many stages in a hierarchy.}
+
+
+\subsection*{Consolidation from hippocampus into neocortex by a hierarchical nesting of consolidation circuits}
+Given that shortcut connections are widespread throughout the brain \cite{vanEssen92,Morgenstern16, Constantinople13}, we next hypothesized that a reiteration of the PPT can also achieve systems consolidation from hippocampus into neocortex.
+To test this hypothesis, we studied a network model (Fig~\ref{fig:hierarchical}A), in which the hippocampus (now simplified to a single area) receives input from a hierarchy of cortical areas, representing, e.g., a sensory system. It provides output to a different hierarchy of areas, representing, e.g., the motor system \added{or another sensory system}.
+
+%\makeWideFigure
+%\makeStandardFigure[!htb]
+\figureCaptionOnly
+  {\figureFourFigureTitle}
+  {\figureFourFigureLabel}
+  {\figureFourFigureCaption}
+  {\figureFourFigureFilename}
+
+The network also contained shortcut connections that bypassed the hippocampus\deleted{ ({\em Methods})}.
+As in the previous section, new memories were stored in the hippocampus \added{but not in any other indirect connection in the hierarchy.
+The repeated storage of new memories}
+every day \replaced{leads }{--- leading} to a decay of previously stored hippocampal memories\replaced{. But memories are also}{ --- and were} consolidated by Hebbian plasticity in parallel pathways\added{; for details, see {\em Methods}}.
+
+Tracing a specific memory over time revealed a gradual consolidation into the cortical shortcut connections, forming a ``memory wave'' \cite{Roxin13} that travels from hippocampus into neocortex (Fig~\ref{fig:hierarchical}B\deleted{, Supplementary Sec.}).
+By exponentially decreasing the shortcut learning rate with distance from the hippocampus, a power-law decay of memories can be observed in the union of all shortcuts, e.g., by reading out the shortcut with the strongest memory trace at any moment in time (Fig~\ref{fig:hierarchical}B). This observation is in line with a rich history of psychological studies on the mathematical shape of forgetting curves \cite{Wixted04}. \added{Note that for the readout we tried to make as few assumptions as possible by letting all pathways contribute on an equal footing. Taking the maximum over the pathways (as well as the mean) generates a power law.}
+Notably, we achieved memory retention times of years through only a small number ($\sim$5) of iterations of the PPT.
+Finally, we found that memory retrieval accelerates during consolidation (Fig~\ref{fig:hierarchical}C), in line with consolidation studies for motor skills \cite{Walker02}. In our consolidation model, the time to recall decreases because the path from peripheral input to output becomes shorter through the use of more direct (peripheral) shortcut connections (Fig~\ref{fig:hierarchical}A and B).
+
+\added{The predicted consolidation-mediated decrease of the time to recall critically depends on the utilized plasticity rule (STDP), which uses timing of input and output of neurons, and on our assumption that memories are initially acquired in an indirect pathway with a longer delay than direct pathways. While this assumption is reasonable for declarative memories that are initially stored in the hippocampus and then consolidated in sensory or motor areas towards neocortex, the underlying computational reasons for such a strategy are unknown. The strategy of the initial storage of memories in a pathway with a longer transmission delay could be related to the Complementary Learning Systems Theory (CLST) \cite{McClelland95, McClelland13} if the initial storage needs some preprocessing, e.g., to achieve representations that are suited for one-trial learning, e.g. population-sparse representations \cite{Leibold08}. In general, our results do not imply that the reduction of delay is a central goal of systems memory consolidation or that it is even necessary. Reduction of delay may, however, be a nice side effect of systems memory consolidation with timing-based plasticity rules \cite{Song00}. And such a reduction of delay does not need to be restricted to declarative memories but also could apply to, e.g., motor skill learning or habit formation.
+}
