@@ -66,7 +66,7 @@ $force_mode = 1;
 # Compilation settings
 # ============================================================================
 # Maximum number of compilation runs
-$max_repeat = 5;
+$max_repeat = 7;
 
 # Allow creation of subdirectories in output directory (needed for tikzexternalize)
 $allow_subdir_creation = 2;
