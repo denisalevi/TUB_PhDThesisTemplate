@@ -208,22 +208,69 @@
 % Parts of the thesis are included below. Rename the files as required.
 % But take care that the paths match. You can also change the order of appearance by moving the include commands.
 % \cfchapter[short name] {full name} {folder name} {file name}.
+
+% CHAPTER 1
 \tikzsetexternalprefix{./1_introduction/TikzPictures/}
 \cfchapter{Introduction}{1_introduction}{introduction}
-\tikzsetexternalprefix{./2/TikzPictures/}
+
+% CHAPTER about ``Aims and contributions of this thesis'' (see Laura's thesis)
+% - Show on 2-3 pages the storyline of the entire thesis, also good place to mention publications not included in the thesis.
+
+%%% PART I: Feedforward / hetero-associative / feedforward memory consolidation: Parallel Pathway Theory
+
+\cfchapter{
+  Aims and contributions of this thesis
+  \label{ch:aims}
+}{chapter_aims_and_contributions}{aims_and_contributions}
+
+% CHAPTER 2
+%\tikzsetexternalprefix{./2/TikzPictures/}
 \cfchapter{
   Hebbian plasticity in parallel synaptic pathways: A circuit mechanism for systems memory consolidation
-}{2}{chapter2}
-\tikzsetexternalprefix{./3/TikzPictures/}
-\cfchapter{Including tikz\label{ch:chapter3}}{3}{chapter3}
-\tikzsetexternalprefix{./4/TikzPictures/}
-\cfchapter{Sum - Algorithm\label{ch:chapter4}}{4}{chapter4}
-\tikzsetexternalprefix{./5/TikzPictures/}
-\cfchapter{PGF-plots from python\label{ch:chapter5}}{5}{chapter5}
-\tikzsetexternalprefix{./6/TikzPictures/}
-\cfchapter{Asymptote\label{ch:chapter6}}{6}{chapter6}
+  \label{ch:ppt}
+  %Hebbian plasticity in parallel synaptic pathways: A circuit mechanism for systems memory consolidation
+}{chapter_PPT}{main}
+
+% CHAPTER 3
+%\tikzsetexternalprefix{./3/TikzPictures/}
+\cfchapter{
+  Episodic to semantic memory transformation in the parallel pathways theory (PPT)
+  \label{ch:ppt-semantization}
+}{chapter_PPT_semantization}{main}
+
+% CHAPTER 4
+\cfchapter{
+  Area-specific semantic generalizations in the parallel pathway theory (PPT) enable Bayes-optimal statistical learning in changing environments
+  \label{ch:change-point-detection}
+}{chapter_change_point_detection}{main}
+
+% CHAPTER 5
+\cfchapter{
+  Cognitive flexibility in changing environments: The role of calbindin-containing CA1 pyramidal cells during learning and consolidation
+  \label{ch:calb-ca1}
+}{chapter_calb_ca1}{main}
+
+%%% PART II: Recurrent / auto-associative systems memory consolidation
+
+% CHAPTER 6
+%\tikzsetexternalprefix{./5/TikzPictures/}
+\cfchapter{
+  Memory consolidation in Drosophila: From parallel pathways to recurrent engram dynamics
+  \label{ch:drosophila}
+}{chapter_drosophila}{main}
+
+% CHAPTER 7
+%\tikzsetexternalprefix{./6/TikzPictures/}
+\cfchapter{
+  Distributed engram reorganization: A dynamical systems perspective for systems consolidation and representational drift
+  \label{ch:engram-reorganization}
+}{chapter_engram_dynamics}{main}
+
+% CHAPTER 8
 \tikzsetexternalprefix{./7/TikzPictures/}
 \cfchapter{Discussion\label{ch:chapter7}}{7}{discussion}
+
+% CHAPTER 9
 \tikzsetexternalprefix{./8/TikzPictures/}
 \cfchapter{Materials and Methods}{8}{materials_methods}
 \cleardoublepage
