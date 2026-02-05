@@ -1,0 +1,76 @@
+%%% DISCUSSION
+
+We proposed the parallel pathway theory (PPT) as a mechanistic basis for systems memory consolidation. This theory relies on two abundant features in the nervous system: parallel shortcut connections between brain areas and Hebbian plasticity.
+\added{A mathematical analysis suggests that STDP in a direct pathway achieves consolidation by implementing a linear regression that approximates the input-output mapping of an indirect pathway by that of the direct pathway.}
+We applied the PPT to hippocampus-dependent memories and showed that the proposed mechanism can transfer memory associations across parallel synaptic pathways. This transfer is robust to different representations in those pathways and requires only weak correlations.
+Our \replaced{results are }{theory is} in quantitative agreement with lesion studies of the perforant path in rodents \cite{Remondes04} and \replaced{are }{is} able to reproduce forgetting curves that follow a power-law as observed in humans \cite{Wixted04}.
+
+\subsection{Theory requirements \added{and predictions}}
+In addition to the anatomical motif of shortcut connections and Hebbian synaptic plasticity, the parallel pathway theory relies on four further requirements during the consolidation phase\added{, which can also be considered as model predictions}.
+
+\begin{itemize}
+\item[(1)] Temporal correlations between the inputs from the two input pathways are necessary \added{during consolidation, and these correlations should be similar to the ones during storage and recall}.
+For example, \deleted{in the hippocampus the mechanism assumes such correlations between CA3 and EC inputs to CA1 during consolidation, the presence of which is not fully resolved ({\em O'Neill et al.}, 2017).} a consolidation from hippocampus into neocortex would require correlations between cortical and hippocampal activity\added{, as reported in} \cite{Ji07}.
+\added{Similarly, a consolidation of spatial memories within the hippocampal formation (including the medial entorhinal cortex, MEC) during replay would require correlations between activity in MEC and hippocampus; in particular, the same locations should be replayed, but represented by grid cells in MEC and by place cells in CA3 and CA1, as in Fig.~\ref{fig:spatial}. A significant but weak correlation between the superficial layers of MEC (which provides input to the hippocampus) and CA1 was indeed observed \cite{ONeill17}. Furthermore, pyramidal cells in the superficial layer III (projecting to CA1, ``direct path'') and stellate cells in the superficial layer II (projecting to DG, which projects to CA3, ``indirect path'') are expected to be correlated due to a strong excitatory feedforward projection from pyramids to stellates \cite{Winterer17}; reviewed in \cite{Tukker21}. Coordinated grid and place cell replay was also observed in \cite{Olafsdottir16} but there CA1 and deep layers of MEC (which receives the hippocampal output) were studied.
+}
+
+
+\item[(2)] The direct pathway should be plastic during consolidation, while the stored associations in the indirect path remain sufficiently stable
+\added{(in contrast to the model in \cite{Tome20})}. In practice, this requires the degree of plasticity to differ between periods of storage and consolidation (e.g., due to neuromodulation \cite{Hasselmo99a, Papouin2017}), in a potentially pathway-dependent manner. In other words, the requirement is that the content of a memory should not be altered much while creating a backup.
+
+\item[(3)] Plasticity in the shortcut pathway should be driven by a teaching signal from the indirect pathway. This can be achieved by STDP in combination with longer transmission delays in the indirect pathway, as suggested here, but other neural implementations of supervised learning may be equally suitable \cite{Legenstein05, Pfister06, Urbanczik14}.
+
+
+\item[(4)] Within the present \replaced{framework }{theory}, a systematic decrease in learning rates within the consolidation hierarchy (Fig~\ref{fig:hierarchical}) is needed to achieve memory lifetimes on the order of years. That is, synapses involved in later stages of consolidation should be less plastic during consolidation periods such as sleep, as also suggested by \cite{Roxin13} \added{and \cite{Tome20}}.
+\added{Furthermore, Roxin and Fusi elegantly showed in \cite{Roxin13} that a multistage memory system confers an advantage (in terms of memory lifetime, memory capacity, and initial signal-to-noise ratio) compared to a homogeneous memory system with the same number of synapses, which provides a fundamental computational reason for the existence of a memory consolidation processes at the systems level. However, to be able to exploit this advantage, an efficient mechanism to transfer memories across stages is necessary. The proposed PPT explains how memories can be transferred in a biologically plausible way in a multistage memory system.
+}
+
+\replaced{
+Conceptually related to models of systems-memory consolidation with a systematic decrease in learning rates across a hierarchy of networks are models of synaptic memory consolidation with complex synapses that can assume many different states and a decrease of plasticity across a hierarchy of states. In such models of synaptic memory consolidation, also a power-law forgetting has been achieved. }{
+A similar approach for obtaining power-law forgetting has been used in models of synaptic memory consolidation} \cite{Fusi05, Benna16}.
+\added{Synaptic and systems memory consolidation models are different but not mutually exclusive.}
+
+\end{itemize}
+
+\subsection{What limits systems memory consolidation?}
+Our account of systems memory consolidation explains how memories are re-organized and transferred across brain regions.
+However, certain forms of episodic memory remain hippocampus-dependent throughout life \cite{Winocur11}.
+
+In the context of the present model, this restriction could result from different factors.
+The PPT simplifies memory engrams by replacing multisynaptic by monosynaptic connections whenever possible.
+However, a shortcut pathway may not be present anatomically, or it may not host an appropriate representation for a given cue-response association in question.
+For example, it may be difficult to consolidate a complex visual object detection task into a shortcut from primary visual cortex (V1) to a decision area because the low-level representation of the visual cue in V1 may not allow it \cite{DiCarlo07, Majaj15}.
+The same applies to tasks that require a mixed selectivity of neural responses \cite{Rigotti13}. Such tasks cannot be fully consolidated into shortcuts with simpler representations of cues and/or responses that do not allow a linear separation of the associations. On the basis of similar arguments, early work suggested that the hippocampus could be critical for learning tasks that are not linearly separable \cite{Sutherland89}.
+
+Within the present framework, the consolidated memory is in essence a linear approximation of the original cue-response association\replaced{, as indicated in the theoretical analysis around Eqs~\eqref{eq:fixed point dynamics} and~\eqref{eq:error function dynamics}}{(Supplementary Sec.~)}.
+The resulting simplification of the memory content could underlie the commonly observed semantization of memories and the loss of episodic detail \cite{Winocur10, Winocur11}. Such a semantization could already occur in the earliest shortcut connections \cite{Schapiro17}, but could also gradually progress in a multi-stage consolidation process.
+
+\subsection{Relation to phenomenological models of systems consolidation}
+
+The basic mechanism of our \replaced{framework }{theory} explains memory transfer between brain regions, which is in line with the Standard Consolidation Theory (SCT) \cite{Squire95,McClelland95}. Our \replaced{theoretical framework }{theory} is closely related to the Complementary Learning Systems Theory (CLST) \cite{McClelland95,McClelland13}, which posits that slow and interleaved cortical learning is necessary to avoid catastrophic interference of new memory items with older memories \cite{McCloskey89}.
+In our model, later --- presumably neocortical --- shortcut connections have lower learning rates to achieve longer memory retention times. Interleaved learning could be achieved by interleaved replay \cite{Foster17,Schuck19, Liu19} during consolidation.
+Thereby, the results of CLST can be directly applied to learning in shortcuts in our model, such as the rapid neocortical consolidation of new memories that are in line with a previously learned schema \cite{Tse07, Tse11, McClelland13}.
+
+Limitations of memory transfer between brain regions --- as discussed above --- can impair the consolidation process, resulting in memories that remain hippocampus-\allowbreak dependent throughout life.
+Hence, our \replaced{theoretical framework }{theory} is also in agreement with the Multiple Trace Theory (MTT) \cite{Nadel97} and the Trace Transformation Theory (TTT) \cite{Winocur10,Winocur11}.
+The MTT postulates that memories are re-encoded in the hippocampus during retrieval, generating multiple traces for the same memory. Our model maintains multiple memory traces in different shortcut pathways, even without a retrieval-based re-encoding. The consolidation mechanism of the PPT, however, could also transfer a specific memory multiple times if it is re-encoded during retrieval. If neocortex extracts statistical regularities from a collection of memories \cite{McClelland95}, the consolidation of such a repeatedly re-encoded memory could then lead to a gist-like, more semantic version of that memory in neocortex \cite{Nadel97, Winocur11, Levine02}, as emphasized by the TTT.
+
+The premise of our model is that memories are actively transferred between brain regions. This premise has recently been subject to debate \cite{Yonelinas19, Antony19, Yonelinas19a}, following the suggestion of the Contextual Binding (CB) theory. The CB theory argues that amnesia in lesion studies and replay-like activity can be explained by simultaneous learning in hippocampus and neocortex, together with interference of contextually similar episodic memories \cite{Yonelinas19}. Note, however, that our \replaced{framework}{theory} does not exclude a simultaneous encoding in neocortex and hippocampus, which can be combined with active consolidation \cite{Dudai15,Pohlchen20}.
+
+Hence, our mechanistic approach is in agreement with and may allow for a unification of several phenomenological theories of systems consolidation.
+
+\subsection{Consolidation of non-declarative memories}
+
+Given that shortcut connections are widespread throughout the central nervous system \cite{vanEssen92,Morgenstern16}, the suggested mechanism may also be applicable to the consolidation of non-declarative memories, e.g., of perceptual \cite{Karni94} and motor skills \cite{Brashers96}, fear memory \cite{Kitamura17} or to the transition of goal-directed to habitual behaviour \cite{Aarts00}.
+
+Several studies have suggested two-pathway models in the context of motor learning \cite{Makino16, Pyle19, Tesileanu17, Murray20}. In particular, Murray and Escola \cite{Murray20} recently used a two-pathway model to investigate how repeated practice affects future performance and leads to habitual behaviour.
+While their model does not incorporate an active consolidation mechanism or multiple learning stages, the basic mechanism is the same:
+A fast learning pathway from cortex to sensorimotor striatum first learns a motor skill and then teaches a slowly learning pathway from thalamus to striatum during subsequent repetition.
+
+\subsection{Limitations of the model and future directions}
+
+The present work focuses on feedforward networks and local learning rules. Hence, the model cannot address how systems memory consolidation affects the representation of sensory stimuli and forms schemata that facilitate future learning \cite{Tse07, Tse11} because representation learning typically requires a means of backpropagating information through the system, e.g., by feedback connections \cite{Lillicrap20}. The interaction of synaptic plasticity with recurrent feedback connections generates a high level of dynamical complexity, which is beyond the scope of the present study. Our framework also does not explain reconsolidation, that is, how previously consolidated memories become labile and hippocampus-dependent again through their reactivation \cite{Debiec02,Dudai12}.
+
+On the mechanistic level, \replaced{the PPT predicts}{we predict} temporally specific deficits in memory consolidation when relevant shortcut connections are lesioned, that is, a tight link between the anatomical organisation of synaptic pathways and their function for memory. These predictions may be most easily tested in non-mammalian systems, where connectomic data are available \cite{Xu20}.
+
+The \replaced{PPT }{parallel pathway theory} could provide an inroad to a mechanistic understanding of the transformation of episodic memories into more semantic representations. This could be modelled, e.g, by encoding a collection of episodic memories that share statistical regularities and studying the dynamics of statistical learning and semantisation in the shortcut connections during consolidation. Such future work may allow \added{us} to ultimately bridge the gap between memory consolidation on the mechanistic level of synaptic computations and the behavioural level of cognitive function.
