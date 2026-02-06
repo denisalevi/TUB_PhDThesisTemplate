@@ -1,0 +1,217 @@
+% -*- root: ../thesis.tex -*-
+%!TEX root = ../thesis.tex
+% ******************************************************************************
+% ************************* Custom LaTeX Commands ******************************
+% ******************************************************************************
+%
+% This file contains custom LaTeX commands that may be used across chapters.
+% Add your command definitions below.
+
+% Example:
+% \newcommand{\mycommand}[1]{\textbf{#1}}
+
+%%% Chapter PPT
+% commands for outside math mode
+\newcommand{\ppca}{\texorpdfstring{PP$_\textrm{\footnotesize CA1}$}{PP-CA1}}
+\newcommand{\ppsub}{\texorpdfstring{PP$_\textrm{\footnotesize SUB}$}{PP-SUB}}
+% commands for inside math mode (in equationa, eq)
+\newcommand{\ppcaeq}{\rm PP\text{-}CA1}
+\newcommand{\ppsubeq}{\rm PP\text{-}SUB}
+\newcommand{\casubeq}{\rm CA1\text{-}SUB}
+
+\renewcommand{\vec}[1]{\mathbf{#1}} % Michiel added this to change to bold fonts for vectors (looks cleaner)
+\newcommand{\vc}[1]{\vec{#1}}
+
+\newcommand{\W}{\vc{W}} % weights of PP
+\newcommand{\V}{\vc{V}} % weights of SC
+\newcommand{\x}{\vc{x}} % input rates from EC
+\newcommand{\z}{\vc{x}'} % input rates from CA3
+\newcommand{\y}{y} % output rate of the CA1 cell
+\newcommand{\LW}{L} % learning window
+\newcommand{\e}{{\rm e}} %
+\newcommand{\Cxx}{\langle \x \x^{\mathsf{T}}\rangle} % covariance matrix of the direct input
+\newcommand{\Cxz}{\langle \x \z^{\mathsf{T}}\rangle} % covariance between direct and indirect input
+\newcommand{\HS}[1]{{\color{blue} #1}}
+
+%%% FIGURE MACROS %%%
+% The variables here are names after the original figure 1-4
+
+%% Figure 1 %%
+% Figure 1 title
+\newcommand{\figureOneFigureTitle}{%
+  A mechanistic basis for systems memory consolidation%
+}
+
+% Figure 1 label
+\newcommand{\figureOneFigureLabel}{fig:PPT_mechanism}
+
+% Figure 1 caption
+\newcommand{\figureOneFigureCaption}{%
+  (A) Circuit motif for the parallel pathway theory.
+  Cue-response associations are initially stored in an indirect synaptic pathway (blue)
+  and consolidated into a parallel direct pathway (red).
+  (B) Hippocampal connectivity.
+  The entorhinal cortex projects to CA1 through an indirect pathway via DG-CA3 and the Schaffer collaterals (SC, blue arrow), and through the direct perforant path (\ppca, red arrow).
+  (C) Model of consolidation through STDP.
+  Left: before consolidation, a strong SC input (middle, blue vertical bar) causes a large EPSP and triggers a spike in CA1 (bottom, black vertical bar).
+  A weak \ppca~input (top, red) that precedes the SC input is potentiated by STDP.
+  Right: after consolidation through STDP, the \ppca~input (top) can trigger a spike in CA1 by itself (bottom).
+  (D-E) Consolidation in a single integrate-and-fire CA1 cell receiving 1000 \ppca~and 1000 SC excitatory inputs.
+  (D) \ppca~activity consists of independent poisson spike trains; the SC activity is an exact copy of the \ppca~activity, delayed by 5 ms.
+  (E) Consolidation of a synaptic weight pattern from non-plastic SC synapses to plastic \ppca~synapses.
+  Left and middle: normalized synaptic weights before and after consolidation.
+  Right: time course of correlation between SC and \ppca~weight vectors during consolidation (mean $\pm$ SEM for 10 trials).
+  \added{(F) 
+  Failure of consolidation of a synaptic weight pattern from non-plastic PP$_\mathrm{CA1}$ to plastic SC synapses; panels as in E. 
+}}
+
+% Figure 1 filename
+%\newcommand{\figureOneFigureFilename}{Fig_1_with_motif.pdf}
+\newcommand{\figureOneFigureFilename}{fig1}
+
+
+% Figure 2 title
+\newcommand{\figureTwoFigureTitle}{%
+  Consolidation of spatial representations%
+}
+
+% Figure 2 label
+\newcommand{\figureTwoFigureLabel}{fig:spatial}
+
+% Figure 2 caption
+\newcommand{\figureTwoFigureCaption}{%
+  (A) Replay of \ppca~and SC activity during sleep.
+  500 \ppca~inputs and 2500 SC inputs are spatially tuned on a linear track with periodic grid fields (top, red) and place fields (bottom, blue).
+  Spiking activities are independent Poisson processes (10 spikes/s) inside place/grid fields, otherwise silent.
+  SC activity is delayed by 5 ms.
+  (B) Multi-compartmental model of a reconstructed CA1 pyramidal neuron (see %\hyperref[ssec:methods_multicompartment]{
+  {\em Methods}).
+  \ppca~and SC inputs project to distal apical tuft dendrites (red dots) and proximal apical and basal dendrites (blue dots).
+  (C) Active neuron properties.
+  Top: somatic sodium spike (black) propagates to the distal tuft and initiates a dendritic calcium spike (red) and further sodium spikes.
+  Bottom: dendritic calcium spike leads to bursts of somatic spikes.
+  (D) Spatial tuning before consolidation.
+  SC provides place field-tuned input to the CA1 cell (left, blue), which yields spatially tuned spiking activity (right, blue); \ppca~input is not spatially tuned (left, red), and (alone) triggers low and untuned spiking activity (right, red).
+  (E) Somatic and dendritic activity during consolidation.
+  During replay, SC input generates backpropagating sodium spikes (black vertical lines) that generate dendritic calcium spikes (red).
+  (F) After consolidation.
+  Spatial tuning is consolidated from the indirect SC pathway into the direct \ppca~pathway.
+  Left: spatial tuning of total \ppca~input (red) approaches theoretically derived \ppca~input tuning (magenta; see {\em Methods}).
+  Right: CA1 output is place field-tuned through either SC or \ppca~input alone.
+  (G) Evolution of correlation between actual and optimal \ppca~input tuning (see F) for replay speeds corresponding to hippocampal replay events (black) and real-time physical motion (grey). Position in D, E, and F normalized to [0,1].
+}  % end figureTwoFigureCaption
+
+% Figure 2 filename
+%\newcommand{\figureTwoFigureFilename}{Fig_2.pdf}
+\newcommand{\figureTwoFigureFilename}{fig3}
+
+
+% Figure 3 title
+\newcommand{\figureThreeFigureTitle}{%
+  Consolidation of place-object associations in multiple hippocampal stages%
+}
+
+% Figure 3 label
+\newcommand{\figureThreeFigureLabel}{fig:lesion}
+
+% Figure 3 caption
+\newcommand{\figureThreeFigureCaption}{%
+  (A) Structure of the extended model.
+  \ppsub: perforant path to the subiculum.
+  Each area (EC, DG-CA3, CA1, SUB) contains object-coding and place-coding populations.
+  Open arrows: all-to-all connections between these areas.
+  (B) Decoding of consolidated associations.
+  Top: The location of a platform in a circular environment is stored as an object-place association in the SC (thick diagonal arrows in A, right).
+  Middle: Platform position probability maps given the platform object cue, inferred from the CA1 output resulting from SC or \ppca~alone, at different times during consolidation ({\em Methods}).
+  Bottom: Platform-in-quadrant probabilities ($
+ \pm \mathrm{SEM}$) given \ppca~input alone during consolidation.
+  Quadrant with correct platform position (target quadrant) in orange.
+  (C) Consolidation from SC to \ppca~and to \ppsub~over four weeks.
+  Each day, a new association is first stored in SC and then partially consolidated.
+  An association on day~0 is monitored in SC, \ppca,~and \ppsub.
+  Panels as in B.
+  (D) Effects of \ppca~lesions on memory consolidation, model and experiment (data with permission from \cite{Remondes2004}).
+  Histograms of time ($
+ \pm \mathrm{SEM}$) spent in quadrants at different delays after memory acquisition (``probe'').
+  Dashed lines at 25\% are chance levels.
+  T: target quadrant; Left, Right: adjacent quadrants; O: opposite quadrant.
+  Top: Control without lesion.
+  Middle: Lesion before memory acquisition.
+  Bottom: Lesion 21 days after memory acquisition.
+}
+
+% Figure 3 filename
+%\newcommand{\figureThreeFigureFilename}{Fig_3.pdf}
+\newcommand{\figureThreeFigureFilename}{fig4}
+
+
+% Figure 4 title
+\newcommand{\figureFourFigureTitle}{%
+  Consolidation from hippocampus into neocortex by a hierarchical nesting of consolidation circuits%
+}
+
+% Figure 4 label
+\newcommand{\figureFourFigureLabel}{fig:hierarchical}
+
+% Figure 4 caption
+\newcommand{\figureFourFigureCaption}{%
+  (A) Schematic of the hierarchical model.
+  The hippocampal formation (HPC) is connected to cortical input circuit 1 and output circuit 1.
+  Increasing numbers indicate circuits further from the HPC and closer to the sensory/motor periphery.
+  Each direct connection at one level (e.g., dark blue arrow between input 1 and output 1) is part of the indirect pathway of the next level (e.g., for pathways from input 2 to output 2).
+  Learning rates of the direct connections decrease exponentially with increasing level (i.e., from blue to red).
+  (B) Memories gradually propagate to circuits more distant from the HPC.
+  The correlation of the initial HPC weights with the direct pathways is shown as a function of time and reveals a memory wave from HPC into neocortex.
+  The maximum of the output circuits follows approximately a power-law (black curve).
+  Noise level indicates chance-level correlations between pathways.
+  (C) Consolidated memories yield faster responses (from sensory periphery, e.g., Input 8, to system output) because these memories are stored in increasingly shorter synaptic pathways.
+}
+
+% Figure 4 filename
+%\newcommand{\figureFourFigureFilename}{Fig_4.pdf}
+\newcommand{\figureFourFigureFilename}{fig5}
+
+
+% This is copied from the PLOS Latex template: Includes just the caption, not the figure
+\newcommand{\figureCaptionOnly}[5][!ht]{%
+    % Place figure captions after the first paragraph in which they are cited.
+    \begin{figure}[#1]
+    \caption{{\bf #2.} #4}
+    \label{#3}
+    \end{figure}
+}
+
+\newcommand{\makeWideFigure}[5][!htbp]{%
+  % turn off line numbers in captions
+
+  \begin{figure}[#1]
+  \begin{adjustwidth}{-2.25in}{0in}
+  \includegraphics[width=\linewidth]{#5}
+
+  % wide figure with multi-page caption
+  \vspace{.4cm} % set vertical space between text and figure
+  \end{adjustwidth}
+  \caption{\textbf{#2.} #4}
+  \label{#3}
+  \end{figure}
+}
+
+\newcommand{\makeStandardFigure}[5][H]{%
+  % standard floating figure
+
+  \begin{figure}[#1]
+    % use to correct figure counter if necessary
+    %\renewcommand{\thefigure}{2}
+    \centering
+
+    \includegraphics[width=\textwidth]{#5}
+
+    \vspace{.4cm}
+
+    \caption{\textbf{#2.} #4}
+
+    \label{#3} % \label works only AFTER \caption within figure environment
+
+  \end{figure}
+}
+%% END MACROS SECTION
