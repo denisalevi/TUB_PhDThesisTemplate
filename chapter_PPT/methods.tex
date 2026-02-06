@@ -29,7 +29,7 @@ The synaptic peak conductances or weights, $g_i$, were either set to a fixed val
 	\end{cases}
 	\label{eq:spiking_additive_STDP}
 \end{align}
-with $\tau_{\rm STDP}=20$~ms. $L(\Delta t)$ is the learning window of STDP \cite{Song2000}. Hard upper and lower bounds were imposed on the synaptic weights, such that $0\le g_i \le \bar{g}_{\rm max}$ for all $i$, where the dimensionless maximum synaptic weight was $\bar{g}_{\rm max}=0.006$. Parameters  $A^+=0.005 \cdot \bar{g}_{\rm max}$ 
+with $\tau_{\rm STDP}=20$~ms. $L(\Delta t)$ is the learning window of STDP \cite{Song2000}. Hard upper and lower bounds were imposed on the synaptic weights, such that $0\le g_i \le \bar{g}_{\rm max}$ for all $i$, where the dimensionless maximum synaptic weight was $\bar{g}_{\rm max}=0.006$. Parameters $A^+=\eta \cdot \bar{g}_{\rm max}$
 and $A^-=1.05 \cdot A^+$
 with $\eta=0.005$
 determine the maximum amounts of LTP and LTD, respectively.
@@ -116,7 +116,7 @@ Excitatory synaptic inputs were distributed over the membrane surface. Upon acti
 
 All inputs were spatially tuned on a 2.5~m long linear track over which the simulated rat walked. The \ppca~inputs showed periodic, grid field-like spatial tuning with periodicity ranging from 2 to 6 grid fields along the entire track with random phase: $G_i(x) = r\mathcal{H}(\cos(2 \pi k x + \xi_i))$, where $\mathcal{H}$ is the Heaviside step function, $r$ is the mean firing rate within the grid field, $k$ is the spatial frequency, and $\xi_i$ is the random spatial phase offset for neuron $i$ (for $i=1, \ldots, 500$). The 2500 SC inputs showed place field-like tuning, having single, 25~cm long place fields distributed uniformly random along the track. When the virtual rat was within the place or grid field of an SC or \ppca~fiber, respectively, the input was activated as an independent Poisson process with a mean rate of $r=$10~spikes/s. Outside of the place/grid fields the fibers were quiescent. Simulations of the consolidation phase considered replay of the rat walking back and forth along the linear track, with running speeds increased, compared to realistic speeds, by a factor 20 (5~m/s; \cite{Lee2002}). SC input activity to the CA1 cell was delayed by 5~ms with respect to the \ppca~input \cite{Yeckel1998}, accounting for the extra processing stages involved for information reaching CA1 from the entorhinal cortex through DG and CA3, compared to the direct entorhinal \ppca~input.
 
-The \ppca~and/or SC inputs showed additive STDP, operating in the same manner as defined in the Methods for Fig~1 Eq~\eqref{eq:spiking_additive_STDP}. Post-synaptic spikes were defined as local voltage crossings of a threshold at $-30$~mV. The maximum synaptic weight for the SC inputs was 400~pS and 140~pS for the \ppca~inputs.
+The \ppca~and/or SC inputs showed additive STDP, operating in the same manner as defined around Eq~\eqref{eq:spiking_additive_STDP}. Post-synaptic spikes were defined as local voltage crossings of a threshold at $-30$~mV. The maximum synaptic weight for the SC inputs was 400~pS and 140~pS for the \ppca~inputs.
 
 The reference tuning curve shown in Fig~\ref{fig:spatial}F (\ppca~inputs theory) was computed by adding up all grid field tuning functions that had an active field in the SC-encoded spatial position (i.e., halfway along the linear track).
 
@@ -212,7 +212,7 @@ The plastic weight matrices $\W_{\ppcaeq}$ and $\W_{\ppsubeq}$ changed according
 \mathrm{d}\tau \left[ L(\tau) \; \x_{\mathrm{EC}}(t-\tau) \; \vc{y}^\mathsf{T}(t)   +  L(-\tau) \; \x_{\mathrm{EC}}(t) \; \vc{y}^\mathsf{T}(t-\tau) \right],
 \label{eq:rate_based_additive_STDP_remondes}
 \end{align}
-where $\vc{W}$ is either $\W_{\ppcaeq}$ or $\W_{\ppsubeq}$, and $\vc{y}$ correspondingly $\vc{y}_{\mathrm{CA1}}$ or $\vc{y}_{\mathrm{SUB}}$. The learning window $L(\tau)$ (see Eq~\eqref{eq:spiking_additive_STDP} determines the learning dynamics.
+where $\vc{W}$ is either $\W_{\ppcaeq}$ or $\W_{\ppsubeq}$, and $\vc{y}$ correspondingly $\vc{y}_{\mathrm{CA1}}$ or $\vc{y}_{\mathrm{SUB}}$. The learning window $L(\tau)$ defined in Eq~\eqref{eq:spiking_additive_STDP} determines the learning dynamics.
 
 Equation~\eqref{eq:rate_based_additive_STDP_remondes} differs from the corresponding Eq~\eqref{eq:rate_based_additive_STDP}
 in several ways. First, on the left-hand side there is now a derivative, in contrast to the earlier version with a differential quotient; and on the right-hand side we omit the angular brackets that indicated a temporal average. Therefore, Eq~\eqref{eq:rate_based_additive_STDP_remondes} represents the instantaneous change of weights for a particular input, which is numerically more straightforward to implement in an online-learning paradigm. The resulting weight change for long times and many inputs approximates well Eq~\eqref{eq:rate_based_additive_STDP} if consolidation is slow enough. Second, we now omit the learning rate parameter $\eta$, which is absorbed in the definition of the parameters $A^+$ and $A^-$ of the learning window $L$. Third, there are now two addends in the integral and the integration limits are  from $0$ to $\infty$. This is equivalent to the earlier definition, but more convenient for a numerical implementation. All this allows to simplify the description of the learning dynamics, as will be outlined in what follows.
@@ -231,7 +231,7 @@ where $\tau_{\rm STDP}$ determines the width of the learning window.
 
 Weight values are constrained to the interval $\left[0, w_{\rm max}\right]$. The weights of $\vc{W}_{\ppcaeq}$ and $\vc{W}_{\ppsubeq}$ were initialized to small random values from a uniform distribution in $\left[0,w_{\rm init}^{\rm max}\right]$.
 
-For each iteration in a consolidation cycle of duration $T_c$, i.e., every~$\Delta t=5$ms, we chose a random input position and a random object to calculate the activities in all layers. These activities were then used to update the weights as given in Eq~\eqref{eq:STDPrule}.
+For each iteration in a consolidation cycle of duration $T_c$, i.e., every~$\Delta T=5$ms, we chose a random input position and a random object to calculate the activities in all layers. These activities were then used to update the weights as given in Eq~\eqref{eq:STDPrule}.
 
 \subsubsection{Assessing the strength of memories in SC, \ppca, and \ppsub}
 %\label{sec:Remondes-mem-strength}
@@ -325,16 +325,16 @@ In our simulations we implemented a lesion by setting all \ppca~weights to $0$ (
 %\label{ssec:methods_hierarchy}
 %\addcontentsline{toc}{section}{\nameref{ssec:methods_hierarchy}}
 
-Figure~\ref{fig:hierarchical} of the main text demonstrates the consolidation of memories in a hierarchy of connected neural populations.
+Figure~\ref{fig:hierarchical} of the {\em Results} demonstrates the consolidation of memories in a hierarchy of connected neural populations.
 In the model, signals flow along distinct neocortical neural populations to the hippocampal formation (HPC) and back into neocortex (black arrows in Fig~\ref{fig:hierarchical}A).
 Shortcut connections exist between the neocortical populations (colored arrows in Fig~\ref{fig:hierarchical}A). All connections carry the same transmission delay~$D$.
 
-Every day new memories are imprinted into the weight matrix connecting the neocortex to the HPC. The model describes the transfer of the memories into neocortex during $N_{\rm cycle}$ consolidation phases, of which there is one per night (for all model parameters and values, see Table~\ref{tab:hierarchy}). In contrast to the model for Fig~\ref{fig:lesion}, we do not consider object-place associations, but directly analyse correlations between a stored memory weight matrix and the weight matrices that describe the neocortical shortcut connections.
+Every day new memories are imprinted into the weight matrix representing the HPC. The model describes the transfer of the memories into neocortex during $N_{\rm cycle}$ consolidation phases, of which there is one per night (for all model parameters and values, see Table~\ref{tab:hierarchy}). In contrast to the model for Fig~\ref{fig:lesion}, we do not consider object-place associations, but directly analyse correlations between a stored memory weight matrix and the weight matrices that describe the neocortical shortcut connections.
 
 \subsubsection{Model details}
 %\label{sec:Remondes-hierarchy-model}
 %\addcontentsline{toc}{subsection}{\nameref{sec:Remondes-hierarchy-model}}
-We consider a hierarchy of $2 L$ neocortical populations with $L=8$ shortcut connections. Activities of the populations that project towards the HPC are given by vectors $\vec{x}_i(t)$ and the activities of the populations leading away from the HPC by vectors $\vec{y}_i(t)$ ($i\in \{1,...,L\})$. At each iteration, the activities $\vec{x}_L(t)$ (i.e., the neocortical population most distal from the HPC) are sampled from a Gaussian distribution with a mean input rate $r$  and a standard deviation $r/2$. The sampled activities are rectified to be non-negative ($r\rightarrow \max(r,0)$), hence yielding a rectified Gaussian distribution.
+We consider a hierarchy of $2 L$ neocortical populations with $L=8$ shortcut connections. Activities of the populations that project towards the HPC are given by vectors $\vec{x}_i(t)$ and the activities of the populations leading away from the HPC by vectors $\vec{y}_i(t)$ ($i\in \{1,...,L\})$. At each iteration, the activities $\vec{x}_L(t)$ (i.e., the neocortical population most distal from the HPC) are sampled from a Gaussian distribution with a mean input rate $r$  and a standard deviation $r/2$. The sampled activities are rectified to be non-negative ($r\leftarrow \max(r,0)$), hence yielding a rectified Gaussian distribution.
 The activities on all other layers are then determined by their respective connections. For simplicity, we assume that weight matrices connecting subsequent populations in the hierarchy (black arrows in Fig~\ref{fig:hierarchical}A) are identity matrices that are scaled such that activity levels remain comparable along the hierarchy (see below). The results do not depend on this simplifying assumption. The population activities along the HPC directed path are then given as
 \begin{align}
 \vec{x}_i = \vec{x}_{i+1}(t-D), \;\;\;\;\; \forall i \in \{1,..,L-1\}.
@@ -374,7 +374,7 @@ Subsequent activities $\vec{y}_i$ of populations projecting away from HPC are ca
 where $\W_i$ are the direct shortcut connections from the populations $\vec{x}_{i}$ to the populations $\vec{y}_i$.
 
 
-Memory imprinting to the HPC weight matrix $\V_{\rm HPC}$ is analogous to the section for Fig~\ref{fig:lesion} (compare Eq~\eqref{eq:MemoryImprint}). Before each consolidation phase, new memories were sampled from a binomial distribution $\vc{B}(1, 0.5)$. The HPC weights were then updated as
+Memory imprinting to the HPC weight matrix $\V_{\rm HPC}$ is analogous to the imprinting used in Fig~\ref{fig:lesion} (compare Eq~\eqref{eq:MemoryImprint}). Before each consolidation phase, new memories were sampled from a binomial distribution $\vc{B}(1, 0.5)$. The HPC weights were then updated as
 \begin{equation}
 \V_{\rm HPC} \leftarrow \left[ \V_{\rm HPC} + \frac{\lambda \left[ \vc{B}(1, 0.5)  \right]^{\rm norm}_1 }{1-\lambda}  \right]^{\rm norm}_1,
 \label{eq:hierarchy_imprint}
@@ -382,7 +382,7 @@ Memory imprinting to the HPC weight matrix $\V_{\rm HPC}$ is analogous to the se
 where $\left[ \vec{M}\right]^{\rm norm}_1$  denotes the L1 normalization of each row of the matrix $\vec{M}$
 and $0<\lambda<1$ is the strength of a new memory.
 
-All shortcut connections $\W_{i}$ showed plasticity according to Eqs~\eqref{eq:STDPrule} and~\eqref{eq:STDPtraces}
+All shortcut connections $\W_{i}$ showed plasticity similar to Eqs~\eqref{eq:STDPrule} and~\eqref{eq:STDPtraces}
 , i.e.
 \begin{align}
 \frac{\mathrm{d} \vc{W}_i }{\mathrm{d} t} &=
@@ -407,7 +407,7 @@ Before starting the main simulation of $N_{\rm cycle}$ consolidation cycles, we 
 %\addcontentsline{toc}{subsection}{\nameref{sec:Remondes-hierarchy-mem}}
 To assess the decay of memory in the system, a reference memory $\V_{\rm ref}$, i.e. a specific realization from a row-normalized binomial distribution $\vc{B}(1, 0.5)$, was imprinted according to Eq~\eqref{eq:hierarchy_imprint} to $\V_{\rm HPC}$ at time $t=0$. The memory pathway correlation, i.e., the Pearson correlation of this reference memory with all shortcut weight matrices $\W_i$ was then calculated.
 
-In analogy to the  section for Fig~\ref{fig:lesion}, the maximum correlation (across layers) was taken as the overall memory signal of the system. This yields the power law in Fig~\ref{fig:hierarchical}B.
+In analogy to the {\em Methods} on Fig~\ref{fig:lesion}, the maximum correlation (across layers) was taken as the overall memory signal of the system. This yields the power law in Fig~\ref{fig:hierarchical}B.
 The noise level indicated in Fig~\ref{fig:hierarchical}B is the standard deviation of the correlation between  two random matrices  drawn from a binomial distribution $\vc{B}(1, 0.5)$ and then row-normalized, both having sample size $N^2$. Considering the central limit theorem, the noise level will be approximately $1/N$.
 
 \begin{table}[!ht]
