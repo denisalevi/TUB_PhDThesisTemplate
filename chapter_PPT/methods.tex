@@ -3,14 +3,14 @@
 \subsection{Consolidation in a single integrate-and-fire neuron}%
 %\label{sec:3.1}
 %\addcontentsline{toc}{section}{\nameref{sec:3.1}}
-For the results shown in Fig~\ref{fig:mechanism}E and \deleted{Supplementary} Fig~\ref{fig:mechanism}\added{F} we used a single integrate-and-fire  model neuron that received excitatory synaptic input. The membrane potential $V(t)$ %(in millivolts)
+For the results shown in Fig~\ref{fig:PPT_mechanism}E and \deleted{Supplementary} Fig~\ref{fig:PPT_mechanism}\added{F} we used a single integrate-and-fire  model neuron that received excitatory synaptic input. The membrane potential $V(t)$ %(in millivolts)
 evolved according to
 \begin{align}
 \tau_{\rm m}\frac{{\rm d} V}{{\rm d} t} = V_{\rm rest} - V + g_{\rm syn}(t)(E_{\rm syn}-V)\,,\label{eq:i_and_f}
 \end{align}
 with membrane time constant $\tau_{\rm m} = 20$~ms, resting potential $V_{\rm rest} = -70$~mV, and synaptic reversal potential $E_{\rm syn}=0$~mV. When the membrane potential reached the threshold $V_{\rm thresh}=-54$~mV, the cell produced a spike and the voltage was reset to $-60$~mV during an absolute refractory period of $1.75$ ms.
 
-The total synaptic conductance $g_{\rm syn}(t)$ in Eq~\eqref{eq:i_and_f} is denoted in units of the leak conductance and thus dimensionless (parameters are taken from \cite{Troyer_1997}). The total synaptic conductance was determined by the sum of 1000 Schaffer collateral (SC) inputs and 1000 perforant path (\ppca) inputs. Activation of input $i$ (where $i$ denotes synapse number) leads to a jump $g_i>0$ in the synaptic conductance:
+The total synaptic conductance $g_{\rm syn}(t)$ in Eq~\eqref{eq:i_and_f} is denoted in units of the leak conductance and thus dimensionless (parameters are taken from \cite{Troyer1997}). The total synaptic conductance was determined by the sum of 1000 Schaffer collateral (SC) inputs and 1000 perforant path (\ppca) inputs. Activation of input $i$ (where $i$ denotes synapse number) leads to a jump $g_i>0$ in the synaptic conductance:
 \begin{align}
 g_{\rm syn}(t)\rightarrow g_{\rm syn}(t)+g_i\, .
 \end{align}
@@ -20,7 +20,7 @@ All synaptic conductances decay exponentially,
 \end{align}
 with synaptic time constant $\tau_{\rm syn}=5$~ms. The \ppca~inputs were activated by mutually independent Poisson processes with a mean rate of 10~spikes/s. The activity patterns of the SC fibers were identical to those of the \ppca~fibers but were delayed by 5~ms.
 
-The synaptic peak conductances or weights, $g_i$, were either set to a fixed value or were determined by additive STDP \cite{Song_2000}. A single pair of a presynaptic spike (at time $t_{\rm pre}$) and a postsynaptic spike (at time $t_{\rm post}$) with time difference $\Delta t\equiv t_{\rm pre} - t_{\rm post}$ induced a modification of the synaptic weight $\Delta g_i$ according to
+The synaptic peak conductances or weights, $g_i$, were either set to a fixed value or were determined by additive STDP \cite{Song2000}. A single pair of a presynaptic spike (at time $t_{\rm pre}$) and a postsynaptic spike (at time $t_{\rm post}$) with time difference $\Delta t\equiv t_{\rm pre} - t_{\rm post}$ induced a modification of the synaptic weight $\Delta g_i$ according to
 \begin{align}
 \Delta g_i= L(\Delta t) =
 	\begin{cases}
@@ -29,12 +29,12 @@ The synaptic peak conductances or weights, $g_i$, were either set to a fixed val
 	\end{cases}
 	\label{eq:spiking_additive_STDP}
 \end{align}
-with $\tau_{\rm STDP}=20$~ms. $L(\Delta t)$ is the learning window of STDP \cite{Song_2000}. Hard upper and lower bounds were imposed on the synaptic weights, such that $0\le g_i \le \bar{g}_{\rm max}$ for all $i$, where the dimensionless maximum synaptic weight was $\bar{g}_{\rm max}=0.006$. Parameters \replaced{$A^+=\eta \cdot \bar{g}_{\rm max}$}{ $A^+=0.005 \cdot \bar{g}_{\rm max}$ }
+with $\tau_{\rm STDP}=20$~ms. $L(\Delta t)$ is the learning window of STDP \cite{Song2000}. Hard upper and lower bounds were imposed on the synaptic weights, such that $0\le g_i \le \bar{g}_{\rm max}$ for all $i$, where the dimensionless maximum synaptic weight was $\bar{g}_{\rm max}=0.006$. Parameters \replaced{$A^+=\eta \cdot \bar{g}_{\rm max}$}{ $A^+=0.005 \cdot \bar{g}_{\rm max}$ }
 and $A^-=1.05 \cdot A^+$
 \added{with $\eta=0.005$}
 determine the maximum amounts of LTP and LTD, respectively.
 
-Synaptic weights were initialized to form a bimodal distribution, such that it agrees with the steady state weight distribution resulting from additive STDP, when presynaptic input consists of uncorrelated Poisson spike trains \cite{Song_2000}. Specifically, half the weights were sampled from an exponential distribution with mean $0.05 \cdot \bar{g}_{\rm max}$, the other half as $\bar{g}_{\rm max}$ minus that same exponential distribution.
+Synaptic weights were initialized to form a bimodal distribution, such that it agrees with the steady state weight distribution resulting from additive STDP, when presynaptic input consists of uncorrelated Poisson spike trains \cite{Song2000}. Specifically, half the weights were sampled from an exponential distribution with mean $0.05 \cdot \bar{g}_{\rm max}$, the other half as $\bar{g}_{\rm max}$ minus that same exponential distribution.
 % initial values
 
 The dynamics were integrated numerically using the forward Euler method, with an integration time step of 0.1 ms.
@@ -44,7 +44,7 @@ The dynamics were integrated numerically using the forward Euler method, with an
 \subsection{Consolidation of spatial representations in a multi-compartment neuron model}%
 %\label{ssec:methods_multicompartment}
 %\addcontentsline{toc}{section}{\nameref{ssec:methods_multicompartment}}
-The results presented in Fig~\ref{fig:spatial}C-G relied on numerical simulations of a conductance-based compartmental model of a reconstructed CA1 pyramidal cell (cell n128 from \cite{Cannon_1998}). Passive cell properties were defined by the membrane resistance $R_\textrm{m}=30$~kOhm\,cm$^2$ with reversal potential $E_\textrm{L}=-70$~mV, intracellular resistivity $R_\textrm{i} = 150$ $\Omega\,$cm, and membrane capacitance $C_\textrm{m} = 0.75\,\mu$F/cm$^2$. Dendrites were discretized into compartments with length smaller than 0.1 times the frequency-dependent passive space constant at 100 Hz. Three types of voltage-dependent currents and one calcium-dependent current, all from \cite{Mainen_1996}, were distributed over the soma and dendrites. Gating dynamics of the currents evolved according to standard first-order ordinary differential equations. The steady state (in)activation functions $x_\infty$ and voltage-dependent time constants $\tau_\infty$ for each gating variable (i.e., $x=m,h,n$; see below) were calculated from a first-order reaction scheme with forward rate $\alpha_x$ and backward rate $\beta_x$ according to $x_\infty(V)=\alpha_x(V)/(\alpha_x(V)+\beta_x(V))$ and $\tau_{\rm x}(V)=1/(\alpha_x(V)+\beta_x(V))$ where $V$ was the membrane potential. All used current densities and time constants were selected for a temperature of $37\,^{\circ}{\rm C}$ (see \cite{Mainen_1996}).
+The results presented in Fig~\ref{fig:spatial}C-G relied on numerical simulations of a conductance-based compartmental model of a reconstructed CA1 pyramidal cell (cell n128 from \cite{Cannon1998}). Passive cell properties were defined by the membrane resistance $R_\textrm{m}=30$~kOhm\,cm$^2$ with reversal potential $E_\textrm{L}=-70$~mV, intracellular resistivity $R_\textrm{i} = 150$ $\Omega\,$cm, and membrane capacitance $C_\textrm{m} = 0.75\,\mu$F/cm$^2$. Dendrites were discretized into compartments with length smaller than 0.1 times the frequency-dependent passive space constant at 100 Hz. Three types of voltage-dependent currents and one calcium-dependent current, all from \cite{Mainen1996}, were distributed over the soma and dendrites. Gating dynamics of the currents evolved according to standard first-order ordinary differential equations. The steady state (in)activation functions $x_\infty$ and voltage-dependent time constants $\tau_\infty$ for each gating variable (i.e., $x=m,h,n$; see below) were calculated from a first-order reaction scheme with forward rate $\alpha_x$ and backward rate $\beta_x$ according to $x_\infty(V)=\alpha_x(V)/(\alpha_x(V)+\beta_x(V))$ and $\tau_{\rm x}(V)=1/(\alpha_x(V)+\beta_x(V))$ where $V$ was the membrane potential. All used current densities and time constants were selected for a temperature of $37\,^{\circ}{\rm C}$ (see \cite{Mainen1996}).
 
 A fast sodium current, $I_{\rm Na}$, was distributed throughout the soma ($\bar{g}_{\rm Na}=130$~pS/$\mu$m$^2$) and dendrites ($\bar{g}_{\rm Na}=260$~pS/$\mu$m$^2$), except from the distal apical dendritic tuft,
 \begin{align}
@@ -110,17 +110,17 @@ Internal calcium concentration in a shell below the membrane surface was compute
 \frac{{\rm d}[{\rm Ca}^{2+}]_i}{{\rm d} t}=
 -\frac{10,000}{2 F d} I_{\rm Ca} + \frac{[{\rm Ca}^{2+}]_\infty - [{\rm Ca}^{2+}]_i} {\tau_{\rm R}} \,,
 \end{align}
-with Faraday constant $F$, depth of shell $d=0.1\,\mu$m and with $[{\rm Ca}^{2+}]_\infty=0.1\mu$M, and $\tau_{\rm R}=80$~ms. To account for dendritic spines, the membrane capacitance and current densities were doubled throughout the dendrites. An axon was lacking in the cell reconstruction and was added as in \cite{Mainen_1996}.
+with Faraday constant $F$, depth of shell $d=0.1\,\mu$m and with $[{\rm Ca}^{2+}]_\infty=0.1\mu$M, and $\tau_{\rm R}=80$~ms. To account for dendritic spines, the membrane capacitance and current densities were doubled throughout the dendrites. An axon was lacking in the cell reconstruction and was added as in \cite{Mainen1996}.
 
-Excitatory synaptic inputs were distributed over the membrane surface. Upon activation of a synapse, the conductance with a reversal potential of 0~mV increased instantaneously and subsequently decayed exponentially with a time constant of 3~ms. The \ppca~provided 500 inputs that were distributed with uniform surface density throughout the distal apical tuft dendrites; the SC provided 2500 inputs, distributed uniformly over basal dendrites and proximal apical dendrites \cite{Stuart07}.
+Excitatory synaptic inputs were distributed over the membrane surface. Upon activation of a synapse, the conductance with a reversal potential of 0~mV increased instantaneously and subsequently decayed exponentially with a time constant of 3~ms. The \ppca~provided 500 inputs that were distributed with uniform surface density throughout the distal apical tuft dendrites; the SC provided 2500 inputs, distributed uniformly over basal dendrites and proximal apical dendrites \cite{Stuart2007}.
 
-All inputs were spatially tuned on a 2.5~m long linear track over which the simulated rat walked. The \ppca~inputs showed periodic, grid field-like spatial tuning with periodicity ranging from 2 to 6 grid fields along the entire track with random phase: $G_i(x) = r\mathcal{H}(\cos(2 \pi k x + \xi_i))$, where $\mathcal{H}$ is the Heaviside step function, $r$ is the mean firing rate within the grid field, $k$ is the spatial frequency, and $\xi_i$ is the random spatial phase offset for neuron $i$ (for $i=1, \ldots, 500$). The 2500 SC inputs showed place field-like tuning, having single, 25~cm long place fields distributed uniformly random along the track. When the virtual rat was within the place or grid field of an SC or \ppca~fiber, respectively, the input was activated as an independent Poisson process with a mean rate of $r=$10~spikes/s. Outside of the place/grid fields the fibers were quiescent. Simulations of the consolidation phase considered replay of the rat walking back and forth along the linear track, with running speeds increased, compared to realistic speeds, by a factor 20 (5~m/s; \cite{Lee02}). SC input activity to the CA1 cell was delayed by 5~ms with respect to the \ppca~input \cite{Yeckel_1998}, accounting for the extra processing stages involved for information reaching CA1 from the entorhinal cortex through DG and CA3, compared to the direct entorhinal \ppca~input.
+All inputs were spatially tuned on a 2.5~m long linear track over which the simulated rat walked. The \ppca~inputs showed periodic, grid field-like spatial tuning with periodicity ranging from 2 to 6 grid fields along the entire track with random phase: $G_i(x) = r\mathcal{H}(\cos(2 \pi k x + \xi_i))$, where $\mathcal{H}$ is the Heaviside step function, $r$ is the mean firing rate within the grid field, $k$ is the spatial frequency, and $\xi_i$ is the random spatial phase offset for neuron $i$ (for $i=1, \ldots, 500$). The 2500 SC inputs showed place field-like tuning, having single, 25~cm long place fields distributed uniformly random along the track. When the virtual rat was within the place or grid field of an SC or \ppca~fiber, respectively, the input was activated as an independent Poisson process with a mean rate of $r=$10~spikes/s. Outside of the place/grid fields the fibers were quiescent. Simulations of the consolidation phase considered replay of the rat walking back and forth along the linear track, with running speeds increased, compared to realistic speeds, by a factor 20 (5~m/s; \cite{Lee2002}). SC input activity to the CA1 cell was delayed by 5~ms with respect to the \ppca~input \cite{Yeckel1998}, accounting for the extra processing stages involved for information reaching CA1 from the entorhinal cortex through DG and CA3, compared to the direct entorhinal \ppca~input.
 
 The \ppca~and/or SC inputs showed additive STDP, operating in the same manner as defined \replaced{around }{in the Methods for Fig~1} Eq~\eqref{eq:spiking_additive_STDP}. Post-synaptic spikes were defined as local voltage crossings of a threshold at $-30$~mV. The maximum synaptic weight for the SC inputs was 400~pS and 140~pS for the \ppca~inputs.
 
 The reference tuning curve shown in Fig~\ref{fig:spatial}F (\ppca~inputs theory) was computed by adding up all grid field tuning functions that had an active field in the SC-encoded spatial position (i.e., halfway along the linear track).
 
-Simulations were carried out with a fixed time step of 25~$\mu$s using the NEURON simulation software \cite{Hines_1997}.
+Simulations were carried out with a fixed time step of 25~$\mu$s using the NEURON simulation software \cite{Hines1997}.
 
 \subsection{Consolidation of place-object associations in multiple hippocampal stages}%
 %\label{sec:Remondes}
@@ -171,7 +171,7 @@ The scaling factors $w^{\rm id}_{\rm SC}=\frac{1}{4}$ and $w^{\rm id}_{\casubeq}
 %\addcontentsline{toc}{subsection}{\nameref{sec:Remondes-place-obj}}
 Place-coding cells in EC and DG-CA3 were assumed to respond deterministically, given a two-dimensional position variable $\vc{p}(t) \in [0,1]^2$, which evolves in time.
 
-Place-coding cells in entorhinal cortex show grid field spatial tuning \cite{Moser08}, which we modelled as a superposition of 3 plane waves with relative angles of $\tfrac{\pi}{3}$:
+Place-coding cells in entorhinal cortex show grid field spatial tuning \cite{Moser2008}, which we modelled as a superposition of 3 plane waves with relative angles of $\tfrac{\pi}{3}$:
 \begin{equation}
 \vc{x}^{\mathrm{place}}_{{\rm EC},i}\left(t\right) = r_{\rm max} \frac{2}{9}  \sum_{l=1}^3
 \left[
@@ -180,7 +180,7 @@ Place-coding cells in entorhinal cortex show grid field spatial tuning \cite{Mos
 ,
 \label{eq:GridCellAct}
 \end{equation}
-where the spacing $m_i = 2\pi \left(2 + \frac{4 i}{N}\right), \; \forall i \in [1, N],$ is chosen so that a total range of 2 to 6 periods fit into the circular environment. The orientation of the plane waves is determined by the vector $\vc{k}^l_i = [\cos(l \frac{\pi}{3} + \theta_i ), \, \sin(l \frac{\pi}{3} + \theta_i )]$ where $\theta_i$ are uniformly chosen random angles, and $\vc{p}_i \in [0,1]^2$ are uniformly sampled random phases of the grid field \cite{Solstad_2006}. Each cell's output rate varies between 0 to $r_{\rm max}$~spikes per second.
+where the spacing $m_i = 2\pi \left(2 + \frac{4 i}{N}\right), \; \forall i \in [1, N],$ is chosen so that a total range of 2 to 6 periods fit into the circular environment. The orientation of the plane waves is determined by the vector $\vc{k}^l_i = [\cos(l \frac{\pi}{3} + \theta_i ), \, \sin(l \frac{\pi}{3} + \theta_i )]$ where $\theta_i$ are uniformly chosen random angles, and $\vc{p}_i \in [0,1]^2$ are uniformly sampled random phases of the grid field \cite{Solstad2006}. Each cell's output rate varies between 0 to $r_{\rm max}$~spikes per second.
 
 Place-coding cells in DG-CA3 show place-field tuning and were assumed to have a 2D Gaussian activity profile
 \begin{align}
@@ -206,7 +206,7 @@ The weights from place-to-object coding cells could be updated analogously. This
 \subsubsection{Learning rule operating on \ppca~and \ppsub~pathways}
 %\label{sec:Remondes-learning}
 %\addcontentsline{toc}{subsection}{\nameref{sec:Remondes-learning}}
-The plastic weight matrices $\W_{\ppcaeq}$ and $\W_{\ppsubeq}$ changed according to a timing-based learning rule~\cite{Dayan_2001}:
+The plastic weight matrices $\W_{\ppcaeq}$ and $\W_{\ppsubeq}$ changed according to a timing-based learning rule~\cite{Dayan2001}:
 \begin{align}
 \frac{\mathrm{d} \vc{W}}{\mathrm{d}t} &= \int_0^{\infty}
 \mathrm{d}\tau \left[ L(\tau) \; \x_{\mathrm{EC}}(t-\tau) \; \added{\vc{y}^\mathsf{T}(t)}   +  L(-\tau) \; \x_{\mathrm{EC}}(t) \; \added{\vc{y}^\mathsf{T}(t-\tau)} \right],
@@ -223,7 +223,7 @@ We integrated the learning dynamics using the Euler method, with time steps~$\De
 \frac{\mathrm{d} \vc{W} }{\mathrm{d} t} &= A^+  \; \hat\x_{\mathrm{EC}}(t) \; \added{\vc{y}^\mathsf{T}(t)} + A^- \; \x_{\mathrm{EC}}(t)\; \added{\hat{\vc{y}}^\mathsf{T}(t)}
 \label{eq:STDPrule}
 \end{align}
-where $A^+$ and $A^-$ again determine the maximum amount of potentiation and depression of the synaptic weights, respectively. Note that these parameters effectively control the learning rate and are chosen twice as large in the \ppca~than in the \ppsub~(Table~\ref{tab:remondes}), to increase memory lifetime in the latter shortcut. Again, we used an exponential window function $L(\tau)$, so that exponentially filtered activities $\hat{\vec{x}}$ and $\hat{\vec{y}}$ can be calculated as in \cite{Song_2000}:
+where $A^+$ and $A^-$ again determine the maximum amount of potentiation and depression of the synaptic weights, respectively. Note that these parameters effectively control the learning rate and are chosen twice as large in the \ppca~than in the \ppsub~(Table~\ref{tab:remondes}), to increase memory lifetime in the latter shortcut. Again, we used an exponential window function $L(\tau)$, so that exponentially filtered activities $\hat{\vec{x}}$ and $\hat{\vec{y}}$ can be calculated as in \cite{Song2000}:
 \begin{align}
 \tau_{\rm STDP} \frac{\mathrm{d} \hat \x_{\mathrm{EC}}(t)}{\mathrm{d}t} = \x_{\mathrm{EC}}(t) - \hat \x_{\mathrm{EC}}(t) \;\;\; \mathrm{and}  \;\;\; \tau_{\rm STDP} \frac{\mathrm{d} \hat {\vc{y}}(t)}{\mathrm{d} t} = \vc{y}(t) - \hat {\vc{y}}(t), \label{eq:STDPtraces}
 \end{align}
@@ -274,9 +274,9 @@ To simulate a single consolidation cycle (i.e., a storage of a new memory follow
 \subsubsection{Lesion experiments}
 %\label{sec:Remondes-lesion}
 %\addcontentsline{toc}{subsection}{\nameref{sec:Remondes-lesion}}
-Remondes and Schuman \cite{Remondes04} lesioned the perforant path (temporoammonic pathway) during a Morris water maze consolidation experiment. Their finding evidenced a role of the perforant path in memory consolidation by showing that the precise time-point of the lesion after memory acquisition determined whether the memory persisted (see Fig~\ref{fig:lesion}D of main text).
+Remondes and Schuman \cite{Remondes2004} lesioned the perforant path (temporoammonic pathway) during a Morris water maze consolidation experiment. Their finding evidenced a role of the perforant path in memory consolidation by showing that the precise time-point of the lesion after memory acquisition determined whether the memory persisted (see Fig~\ref{fig:lesion}D of main text).
 
-In our simulations we implemented a lesion by setting all \ppca~weights to $0$ ($\vc{W}_{\ppcaeq} = 0$) and by disabling their plasticity. Like in the experimental setup of \cite{Remondes04}, we lesioned either right before or 21 days after presentation of object $\hat o$. For each day and lesioning protocol, the place probabilities, Eq~\eqref{eq:GaussianDecoder}, along the pathways can then be calculated. The pathway with the highest inferred object position probability was then selected, and the summed probabilities per quadrant were calculated for this pathway. To account for exploration versus exploitation (see, e.g., \cite{Sutton_1998}) of the rats, the inferred probabilities were linearly mixed with a uniform distribution over the quadrants. We used $70\%$ explore versus $30\%$ exploit for the plots in Fig~\ref{fig:lesion}D. Note that we assumed that the probabilities per quadrant correspond to the time spent in each quadrant.
+In our simulations we implemented a lesion by setting all \ppca~weights to $0$ ($\vc{W}_{\ppcaeq} = 0$) and by disabling their plasticity. Like in the experimental setup of \cite{Remondes2004}, we lesioned either right before or 21 days after presentation of object $\hat o$. For each day and lesioning protocol, the place probabilities, Eq~\eqref{eq:GaussianDecoder}, along the pathways can then be calculated. The pathway with the highest inferred object position probability was then selected, and the summed probabilities per quadrant were calculated for this pathway. To account for exploration versus exploitation (see, e.g., \cite{Sutton1998}) of the rats, the inferred probabilities were linearly mixed with a uniform distribution over the quadrants. We used $70\%$ explore versus $30\%$ exploit for the plots in Fig~\ref{fig:lesion}D. Note that we assumed that the probabilities per quadrant correspond to the time spent in each quadrant.
 
 
 
@@ -505,10 +505,11 @@ Note that~$\sum_{j=0}^i c_{ij} = 1$, so the activity level in different output l
 For the simulations illustrated in Fig.~\ref{sfig:power_law}, we chose $\tau_\textrm{STDP}=40$~ms as the time constant of an exponentially decaying STDP learning window for positive delays $\tau>0$, and we set $A^+ =1$ in Eq~\eqref{eq:spiking_additive_STDP}. Furthermore, we used $D=2$~ms. As shown in the  Fig.~\ref{sfig:power_law}B, the maximum of the overlaps~$O_j$ indeed approximates a power law decay.
 }
 
-%\makeStandardFigure
+\makeStandardFigure
 %\makeWideFigure
-\figureCaptionOnly
+%\figureCaptionOnly
   {\added{Mathematical analysis of the  hierarchical consolidation network}}
   {sfig:power_law}
   {\added{{\bf(A)} The mathematical analysis is performed for a network consisting of $N+1$ input and $N+1$ output layers. All output layers (except output layer 0) weight the input from the previous layer with a factor~$\alpha$ and the input via the shortcut pathway with a factor~$1-\alpha$, to ensure that activity does not rise as increasingly many pathways converge onto the output layers. Input layer~$i$ is hence connected to output layer~$i$ through a shortcut connection with weight matrix~$(1-\alpha) W_i$ (except for the bottom-most layers~$i=0$, for which no factor~$1-\alpha$ is required). All connections between input layers are set to the identity matrix~$\mathbf{I}$, and all connections between output layers are set to $\alpha \mathbf{I}$, for notational simplicity in the derivations. The math can be generalized to arbitrary connection matrices, as long as the network is linear. Each connection introduces a synaptic delay of $D$. The multi-synaptic pathway from input layer~$i$ to output layer~$i$ via shortcut connection~$j\neq i$ has a total delay of $(2(i-j)+1) \cdot D$, so the difference in delays between the pathway through shortcut~$i$ and shortcut~$j$ is $D_{ij}=2 (i-j) \cdot D$.  {\bf(B)} The similarity~$O_i$ of the weight matrix~$W_0$ (in which memory traces are initially stored) and the shortcut connection~$W_i$ as a function of the time elapsed after storage (colored lines), and their maximum (black line). Simulations shown for~$D=2$ ms, $\alpha=0.8$, $\eta_i = 2^{-i}$ and STDP time constant~$\tau_\textrm{STDP}=40$ ms.}}
-  {Fig_6.pdf}
+  %{Fig_S3.pdf}
+  {fig6}
