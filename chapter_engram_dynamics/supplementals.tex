@@ -580,8 +580,7 @@ The neuronal forgetting times $\tau_i$ are the reciprocal of the normally distri
 
 \begin{figure}[H]
   \centering
-  % 6.5in is the width set in the Google Slides page setup
-  \centerwidegraphic[width=6.5in]{figures/fig5_supplementary.pdf}
+  \includegraphics[width=6.5in]{fig5_supplementary.pdf}
   \caption{For correlated stimulus tuning (same simulations as shown in Fig.~\ref{fig5}I,J), the results on population vector correlation, tuning curve correlation and readout decoding are qualitatively similar to those for random stimulus tuning (Fig.~\ref{fig5}D-F).
   \label{sfig5}}
 \end{figure}
@@ -625,7 +624,7 @@ The dynamics for an eigenstate $\bd{\psi}_i$ of the consolidation Hamiltonian is
 $$\bd{\psi}_i(t) = e^{-i E_i (t-t_0)} \bd{\psi}_i(t_0)$$
 One common mathematical tool to study interacting systems are Green's functions. We define the \textit{Green's function} operator $\mb{G}(t, t_0)$ as the solution to the following equation:
 \begin{equation}
-\l(i\frac{d}{dt} - \mb{H}\r)\mb{G}(t, t_0) =  \bd{\delta}(t-t_0) \,.
+\left(i\frac{d}{dt} - \mb{H}\right)\mb{G}(t, t_0) =  \bd{\delta}(t-t_0) \,.
 \label{eq:greensfunctiondefinition}
 \end{equation}
 Green's functions are generally not unique. The one of our specific interest is called \textit{retarded Green's function}, which connects two points in time that are causally related ($t>t'$). In the temporal and the Fourier domain, it reads
@@ -633,7 +632,7 @@ Green's functions are generally not unique. The one of our specific interest is 
     \mb{G}(t-t') &= -i \theta(t-t') \mb{U}(t-t')\\
 %    \label{eq:greenfunc_qm}
     \Tilde{\mb{G}}(\omega) &=
-    \lim_{\epsilon\to 0}\l[\omega - \mb{H} + i\epsilon\r]^{-1} \,.
+    \lim_{\epsilon\to 0}\left[\omega - \mb{H} + i\epsilon\right]^{-1} \,.
 %    \label{GreenfunctionInverse}
 \end{align}
 The matrix elements for one eigenstate $\bd{\psi}_j$ are
@@ -647,7 +646,7 @@ The matrix elements for one eigenstate $\bd{\psi}_j$ are
 \end{align}
 The Green's function for a generic engram (in time or frequency domain) is
 \begin{equation}
-    G_{\mb{e}_\mu} = \mb{e}_\mu^\dagger \mb{G} \mb{e}_\mu =  \sum_{ij} e^*_i e_j \bd{\psi}_i^\dagger \mb{G} \psi_j = \sum_i \l|e_i\r|^2 G_i \,.
+    G_{\mb{e}_\mu} = \mb{e}_\mu^\dagger \mb{G} \mb{e}_\mu =  \sum_{ij} e^*_i e_j \bd{\psi}_i^\dagger \mb{G} \psi_j = \sum_i \left|e_i\right|^2 G_i \,.
 \end{equation}
 Green's functions are tightly related to temporal correlations: the cosine similarity $S_{\mb{e}_\mu}$ between $\mathbf{e}_\mu$ and itself at later time $t>0$ is given by
 \begin{align}
@@ -656,8 +655,8 @@ Green's functions are tightly related to temporal correlations: the cosine simil
 \end{align}
 For real engrams, the cosine similarity is a real number, and it can be expressed in terms of the spectral function  $\mc{S}_{\mb{e}_\mu}(\omega)$ via Fourier transform:
 \begin{align}
-   \mc{F} \l[  S_{\mb{e}_\mu}(t) \r] = \mc{S}_{\mb{e}_\mu}(\omega) \propto
-    \text{Im}  \l[  G_{\mb{e}_\mu}(\omega) \r] \,.
+   \mc{F} \left[  S_{\mb{e}_\mu}(t) \right] = \mc{S}_{\mb{e}_\mu}(\omega) \propto
+    \text{Im}  \left[  G_{\mb{e}_\mu}(\omega) \right] \,.
 \end{align}
 
 \subsubsection*{Gaussian random Hamiltonians}
@@ -668,26 +667,26 @@ In the continuum limit ($N\to\infty$), the distribution of the eigenvalues $E_i$
     \rho_H(E) = \frac{2}{\pi R^2}\sqrt{R^2 -E^2} \,,
     \label{eq:semicircle_law}
 \end{equation}
-defined in the interval $\l|E\r|<R = 2\sigma_H \sqrt{N}= 2\sigma_0$.
+defined in the interval $\left|E\right|<R = 2\sigma_H \sqrt{N}= 2\sigma_0$.
 For each Gaussian random Hamiltonian, we can apply the results of Equations~\ref{eq:Gfree_time} and~\ref{eq:Gfree_omegas} to compute the Green's function of an $\mb{H}$-eigenstate~$\bd{\psi}_i$ with eigenvalue~$E_i$. As before, the time-autocorrelation will oscillate in time with frequency $\frac{E_i}{2\pi}$, without decaying.
 
 In general, we might assume an engram to be a random superposition of eigenstates of the rotational consolidation matrix: $$\mb{e}_\mu = \sum_i c_i \bd{\psi}_i \,,$$ with $c_i$ randomly sampled from a distribution with zero mean, and standard deviation $\sigma_c = 1/\sqrt{N}$.
 Its average Green's function is given by
 \begin{align*}
-    G_{\l<\mb{e}_\mu\r>} (\omega) & = \l< \mb{e}_\mu^\dagger \mb{G}(\omega) \mb{e}_\mu \r> =
-    \sum_i \l< \l|c_i\r|^2 \r> \frac{1}{\omega - E_i+ i \epsilon} \\
+    G_{\left<\mb{e}_\mu\right>} (\omega) & = \left< \mb{e}_\mu^\dagger \mb{G}(\omega) \mb{e}_\mu \right> =
+    \sum_i \left< \left|c_i\right|^2 \right> \frac{1}{\omega - E_i+ i \epsilon} \\
     &
     = \sigma_c^2 \sum_i \frac{1}{\omega - E_i + i \epsilon} =
     \frac{1}{N} \sum_i \frac{1}{\omega - E_i + i \epsilon}
 \end{align*}
 For large $N$ we use the continuous approximation:
 \begin{equation*}
-    G_{\l<\mb{e}_\mu\r>} (\omega)  \approx \hspace{0.1cm} \int dE \frac{\rho_H(E)}{w-E+ i \epsilon}.
+    G_{\left<\mb{e}_\mu\right>} (\omega)  \approx \hspace{0.1cm} \int dE \frac{\rho_H(E)}{w-E+ i \epsilon}.
 \end{equation*}
-This integral corresponds to the Stieltjes transformation of the semicircle law. It can be solved performing a geometric series expansion of $\rho_H(E)$, and interchanging summation and integration. Alternative solutions make use of analytical continuation and contour integration. We refer to \cite{jiang2021wigner} and to \cite{bai2010spectral} for detailed calculations.
+This integral corresponds to the Stieltjes transformation of the semicircle law. It can be solved performing a geometric series expansion of $\rho_H(E)$, and interchanging summation and integration. Alternative solutions make use of analytical continuation and contour integration. We refer to \cite{Jiang2021a} and to \cite{Bai2010} for detailed calculations.
 Instead, we report here an intuitive derivation of the result. Multiplying both numerator and denominator by $(\omega-E+i\epsilon)$, we obtain
 \begin{equation*}
-    G_{\l<\mb{e}_\mu\r>} (\omega) =
+    G_{\left<\mb{e}_\mu\right>} (\omega) =
     \hspace{0.1cm} \int dE \frac{\omega-E}{(w-E)^2+ \epsilon^2}\rho_H(E) +
     i \hspace{0.1cm} \int dE \frac{\epsilon}{(w-E)^2+ \epsilon^2}\rho_H(E)
 \end{equation*}
@@ -697,13 +696,13 @@ $
 $.
 The imaginary part of the integral, which relates to the spectral function $\mc{S}(\omega)$, is therefore given by the density of eigenvalues:
 $$
-\mc{S}(\omega)=\lim_{\epsilon\to0^+} \frac{1}{\pi} \text{Im}\l[ G_{\l<\mb{e}_\mu\r>} (\omega) \r] =
+\mc{S}(\omega)=\lim_{\epsilon\to0^+} \frac{1}{\pi} \text{Im}\left[ G_{\left<\mb{e}_\mu\right>} (\omega) \right] =
 \rho_H(w)
 $$
 We can therefore reconstruct the autocorrelation function for a random state $\mb{e}_\mu$ by inverse Fourier transform of the semicircle law:
 \begin{equation}
-    S(t-t') = \mc{F}^{-1}\l[ \mc{S}(\omega \r)] = \mc{F}^{-1}\l[ \rho_H(\omega) \r] =
-    \frac{1}{2 \pi}\int_{-R}^{R} d\omega \rho_H(\omega) e^{-i\omega(t-t')} = 2 \frac{J_1\l(R|t-t'|\r)}{R|t-t'|}
+    S(t-t') = \mc{F}^{-1}\left[ \mc{S}(\omega) \right] = \mc{F}^{-1}\left[ \rho_H(\omega) \right] =
+    \frac{1}{2 \pi}\int_{-R}^{R} d\omega \rho_H(\omega) e^{-i\omega(t-t')} = 2 \frac{J_1\left(R|t-t'|\right)}{R|t-t'|}
     \label{eq:autocorrelation_bessel}
 \end{equation}
 Here, $J_1(x)$ is a Bessel function of the first kind of order 1. The autocorrelation $S(t)$ presents a decaying oscillation (Figure \ref{sfig:full_system}). For large $t$, the decay is described by a power law $S(t) \sim t^{-3/2}$.
@@ -712,7 +711,7 @@ Although the dynamics is deterministic and purely rotational, the autocorrelatio
 
 \begin{figure}%[H]
     \centering
-    \centerwidegraphic[width=\linewidth]{figures/supplementary_full_engram.pdf}
+    \includegraphics[width=\textwidth]{supplementary_full_engram.pdf}
     \caption{ \small
     Dynamics in the fully-observed system.
     \textbf{(A)}The distribution of the eigenvalues for Gaussian random matrix $\mb{H}$ with size $N=1000$ and entries standard deviation $\sigma_H=\sigma_0/\sqrt{N} = 1/\sqrt{N}$. The red line corresponds to the semicircle law Eq.\ref{eq:semicircle_law}.
@@ -755,7 +754,7 @@ We now switch on the interaction $\mb{V}$ and compute the full Green's function 
 \subsubsection*{Self-energy formalism}
 To compute the full propagator $\mb{G}^{s}$ we start with the definition of the Green's function operator in Fourier space:
 $$
-\Tilde{\mb{G}}(\omega) = \l[\omega - \mb{H} \r]^{-1}
+\Tilde{\mb{G}}(\omega) = \left[\omega - \mb{H} \right]^{-1}
 $$
 We use the structure of our system to rewrite the relation above as
 \begin{equation*}
@@ -783,9 +782,9 @@ We extract a system of two equations for $\mb{G}^{s}$:
 \end{equation}
 which has the solution
 \begin{equation}
-    \mb{G}^s(\omega) = \l[ \omega - \mb{H}_s - \mb{V} \l(\omega-\mb{H}_b\r)^{-1}\mb{V}^\dagger \r]^{-1} =
-     \l[\l(\mb{G}^{s_0}\r)^{-1} - \bd{\Sigma}(\omega) \r]^{-1}
-     = \l(\bd{\Lambda}(\omega)\r)^{-1} \,.
+    \mb{G}^s(\omega) = \left[ \omega - \mb{H}_s - \mb{V} \left(\omega-\mb{H}_b\right)^{-1}\mb{V}^\dagger \right]^{-1} =
+     \left[\left(\mb{G}^{s_0}\right)^{-1} - \bd{\Sigma}(\omega) \right]^{-1}
+     = \left(\bd{\Lambda}(\omega)\right)^{-1} \,.
      \label{eq:dysonInverse}
 \end{equation}
 The term $\bd{\Sigma}(\omega)$ is commonly named \textit{self-energy} and it describes the correction to the free propagator $\mb{G}^{s_0}(\omega)$, due to the coupling with the bath.
@@ -796,24 +795,24 @@ This expression leads to a self-consistent relation for $\mb{G}^s(\omega)$, know
 \end{equation}
 We can express Eq.~\ref{eq:dysonInverse} in the diagonal representation, diagonalizing both the Hamiltonian of the observed subsystem and the Hamiltonian of the bath:
 \begin{align}
-\bd{\Lambda}(\omega) = \l(\mb{G}^{s_0}\r)^{-1} - \bd{\Sigma}(\omega)
+\bd{\Lambda}(\omega) = \left(\mb{G}^{s_0}\right)^{-1} - \bd{\Sigma}(\omega)
 & =
-\mb{U}_s^{-1} \l(\Tilde{\mb{G}}^{s_0}\r)^{-1} \mb{U}_s -
-\mb{V} \mb{U}_b^{-1} \l(\omega-\hat{\mb{H}}_b\r)^{-1} \mb{U}_b \mb{V}^\dagger
+\mb{U}_s^{-1} \left(\Tilde{\mb{G}}^{s_0}\right)^{-1} \mb{U}_s -
+\mb{V} \mb{U}_b^{-1} \left(\omega-\hat{\mb{H}}_b\right)^{-1} \mb{U}_b \mb{V}^\dagger
 \\
-& = \mb{U}_s^{-1} \l[ \l(\Tilde{\mb{G}}^{s_0}\r)^{-1} - \hat{\mb{V}} \l(\omega-\hat{\mb{H}}_b\r)^{-1} \hat{\mb{V}}^\dagger \r] \mb{U}_s \,,
+& = \mb{U}_s^{-1} \left[ \left(\Tilde{\mb{G}}^{s_0}\right)^{-1} - \hat{\mb{V}} \left(\omega-\hat{\mb{H}}_b\right)^{-1} \hat{\mb{V}}^\dagger \right] \mb{U}_s \,,
 \end{align}
 where we defined $\hat{\mb{V}} = \mb{U}_s \mb{V} \mb{U}_b^{-1}$. We compute now the explicit expression for the matrix elements of $\bd{\Lambda}(\omega)$ in the diagonal representation: $\hat{\bd{\Lambda}} (\omega) = \mb{U}_s \bd{\Lambda} \mb{U}_s^{-1} $.
 The diagonal elements read:
 \begin{align}
     \hat{\bd{\Lambda}}_{ii} (\omega)
-    & = \l(\Tilde{\mb{G}}^0_s\r)^{-1}_{ii} - \sum_{jk} \hat{\mb{V}}_{ij}(\omega-\hat{\mb{H}}_b)_{jk} \hat{\mb{V}}^\dagger_{ki}
+    & = \left(\Tilde{\mb{G}}^0_s\right)^{-1}_{ii} - \sum_{jk} \hat{\mb{V}}_{ij}(\omega-\hat{\mb{H}}_b)_{jk} \hat{\mb{V}}^\dagger_{ki}
     \\
     &=
     \omega - E^s_i - \sum_j \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^\dagger_{ji} (\omega-E^b_j)^{-1}
     \\
     &=
-    \omega - E^s_i - \sum_j \l| \Tilde{\mb{V}}_{ij} \r|^2 (\omega-E^b_j)^{-1}
+    \omega - E^s_i - \sum_j \left| \Tilde{\mb{V}}_{ij} \right|^2 (\omega-E^b_j)^{-1}
     \label{eq:Lambdadiagonal}
 \end{align}
 Similarly, the off-diagonal elements are given by
@@ -830,30 +829,30 @@ We are interested now in the case of the full Hamiltonian~$\mb{H}$ being a Gauss
 The results of the previous section can be simplified by an ensemble average of the matrix elements of $\Tilde{\mb{V}}$ (assuming a self-averaging in this large neuronal system):
 \begin{align}
     &\Tilde{\bd{\Lambda}}_{ii} (\omega) \approx
-    \omega - E^s_i - \sum_j \l< \l| \Tilde{\mb{V}}_{ij} \r|^2 \r> (\omega-E^b_j)^{-1}
+    \omega - E^s_i - \sum_j \left< \left| \Tilde{\mb{V}}_{ij} \right|^2 \right> (\omega-E^b_j)^{-1}
     \\
     &
     \Tilde{\bd{\Lambda}}_{ik} (\omega) \approx
-    \sum_j \l< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \r> (\omega-E^b_j)^{-1} \,.
+    \sum_j \left< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \right> (\omega-E^b_j)^{-1} \,.
 \end{align}
 The two averages read
 \begin{align}
-     \l< \l| \Tilde{\mb{V}}_{ij} \r|^2 \r> & =
-    \sum_{kl} \l< \l| \mb{V}_{kl} \r|^2 \r>
-    \l| (\mb{U}_s)_{ik} \r|^2
-    \l| (\mb{U}_b^{-1})_{lj} \r|^2
+     \left< \left| \Tilde{\mb{V}}_{ij} \right|^2 \right> & =
+    \sum_{kl} \left< \left| \mb{V}_{kl} \right|^2 \right>
+    \left| (\mb{U}_s)_{ik} \right|^2
+    \left| (\mb{U}_b^{-1})_{lj} \right|^2
     \\
     & =
     \frac{\sigma_0^2}{N}
     \sum_{k}
-    \l| (\mb{U}_s)_{ik} \r|^2
+    \left| (\mb{U}_s)_{ik} \right|^2
     \sum_j
-    \l| (\mb{U}_b^{-1})_{lj} \r|^2
+    \left| (\mb{U}_b^{-1})_{lj} \right|^2
     \\
     & =
     \frac{\sigma_0^2}{N}
     \\
-    \l< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \r>
+    \left< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \right>
     & =
     \frac{\sigma_0^2}{N}
     \sum_l
@@ -875,8 +874,8 @@ The elements of the matrix $\bd{\Lambda}(\omega)$ read:
 \end{align}
 We can recover the full Green's function for an eigenstate $\bd{\psi}_i^s$ of the observed subsystem from the diagonal components of $\tilde{\mb{G}}_s$:
 \begin{equation}
-    G^s_i(\omega) = \bd{\psi}_i^{s\dagger} \mb{G}_s(\omega) \bd{\psi}^s_i =  \l(\Tilde{\bd{\Lambda}}_{ii} (\omega) \r)^{-1} \approx
-    \l[ \omega - E^s_i + i\epsilon - \frac{\sigma_0^2}{N} \sum_{j=1}^{N_b} (\omega-E^b_j)^{-1} \r]^{-1}
+    G^s_i(\omega) = \bd{\psi}_i^{s\dagger} \mb{G}_s(\omega) \bd{\psi}^s_i =  \left(\Tilde{\bd{\Lambda}}_{ii} (\omega) \right)^{-1} \approx
+    \left[ \omega - E^s_i + i\epsilon - \frac{\sigma_0^2}{N} \sum_{j=1}^{N_b} (\omega-E^b_j)^{-1} \right]^{-1}
     \label{eq:FullGreenFunctionSum}
 \end{equation}
 The self-energy for Gaussian random matrices is given by the sum of contributions from all the modes of the bath $\bd{\psi}_j^b$, which energy is $E_j^b$:
@@ -925,12 +924,12 @@ The continuum limit allows us to simplify the self-energy Eq.~\ref{eq:selfenergy
     \int_{-R_b}^{R_b} dE^b \hspace{0.1cm} \frac{ N_b \hspace{0.1cm}\rho_b(E_b)}{\omega-E^b+i\epsilon}
     \\[0.2cm]
     & =
-    \sigma_0^2 \frac{N_b}{N}\l(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{R_b^2/2} \r) =
-    \sigma_0^2 \frac{N_b}{N}\l(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{2 \sigma_0^2 N_b/N } \r)
+    \sigma_0^2 \frac{N_b}{N}\left(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{R_b^2/2} \right) =
+    \sigma_0^2 \frac{N_b}{N}\left(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{2 \sigma_0^2 N_b/N } \right)
     \\[0.2cm]
     & = \frac{ \omega \mp \sqrt{\omega-R_b^2} }{2} \,,
 \end{align}
-where the $\mp$ is taken such that $\Sigma(\omega) \sim \frac{1}{\l|\omega\r|}$ for $\omega\to\infty$.
+where the $\mp$ is taken such that $\Sigma(\omega) \sim \frac{1}{\left|\omega\right|}$ for $\omega\to\infty$.
 The integral above is the Stieltjes transform of the semicircle law\footnote{Given the semicircle distribution $\rho(E) = \frac{2}{\pi R^2} \sqrt{R^2 - E^2}$, the Stieltjes transform reads
 \begin{align}
     m(\omega) = \int_{-R}^R dE \frac{\rho(E)}{\omega-E} = \frac{\omega - \text{sign}(\omega) \sqrt{\omega^2 - R^2}}{R^2/2} 
@@ -938,16 +937,16 @@ The integral above is the Stieltjes transform of the semicircle law\footnote{Giv
 }
 We separate the self-energy into its real and imaginary parts:
 \begin{align}
-    \Delta(\omega) &= \text{Re}\l[ \Sigma(\omega)\r] =
-    \frac{1}{2} \l(\omega - \text{sign}(\omega)\sqrt{\omega^2-R_b^2}   \r)
+    \Delta(\omega) &= \text{Re}\left[ \Sigma(\omega)\right] =
+    \frac{1}{2} \left(\omega - \text{sign}(\omega)\sqrt{\omega^2-R_b^2}   \right)
     \label{eq:selfenergy_real}
     \\[0.2cm]
-    \Gamma(\omega) &= \text{Im}\l[ \Sigma(\omega)\r] =
+    \Gamma(\omega) &= \text{Im}\left[ \Sigma(\omega)\right] =
     \frac{\sqrt{R_b^2-\omega^2}}{2}
     = \frac{\pi R_b^2}{4} \rho_b(\omega) = \pi \sigma_0^2 \frac{N_b}{N} \rho_b(\omega)
     \label{eq:selfenergy_imag} \,.
 \end{align}
-Note that the second term in $\Delta(\omega)$ vanishes for $\l|\omega\r|<R_b$, and viceversa the imaginary part $\Gamma(\omega)$ vanishes for $\l|\omega\r|>R_b$.
+Note that the second term in $\Delta(\omega)$ vanishes for $\left|\omega\right|<R_b$, and viceversa the imaginary part $\Gamma(\omega)$ vanishes for $\left|\omega\right|>R_b$.
 The full Green's function takes the following form:
 \begin{equation}
     G^s_i(\omega) \approx
@@ -959,18 +958,18 @@ The full Green's function takes the following form:
 The spectral function is computed as
 \begin{equation}
     \mc{S}_i(\omega) =
-    \frac{1}{\pi}\text{Im}\l[ G^s_i(\omega) \r] =
-    \lim_{\epsilon\to 0} \l(
-    \frac{1}{\pi}\frac{\Gamma(\omega)-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \big(\Gamma(\omega)^2-\epsilon\big)^2}  \r) \,.
+    \frac{1}{\pi}\text{Im}\left[ G^s_i(\omega) \right] =
+    \lim_{\epsilon\to 0} \left(
+    \frac{1}{\pi}\frac{\Gamma(\omega)-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \big(\Gamma(\omega)^2-\epsilon\big)^2}  \right) \,.
     \label{eq:spectralfunction_limit}
 \end{equation}
 We study this limit in two different cases, namely for
-$\Gamma(\omega)\neq 0$ and $\Gamma(\omega) = 0$. These are given by $\l|\omega\r|<R_b$ and $\l|\omega\r|>R_b$ respectively, and are indicated by $_<$ and $_>$ subscripts.
+$\Gamma(\omega)\neq 0$ and $\Gamma(\omega) = 0$. These are given by $\left|\omega\right|<R_b$ and $\left|\omega\right|>R_b$ respectively, and are indicated by $_<$ and $_>$ subscripts.
 In the first case, the spectral function reads:
 \begin{equation}
     \mc{S}_i(\omega)_< =
     \frac{1}{\pi}\frac{\Gamma(\omega)}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \Gamma(\omega)^2}
-    \hspace{2cm} \text{for} \hspace{0.3cm} \l|\omega\r|<R_b \,.
+    \hspace{2cm} \text{for} \hspace{0.3cm} \left|\omega\right|<R_b \,.
     \label{eq:spectral<}
 \end{equation}
 In the second case instead,
@@ -979,12 +978,12 @@ the function reads
     \mc{S}_i(\omega)_> =
     \lim_{\epsilon\to0}
     \frac{1}{\pi}\frac{-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \epsilon^2}
-    \hspace{2cm} \text{for} \hspace{0.3cm} \l|\omega\r|>R_b \,.
+    \hspace{2cm} \text{for} \hspace{0.3cm} \left|\omega\right|>R_b \,.
     \label{eq:spectral>}
 \end{equation}
 The behavior of this second limit depends on the zero of the term $\mc{E}(\omega) = \omega - E^s_i - \Delta(\omega)$, which corresponds to shifted energy of the original mode\footnote{Since the function $\mc{E}(\omega)$ is continuous, monotonic and $
 \lim_{\omega\to\pm\infty}\mc{E}(\omega) = \pm\infty$, it has only one zero.}.
-If $\mc{E}(\omega)$ vanishes at $\l|\omega\r|>R_b$, the limit in Eq.\ref{eq:spectral>} gives a finite contribution. If, instead, the zero of $\mc{E}(\omega)$ lies in $[-R_b, R_b]$, the limit for $\mc{S}_i(\omega)_>$ is zero, and the only contribution comes from $\mc{S}_i(\omega)_<$.
+If $\mc{E}(\omega)$ vanishes at $\left|\omega\right|>R_b$, the limit in Eq.\ref{eq:spectral>} gives a finite contribution. If, instead, the zero of $\mc{E}(\omega)$ lies in $[-R_b, R_b]$, the limit for $\mc{S}_i(\omega)_>$ is zero, and the only contribution comes from $\mc{S}_i(\omega)_<$.
 This second case is always given when $E_i^s<R_s\leq \frac{R_b}{2}$, that corresponds to $f \leq \frac{1}{5}$. We refer to this situation as ``low sampling fraction".
 Figure~\ref{sfig:subsampling_autocorr}A shows how theory captures the behavior of the autocorrelation and spectral density.
 If instead $E_i^s>\frac{R_b}{2}$, the limit reads
@@ -993,10 +992,10 @@ If instead $E_i^s>\frac{R_b}{2}$, the limit reads
     \lim_{\epsilon\to0}
     \frac{1}{\pi}\frac{-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \epsilon^2}
     \approx
-    -\delta(\omega-E_i) = -\delta\l(\omega-E_i^s-\frac{R_b^2}{4E_i^s}\r)
+    -\delta(\omega-E_i) = -\delta\left(\omega-E_i^s-\frac{R_b^2}{4E_i^s}\right)
 \end{equation}
 
-The spectral function, which was peaked at one frequency when no coupling was present, takes now finite values at all frequencies $\l|\omega\r|<R_b$.
+The spectral function, which was peaked at one frequency when no coupling was present, takes now finite values at all frequencies $\left|\omega\right|<R_b$.
 This is a consequence of the coupling with the bath, and it results in a decay of time-autocorrelations. This effect, known as \textit{damping} or \textit{dephasing}, gives a finite life-time to the rotational eigenstates in the observed subspace. An analogous damping profile would be observed in the presence of stochasticity in the engram dynamics. The similarity is not surprising, since the coupling with the bath can be interpreted as a noise source in the dynamics of the sampled subsystem. 
 
 In conclusion, the autocorrelation of a rotational eigenstates, that would oscillate in a fully-observed system, decays in the presence of subsampling, because of the coupling with the unobserved population. 
@@ -1006,7 +1005,7 @@ However, the substantial difference between the dephasing caused by subsampling 
 
 \begin{figure}%[H]
     \centering
-    \centerwidegraphic[width=0.94\linewidth]{figures/supplementary_subsampling.pdf}
+    \includegraphics[width=0.94\textwidth]{supplementary_subsampling.pdf}
     \caption{ \small \textbf{Low and high sampling fractions}
     \\
     Spectral functions (\textbf{A,C}) and time-autocorrelations (\textbf{B,D}) of a rotation eigenstate $\bd{\psi}^s_i$ of the sampled subsystem, with energy $E_i^s$. Numerical values are obtained simulating a full rotation hamiltonian $\mb{H}$ of size $N=10000$, using Euler integration (time constant $\tau=1$, time step $\Delta t=0.001$, simulation time length $T_f = 1000$). The activity is observed in the first $N_s=100$ (\textbf{A, B}) and $N_s=9000$ (\textbf{C, D}) dimensions. $\sigma_0=1$.
@@ -1016,7 +1015,7 @@ However, the substantial difference between the dephasing caused by subsampling 
 
 \paragraph{Numerical simulations}
 We simulate the rotational dynamics sampling an $N\times N$ anti-symmetric matrix $\mb{H}$. Above diagonal entries $
-\mb{H}_{i<j}$ are independent random variables with identical normal distribution $\mc{N}\l(0, \frac{\sigma_0^2}{N}\r)$. All the remaining entries are fixed by anti-symmetry.
+\mb{H}_{i<j}$ are independent random variables with identical normal distribution $\mc{N}\left(0, \frac{\sigma_0^2}{N}\right)$. All the remaining entries are fixed by anti-symmetry.
 We simulate the decorrelation of one eigenstate $\bd{\psi}_i^s$ of $\mb{H}_s$ with energy $E_i^s$ (that is, one rotational eigenstate of the sampled subsystem), caused by the coupling with the bath. We define the initial state as following: the first $N_s$ dimensions correspond to $\bd{\psi}_i$, and the remaining $N_b$ are set to zero to  reflect no initial activity in the bath:
     $\mb{e}(0)= \begin{pmatrix}
         \bd{\psi}_i &

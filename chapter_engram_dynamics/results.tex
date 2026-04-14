@@ -6,8 +6,7 @@ Each memory is represented in the brain by an engram vector $\mathbf{e}_\mu$ ($\
 
 \begin{figure}
   \centering
-  % 6.5in is the width set in the Google Slides page setup
-  \centerwidegraphic[width=6.5in]{figures/fig1.pdf}
+  \includegraphics[width=6.5in]{fig1.pdf}
   \caption{
     \textbf{Systems consolidation as sequential dynamics.}
     {
@@ -172,8 +171,7 @@ Thus, only memories that lie in the selection space are consolidated, while memo
 %
 \begin{figure}
   \centering
-  % 6.5in is the width set in the Google Slides page setup
-  \centerwidegraphic[width=6.5in]{figures/fig2.pdf}
+  \includegraphics[width=6.5in]{fig2.pdf}
   \caption{
     \textbf{Selective consolidation and stability through low-rank dynamics.}
     \textbf{A}. Selective consolidation via a low-rank hippocampus-to-cortex consolidation matrix.
@@ -243,7 +241,11 @@ Active consolidation and maintenance are mediated by the consolidation matrix $\
 \mathbf{A} = \mathbf{A}^{\text{potent}} + \mathbf{A}^{\text{null}} \,.
 \end{equation}
 
-\todo{Do we want more here? Math + sims as Henning once suggested? From Henning: Math on how to split this up and some simulations. I suspect that M\_potent is obtained by projecting all columns onto the set of readout vectors. Whatever remains it M\_null.}
+% TODO from manuscript draft removed in thesis import:
+% Do we want more here? Math + sims as Henning once suggested? From Henning:
+% Math on how to split this up and some simulations. I suspect that M_potent
+% is obtained by projecting all columns onto the set of readout vectors.
+% Whatever remains is M_null.
 
 The output-null component is irrelevant for the stability of the memory, because it is by definition unable to change the memory response. Passive forgetting in the output-null space is also inconsequential. The \emph{output-potent} component~$\mathbf{A}^\text{potent}$ that affects the readout can have two effects. The beneficial effect is that it can counteract passive forgetting and thereby prolong memory lifetimes. However, it can also change the memory response. Take a memory consisting of an episodic and a semantic component that is stored in the hippocampus and decays over time (Fig.~\ref{fig2}D). If the hippocampal decay is in the potent space of the memory readout while the dynamics of the semantic component remain in the null-space, the memory will transform from a memory with episodic and semantic components into a purely semantic memory.
 
@@ -266,8 +268,7 @@ The output-null component is irrelevant for the stability of the memory, because
 
 \begin{figure}
   \centering
-  % 4.49in is 2/3 col figure width (11.4cm) in Cell press
-  \centerwidegraphic[width=4.49in]{figures/fig3.pdf}
+  \includegraphics[width=4.49in]{fig3.pdf}
   \caption{
   \textbf{Power-law forgetting from homogeneous neuronal forgetting times.}
     {
@@ -296,8 +297,7 @@ Each cue evokes the associated engram $\mathbf{e}_\mu$, that is, a representatio
 
 \begin{figure}
   \centering
-  % 6.5in is the width set in the Google Slides page setup
-  \centerwidegraphic[width=6.5in]{figures/fig4.pdf}
+  \includegraphics[width=6.5in]{fig4.pdf}
   \caption{
     \textbf{Hallmarks of representational drift.}
     \textbf{A.}~Stimulus tuning of $S=21$ engrams at three different time points $T_0, T_1, T_2$ (grid columns). Each grid row shows same data with neurons sorted by preferred stimulus at a different time point.
@@ -319,8 +319,7 @@ Earlier theoretical work treated representational drift as driven by stochastic 
 
 \begin{figure}%[H]
   \centering
-  % 6.5in is the width set in the Google Slides page setup
-  \centerwidegraphic[width=6.5in]{figures/fig5.pdf}
+  \includegraphics[width=6.5in]{fig5.pdf}
   \caption{
     \textbf{Effects of subsampling.}
     \textbf{A.}~Subsampling: The hidden population has an unpredictable effect (red arrow) on the dynamics of the observed population.
