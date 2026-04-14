@@ -1,0 +1,83 @@
+All simulations used forward Euler integration with time step $\Delta t = 0.001$ for Figs.~\ref{fig1},\ref{fig2},\ref{fig4},\ref{fig5} and $\Delta t = 0.1$ for Fig.~\ref{fig3}. Figs.~\ref{fig1}--\ref{fig3} were simulated in pattern space (Eq.~\ref{eq:pattern_dynamics}), where the $i$-th pattern $\mathbf{\tilde{p}}_i$ was chosen as the $i$-th standard basis vector in $P$ dimensions, i.e.~with components $(\mathbf{\tilde{p}}_i)_j = \delta_{ij}$, where $\delta$ is the Kronecker-Delta. Figs.~\ref{fig4} and \ref{fig5} were simulated in neural space (Eq.~\ref{eq:linear_dynamics}).
+
+\paragraph*{Systems consolidation as sequential dynamics.}
+For Fig.~\ref{fig1} and \ref{fig2}, forgetting times were the same for all patterns $\tilde{\tau}_i = 1 \, \forall i \in \{0, \cdots, P-1\}$. For Fig.~\ref{fig1} we simulated $P = 2$ patterns, initialized the engram with the first pattern $\mathbf{\tilde{e}}(0) = \mathbf{\tilde{p}}_0$ and used consolidation matrix
+\begin{equation}
+  \mathbf{\tilde{A}} = \begin{pmatrix}
+    0 & 0
+    \\
+    1 & 0
+  \end{pmatrix}.
+\end{equation}
+For Fig.~\ref{fig2}, we simulated $P=4$ patterns ($\mathbf{\tilde{p}}_0$, $\mathbf{\tilde{p}}_1$ in hippocampus and $\mathbf{\tilde{p}}_2$, $\mathbf{\tilde{p}}_3$ in cortex), initialized the engram with both hippocampal patterns active $\mathbf{\tilde{e}}(0) = \mathbf{\tilde{p}}_0 + \mathbf{\tilde{p}}_1$. The consolidation matrix was
+\begin{equation}
+  \mathbf{\tilde{A}} = \begin{pmatrix}
+    \mathbf{\tilde{A}}^{\text{HPC} \leftarrow \text{HPC}} & \begin{matrix} 0 & 0 \\ 0 & 0 \end{matrix}
+    \\
+    \mathbf{\tilde{A}}^{\text{CTX} \leftarrow \text{HPC}} & \begin{matrix} 0 & 0 \\ 0 & 0 \end{matrix}
+  \end{pmatrix}.
+\end{equation}
+For the selective hippocampus-to-cortex consolidation, the first hippocampal pattern was consolidated via selection vector $\mathbf{n} = \mathbf{\tilde{p}}_0$ and projected into the first cortical pattern via $\mathbf{m} = \mathbf{\tilde{p}}_2$, such that
+\begin{equation}
+    \mathbf{\tilde{A}}^{\text{CTX} \leftarrow \text{HPC}} = \mathbf{m} \mathbf{n}^{\text{T}} = \begin{pmatrix}
+    1 & 0 \\
+    0 & 0
+    \end{pmatrix}.
+\end{equation}
+For the decaying second hippocampal component, we set $\mathbf{\tilde{A}}^{\text{HPC} \leftarrow \text{HPC}} = \mathbf{0}$. For the stable second hippocampal component, we set $\mathbf{k} = \mathbf{\tilde{p}}_1$, such that
+\begin{equation}
+    \mathbf{\tilde{A}}^{\text{HPC} \leftarrow \text{HPC}} = \mathbf{k} \mathbf{k}^{\text{T}} = \begin{pmatrix}
+        0 & 0 \\
+        0 & 1
+    \end{pmatrix}.
+\end{equation}
+
+\paragraph*{Power-law forgetting from homogeneous neuronal forgetting times.}
+For Fig.~\ref{fig3}, we simulated $P=500$ patterns with geometrically distributed forgetting times $\tilde{\tau}_\alpha = \tau_0 \beta^\alpha$ for $\alpha \in \{0,\ldots,P-1\}$, with $\tau_0 = 1$, $\beta = (\tau_{\max}/\tau_0)^{1/(P-1)}$, and $\tau_{\max} = 10000$. Consolidation was implemented as sequential pattern-to-pattern transfer via an off-diagonal pattern consolidation matrix $\mathbf{\tilde{A}}_{ij} = \tilde{\tau}_i^{-1} \delta_{i,j+1}$. The readout was computed as a sum of all pattern strengths via readout vector $\mathbf{\tilde{A}}^{\text{out}} = (1, 1, \ldots, 1)^{\text{T}}$. Neural engram pattern entries $(\mathbf{p}_i)_j$ for neuron $j$ in pattern $i$ were sampled from a standard normal distribution in $\mathbb{R}^N$ where $N=1000$ was the number of neurons. Each pattern $\mathbf{p}_i$ was then normalized to have length $\|\mathbf{p}_i\| = \sqrt{N/P}$, such that the entries in the engram participation vector $\mathbf{e}$ where independent of the number of patterns $P$ and number of neurons $N$. The pattern space dynamics were transformed to neural space via $\mathbf{e}(t) = \mathbf{P}\mathbf{w}(t)$, where $\mathbf{P} \in \mathbb{R}^{N \times P}$ was the matrix of neural engram patterns and $\mathbf{w}$ the vector of pattern strengths. The effective time constants of individual neurons were extracted from the diagonal entries of the neural consolidation matrix $\mathbf{A} = \mathbf{P}(-\boldsymbol{\tilde{\uptau}}^{-1} + \mathbf{\tilde{A}})\mathbf{P}^{\text{T}}$, giving $\tau_i = -1/\mathbf{A}_{ii}$ for each neuron $i$.
+
+The theoretical distribution of neural time constants was computed as the reciprocal normal distribution
+\begin{equation}
+  \text{PDF}(\tau_i) = \frac{1}{\tau_i^2 \sqrt{2\pi \var{\frac{1}{\tau_i}}}} \exp\left( -\frac{(\frac{1}{\tau_i} - \left<\frac{1}{\tau_i}\right>)^2}{2\var{\frac{1}{\tau_i}}} \right), \qquad \tau_i > 0 \,,
+\end{equation}
+
+with
+
+\begin{equation}
+\begin{aligned}
+\left< \frac{1}{\tau_i} \right> &\approx \frac{1}{\tau_0 P} \frac{1}{1-\beta^{-1}} \,, \\
+\var{\frac{1}{\tau_i}} &\approx  \frac{1}{\tau_0^2 P^2} \frac{1}{1-\beta^{-2}} \left(2 + \frac{a^2}{\beta^2}\right) \,
+\end{aligned}
+\end{equation}
+
+and $a=1$. For analytical derivations, see Supplementary Section $\ref{sub:power_law_forgetting}$.
+
+%derived from the inverse Gaussian distribution with parameters $\mu$ and $\lambda$ computed from the mean and variance of the inverse time constants $1/\tau_i$. The data fit line shows the inverse Gaussian distribution fitted to the empirical distribution of neuronal time constants, while the theory line shows the predicted distribution based on the pattern space parameters. The theoretical mean and variance of the inverse time constants were computed as
+%
+%The theoretical distribution of neural time constants was derived from the inverse Gaussian distribution with parameters $\mu$ and $\lambda$ computed from the mean and variance of the inverse time constants $1/\tau_i$. The data fit line shows the inverse Gaussian distribution fitted to the empirical distribution of neuronal time constants, while the theory line shows the predicted distribution based on the pattern space parameters. The theoretical mean and variance of the inverse time constants were computed as
+%\begin{equation}
+%    \left< \frac{1}{\tau_i} \right> = \frac{1}{P}\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}
+%\end{equation}
+%and
+%\begin{equation}
+%    \text{Var}\left[\frac{1}{\tau_i}\right] = \frac{3}{P^2}\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}.
+%\end{equation}
+%The inverse Gaussian parameters were computed as
+%\begin{equation}
+%    \mu_{\text{IG}} = \frac{1}{\left< \frac{1}{\tau_i} \right>} + \frac{\text{Var}\left[\frac{1}{\tau_i}\right]}{\left< \frac{1}{\tau_i} \right>^3}
+%\end{equation}
+%and
+%\begin{equation}
+%    \lambda_{\text{IG}} = \frac{\left< \frac{1}{\tau_i} \right>}{\text{Var}\left[\frac{1}{\tau_i}\right]}.
+%\end{equation}
+%%The inverse Gaussian probability density functions were evaluated using \texttt{scipy.stats.invgauss.pdf} with parameters \texttt{mu}=$\mu_{\text{IG}}/\lambda_{\text{IG}}$ and \texttt{scale}=$\lambda_{\text{IG}}$.
+%The derivation of these equations and the connection to the inverse Gaussian distribution is provided in the Supplementary Material.
+
+\paragraph*{Representational drift simulations.}
+For Fig.~\ref{fig4} and \ref{fig5}, we simulated engram dynamics for \mbox{$S=21$} stimulus-evoked engrams. Simulations were run for a burn-in period $t_\text{burn}$ after which recording time began as $t=0$ and ran until $t=t_\text{sim}$. Population vectors were recorded at $k$ evenly spaced time points $t_0, t_1, \dots, t_{k-1}$ within the total simulation time. We defined time points $T_0, T_1, T_2$ as recording indices $t_0, t_{15}, t_{30}$, respectively. For Fig.~\ref{fig5}, we defined an additional time point $T_3$ as recording index $t_{45}$. Simulation times were chosen such that population vector correlation dropped to approximately zero from $T_0$ to $T_2$ (Fig.~\ref{fig4}: $t_\text{sim} = 30$ with $k=31$ in $[T_0,T_2]$; Fig.~\ref{fig5}: $t_\text{sim} = 3$ with $k=46$ in $[T_0,T_3]$). Population-vector and tuning-curve correlations were computed as Pearson correlations relative to $t_0$.
+
+
+\paragraph*{Hallmarks of representational drift.}
+For Fig.~\ref{fig4}, engrams were initialized with mixed Gaussian tuning by tiling the stimulus space with Gaussian tuning curves ($\sigma = 2.1$) and applying a random orthogonal mixing across neurons. The temporal evolution of each engram was independently simulated using the same sequential pattern-to-pattern dynamics with geometric time-constant distribution as for Fig.~\ref{fig3}, but with $N=500$ neurons, $P=500$ patterns, and $\tau_{\max}=15$. We simulated $t_{\text{burn}} = 10$ time units of burn-in before recording population vectors. We processed the simulated activity traces by rectifying negative values to zero. This corresponds to simulating sub-threshold neuronal activity that is only observable when it crosses the spiking threshold \citep{Mainali2025}.  For visualization of single neuron tuning curves (Fig.~\ref{fig4}C), we normalized each neuron's activity across stimuli and time to $[0,1]$. Activities in Fig.~\ref{fig4}A were not normalized.
+
+\paragraph*{Figure 5: Subsampling, decoding, and fits of the dynamics.}
+Engrams with random stimulus tuning were initialized with normally distributed engram participation entries, sampled from $\mathcal{N}(0,1)$. Engrams with correlated stimulus tuning were initialized using the mixed Gaussian tuning used for Fig.~\ref{fig4} (with $\sigma=2.1$). Stable rotational dynamics were constructed by sampling a random matrix $\mathbf{G}$ with entries $\mathcal{N}(0,1/N_{\text{neurons}})$, forming an antisymmetric generator $\mathbf{A}_0=\mathbf{G}-\mathbf{G}^{\text{T}}$. We then set the first dimension of $\mathbf{A}_0$ to zero and defined the readout matrix $\mathbf{A}^{\text{out}}_0$ to read out from this dimension, such that the dynamics lie in the nullspace of the readout. Finally, we mixed this dimension across neurons by conjugating both matrices by a random orthogonal matrix $\mathbf{O}$ to get $\mathbf{A}=\mathbf{O}\mathbf{A}_0\mathbf{O}^{\text{T}}$ and $\mathbf{A}^{\mathrm{out}}=\mathbf{O}\mathbf{A}^{\text{out}}_0$. We fixed the number of observed neurons at $N_{\mathrm{obs}}=100$ and varied the sampling fraction $f\in\{0.02,0.1,0.2,0.4,0.8,1.0\}$ by simulating larger networks with $N_{\mathrm{tot}}=\lceil N_{\mathrm{obs}}/f\rceil$ and randomly selecting $N_{\mathrm{obs}}$ neurons for analysis. All results were averaged across 10 independent neuronal samples from the same full population. Each simulation consisted of $t_{\text{burn}} = 5$ of burn-in time, followed by $t_{\text{sim}} = 3$ simulation time sampled at $46$ time points. We defined time points $T_0,T_1,T_2,T_3$ as recording indices $t_0,t_{15},t_{30},t_{45}$, respectively. Decoding used ordinary least squares to predict $\mathbf{z}_\mu(t_k)$ from the observed activity $\mathbf{e}_\mu(t_k)$, training on all stimuli and the first $k = 16$ time points (in $[T_0,T_1]$, i.e. trained on $S \times k = 21 \times 16 = 336$ samples) and reporting $R^2$ across time in $[T_1,T_3]$ (normalized such that a model always predicting the average of the data gives $R^2=0$; default from \texttt{sklearn.metrics.r2\_score}). Representational similarity matrices were computed as cosine similarity between engram vectors across neurons at $T_0,T_1,T_2$ and compared by correlating their vectorized upper triangles \citep{Deitch2021}. Population geometry was quantified by edge-angle matrices \citep{Schoonover2021,Sylte2025} summarized by the Frobenius norm $\|\mathbf{M}(t_k)-\mathbf{M}(t_0)\|_F$, where $\mathbf{M}(t)$ is a $S \times (S-2)(S-1)/2$ dimensional matrix with all edge angles connecting to a single engram vector per matrix row. Edge angle matrices were normalized by a shuffle baseline obtained by permuting engram labels (edge angle matrix rows) at $T_2$. To fit dynamics from subsampled data we used ordinary least squares regression without intercept to learn a one-step increment model $\Delta\mathbf{e}_\mu(t_k)=\mathbf{e}_\mu(t_{k+1})-\mathbf{e}_\mu(t_k)$ from $\mathbf{e}_\mu(t_k)$ (training on all consecutive transitions in the training window) and report training $R^2$, 5-fold cross-validated $R^2$ across held-out stimuli, leave-one-out cross-validated $R^2$ across held-out time transitions within the training window, a control baseline predicting $\Delta\mathbf{e}_\mu = 0$, and an extrapolation score on a future out-of-distribution (OOD) transition ending at $T_{10}$. Fits were performed on the random stimulus tuning simulations using $46$ recordings, but with $500$ simulated engrams to make sure all fits were constrained by sufficient data.

@@ -1,0 +1,381 @@
+\subsection*{A population model of memory engram dynamics}
+
+%This section provides an overview of the model we developed in this study; details can be found in the Supplementary Material. 
+We consider a set of memories that can be reactivated by associated cues. %~$\mathbf{s}_\mu$, . 
+Each memory is represented in the brain by an engram vector $\mathbf{e}_\mu$ ($\mu=1,2,\ldots$) that describes the participation of different neurons in the $\mu$-th memory (Fig.~\ref{fig1}A). We do not link this ``participation'' to a specific physiological signal but rather consider it a conceptual variable that may correlate with a variety of measurements, such as neural activity or immediate early gene expression. 
+
+\begin{figure}
+  \centering
+  % 6.5in is the width set in the Google Slides page setup
+  \centerwidegraphic[width=6.5in]{figures/fig1.pdf}
+  \caption{
+    \textbf{Systems consolidation as sequential dynamics.}
+    {
+      \textbf{A}. Model for the dynamics of a cue-driven memory engram $\mathbf{e}$.
+      \textbf{B}. Classical view of memory consolidation: A consolidation matrix $\mathbf{A}$ with entries that only consolidate from hippocampus (HPC) to cortex (CTX) consolidates a hippocampal engram pattern pattern $\mathbf{p}_0$ into a cortical engram pattern $\mathbf{p}_1$.
+      \textbf{C}. Illustration of the consolidation (pink arrow) between the hippocampal (blue) and cortical (green) engram pattern.
+      \textbf{D}. The neural engram dynamics $\mathbf{e}(t)$ can be described as a weighted sum of the elemental patterns $\mathbf{p}_\alpha$ and time-varying pattern strengths $w_\alpha(t)$.
+      \textbf{E} Illustration of the orthogonality of the hippocampal and cortical patterns.
+      \textbf{F} Simulation of the pattern strength dynamics with same pattern forgetting time $\tau$ for both patterns.
+      \textbf{G,H}. Same as \textbf{B,C} but for the consolidation between two distributed (``brain-wide'') engram patterns.
+      \textbf{I}. Illustration of the hidden sequential dynamics between distributed, orthogonal patterns.
+      }
+      \label{fig1}
+    }
+\end{figure}
+
+The model aims to describe how the engrams~$\mathbf{e}_\mu$ change over time. It rests on four simplifying assumptions (for a detailed derivation, see Supplementary Section \ref{sub:model-derivation}). First, changes in an engram are driven by its reactivation, such that the change in the engram depends on the shape of the engram itself. Second, the reactivation of a given engram does not change other engrams, such that we can describe the dynamics of an engram independently of all the others. Third, we assume that engram changes can be separated into a forgetting component and a component that describes the active consolidation of the memories. Finally, we approximate the engram dynamics as linear. These assumptions lead to the following engram dynamics: 
+\begin{equation}\label{eq:linear_dynamics}
+  \ddt \mathbf{e} = -\boldsymbol{\uptau}^{-1} \mathbf{e} + \mathbf{A} \mathbf{e},
+\end{equation}
+where $\boldsymbol{\uptau}$ is a diagonal matrix of forgetting times for each of the neurons, and $\mathbf{A}$ is a consolidation matrix that describes how the participation of any neuron in the engram is redistributed among the other neurons during systems consolidation. For the sake of simplifying notation, we start with the dynamics of a single memory and thus exclude the memory subscript~$\mu$.
+
+We assume that the recall of the engram generates a behavioral readout that we assume to depend linearly on the engram:
+\begin{equation}\label{eq:readout}
+  \mathbf{z} = \mathbf{A}^{\text{out}} \mathbf{e} \,.
+\end{equation}
+Here, $\mathbf{z}$ is a readout variable representing, for example, subjective recall or a behavior in response to the elicited memory, and $\mathbf{A}^{\text{out}}$ is the readout matrix. The linear picture is likely a relatively crude approximation of both the dynamics and the readout of the memory engrams, but it provides a geometric perspective on memory consolidation that is conceptually useful. 
+
+The computational model in Eqs.~\eqref{eq:linear_dynamics} and \eqref{eq:readout} is mathematically equivalent to a linear recurrent neural network (RNN) but with crucial differences in interpretation (Table~\ref{tab:RNN}). The primary difference is that our model focuses on the evolution of engram participation over time, rather than the firing rate dynamics typically modeled in RNNs. The consolidation matrix thus reflects the influence neurons have on each others' involvement in encoding memory, rather than the synaptic connections of the traditional RNN weight matrix. The resultant consolidation dynamics also occur on a slower timescale, of hours to years, rather than the millisecond timescales of neural activity.
+
+Modeling the dynamics of memory engrams in this way allows us to reinterpret established dynamical phenomena in RNNs in the context of systems memory consolidation. The following sections address in detail the consequences of this reinterpretation of neural network activity as engram dynamics (Table~\ref{tab:RNN}).
+
+\begin{center}
+\begin{table}
+\caption{Many well-characterized features of traditional RNNs can be reinterpreted in our engram dynamics framework.}
+\label{tab:RNN}
+\begin{tabular}{r c l} 
+\textbf{Traditional RNN} & & \textbf{Engram dynamics} \\
+\hline \vspace{-3mm} \\
+& \makebox[0pt][c]{\textbf{Definitions}} & \\
+Neural activity/firing rate & $\longleftrightarrow$ & Engram participation \\
+Neural time constant (milliseconds) & $\longleftrightarrow$ & Consolidation timescales (hours to years) \\
+Synaptic weight matrix & $\longleftrightarrow$ & Consolidation matrix \\
+Initialization & $\longleftrightarrow$ & Memory acquisition \\
+Neural dynamics & $\longleftrightarrow$ & Consolidation \\
+\hline \vspace{-3mm} \\
+& \makebox[0pt][c]{\textbf{Model dynamics}} & \\
+Feedforward networks & $\longleftrightarrow$ & Unidirectional pattern-to-pattern consolidation \\
+Low-rank networks & $\longleftrightarrow$ & Selective consolidation \& semantization \\
+Attractors & $\longleftrightarrow$ & Stable engrams \\
+Null-space dynamics & $\longleftrightarrow$ & Stable memories despite dynamic engrams \\
+\hline
+\end{tabular}
+\end{table}
+\end{center}
+
+
+\subsection*{Systems consolidation as sequential dynamics}
+The model allows us to generalize the classic inter-areal view of consolidation to brain-wide representations. First, we present a consolidation matrix~$\mathbf{A}$ that represents the classic view, where initially hippocampal memories transform into cortical ones. We then show how this view can be transformed to a more distributed view, with memories following trajectories in a space of brain-wide engram patterns.
+
+\subsubsection*{Classical view: Hippocampus-to-cortex consolidation}
+
+In classical models of systems memory consolidation, memories are formed in the hippocampus (HPC) and gradually transferred into cortex (CTX) for long-term storage \citep{McClelland1995, Roxin2013}. This picture can be encapsulated in our model by splitting the engram into a hippocampal component~$\mathbf{e}^{\mathrm{HPC}}$ and a cortical component~$\mathbf{e}^{\mathrm{CTX}}$ and limiting the entries of the consolidation matrix $\mathbf{A}$ to those that transfer memories from hippocampus to cortex (Fig.~\ref{fig1}B): %Finally, we assume that forgetting is slower in cortex than in hippocampus \citep{McClelland1995}:
+%
+\begin{equation}\label{eq:engram_split}
+ \mathbf{e} = \begin{pmatrix}
+   \mathbf{e}^{\mathrm{HPC}} \\[1ex]
+   \mathbf{e}^{\mathrm{CTX}}
+ \end{pmatrix}, \qquad
+  \mathbf{A} = \begin{pmatrix}
+   \mathbf{0} & \mathbf{0} \\[1ex]
+   \mathbf{A}^{\mathrm{CTX}\leftarrow\mathrm{HPC}} & \mathbf{0}
+ \end{pmatrix}
+ %, \qquad
+ %\boldsymbol{\uptau} = \begin{pmatrix}
+ %  \boldsymbol{\uptau}^{\mathrm{HPC}} & \mathbf{0} \\
+ %  \mathbf{0} & \boldsymbol{\uptau}^{\mathrm{CTX}}
+ %\end{pmatrix}
+ .
+\end{equation}
+
+Let us denote the initial memory engram as engram pattern $\mathbf{p}_0$. In the classical view, this initial memory would be exclusively hippocampal (Fig.~\ref{fig1}B,C):
+%
+\begin{equation}\label{eq:initial_engram}
+  \mathbf{e}(t=0) = \mathbf{p}_0 = \begin{pmatrix}
+    \mathbf{p}^{\mathrm{HPC}} \\[1ex]
+    \mathbf{0}
+  \end{pmatrix}.
+\end{equation}
+%
+Over time, this initial hippocampal engram pattern $\mathbf{p}_0$ decays as a result of passive forgetting while the consolidation process transforms it into a cortical pattern $\mathbf{p}_1$:
+%
+\begin{equation}\label{eq:cortical_engram}
+  \mathbf{p}_1 = \mathbf{A} \mathbf{p}_0 = \begin{pmatrix}
+    \mathbf{0} \\[1ex]
+    \mathbf{p}^{\mathrm{CTX}}
+  \end{pmatrix} \,.
+\end{equation}
+%
+This pattern decays in turn with a time constant that % $\tau^{\mathrm{CTX}}$, which 
+may be slower than hippocampal forgetting \citep{McClelland1995}. %For the sake of illustration, we here show $\tau^{\mathrm{CTX}} = \tau^{\mathrm{HPC}}$. 
+Because the hippocampal and cortical patterns are represented in disjoint sets of neurons (Fig.~\ref{fig1}D, left), the two patterns are orthogonal (Fig.~\ref{fig1}E), and the dynamics take the form of a feedforward network in which each layer transiently stores memories before passing them on to the next layer (Fig.~\ref{fig1}F, left).
+
+\subsubsection*{Distributed view: Pattern-to-pattern consolidation}
+
+To allow a more distributed view of consolidation \citep{Roy2022}, we can move away from the area-centric view of engram dynamics described above, in which a memory transforms explicitly from one part of the brain to another, to a pattern-centric view \citep{Goldman2009, Ganguli2008}. In this view, we can retain the previous feedforward dynamics but recast them as transforming an engram within pattern space, where one distributed pattern transforms sequentially into the next.
+
+To introduce the pattern perspective, we represent the time-varying neural engram $\mathbf{e}(t)$ as a superposition of $P$ stable patterns of neural engram participation $\mathbf{p}_{\alpha}$, each contributing with a time-varying strength $w_{\alpha}(t)$ (Fig.~\ref{fig1}D):
+%
+\begin{equation}\label{eq:pattern_to_engram}
+  %\mathbf{e}(t) = \sum_{\alpha=1}^P \tilde{e}^{\alpha}(t) \, \mathbf{p}^{\alpha} = \mathbf{P} \, \mathbf{\tilde{e}}(t)\,.
+\mathbf{e}(t) = \sum_{\alpha=0}^{P-1} w_{\alpha}(t) \, \mathbf{p}_{\alpha}\,.
+\end{equation}
+%
+The patterns define the sequential structure of the engram dynamics, while the pattern strengths determine how active each pattern is over time. In this way, each pattern in neural space corresponds to a coordinate axis in pattern space (cf.~Fig.~\ref{fig1}E,F), and the engram dynamics is fully captured by the pattern strength dynamics:
+%
+\begin{equation}\label{eq:pattern_dynamics}
+\frac{\mathrm{d}}{\mathrm{d}t} \mathbf{w} = -\boldsymbol{\tilde{\uptau}}^{-1} \mathbf{w} + \tilde{\mathbf{A}} \mathbf{w}\,,
+\end{equation}
+%
+with pattern strength vector $\mathbf{w}(t) = (w_0(t), w_1(t), \ldots, w_{P-1}(t))$, pattern-specific time constants $\boldsymbol{\tilde{\uptau}} = \diag(\tilde{\tau}_0,\ldots,\tilde{\tau}_{P-1})$ and a pattern-specific consolidation matrix $\tilde{\mathbf{A}}$ (Fig.~\ref{fig1}F).
+%The engram patterns can be seen as the latent variables underlying the neural engrams, while the pattern strengths represent their latent dynamics.
+We can readily transform between the neural and pattern spaces through an appropriate transform of the forgetting times and consolidation matrix (cf.~Supplementary Section \ref{sub:pattern-space}).
+
+With this pattern-centric perspective, we can generalize the sequential picture of classical inter-areal consolidation to a sequential consolidation among distributed patterns. To illustrate the idea, consider two patterns $\mathbf{p}_0$ and $\mathbf{p}_1$ that are both distributed across both hippocampus and cortex (Fig.~\ref{fig1}G,H). The patterns define the coordinate axes in pattern space $\tilde{\mathbf{p}}_0$ and $\tilde{\mathbf{p}}_1$, independent of their neural representation (Fig.~\ref{fig1}F). A sequential transformation from $\tilde{\mathbf{p}}_0$ to $\tilde{\mathbf{p}}_1$ is described by a pattern-specific consolidation matrix with entries limited to those that link these two patterns:
+\begin{equation}
+    \tilde{\mathbf{p}}_0 = \left(\begin{array}{c} 1 \\ 0 \end{array}\right), \quad
+    \tilde{\mathbf{p}}_1 = \left(\begin{array}{c} 0 \\ 1 \end{array}\right), \quad
+    \tilde{\mathbf{A}} = \left( \begin{array}{cc}
+        0 & 0 \\
+        1 & 0
+    \end{array}\right) \,.
+\end{equation}
+Because we have removed the constraint of the initial pattern being confined to hippocampus, any of the entries in the associated consolidation matrix $\mathbf{A}$ in the neuron-centric view may be non-zero, effectively mediating a bidirectional consolidation between hippocampal and cortical components of the engram (Fig.~\ref{fig1}G).
+
+The two distributed patterns can be seen as rotated versions of the originally hippocampus- and cortex-specific patterns in neural space (Fig.~\ref{fig1}I). This rotation preserves the geometry of the engram dynamics and results in a hidden feedforward network, in which each distributed pattern activates the next (Fig.~\ref{fig1}F), while individual neurons can participate in multiple patterns. Our model thus transfers the classical picture of hippocampal-to-cortical memory consolidation to the consolidation of potentially brain-wide distributed engram patterns while maintaining the idea of sequential dynamics.
+
+\subsection*{Selective consolidation through low-rank dynamics}
+
+Some memories last a lifetime while others fade quickly, and even those memories that stand the test of time often decline in vividness and detail. Classical models of memory consolidation provide little insight into the neural correlates or mechanisms that underlie such selective forgetting. %why this should be the case.
+
+In the model, this selective consolidation can be understood as a consequence of the structure of the consolidation matrix.  A version of the model that consolidates certain memories while forgetting others can be obtained with a consolidation matrix that is of low rank:
+%
+\begin{equation}\label{eq:low_rank}
+\mathbf{A} = \sum_i \mathbf{m}_i \mathbf{n}_i^{\text{T}}\,.
+\end{equation}
+%
+We exemplify this in our hippocampus-to-cortex model (%Eq.~\eqref{eq:engram_split}, 
+Figs.~\ref{fig2}A). % by defining the submatrix $\mathbf{A}^{\mathrm{CTX}\leftarrow\mathrm{HPC}}$ to consolidate only one memory:
+%
+%\begin{equation}
+%  \mathbf{A}^{\mathrm{CTX}\leftarrow\mathrm{HPC}} = \mathbf{m} {\mathbf{n}^{\text{T}}} \,.
+%\end{equation}
+%
+%Here, $\mathbf{n}$ selects a portion of the hippocampal memory for transformation into the consolidated engram~$\mathbf{m}$ in neocortex (Fig.~\ref{fig2}C). 
+%Memories that are initially stored in the hippocampus are projected onto the selection vector $\mathbf{n}^{\text{HPC}}$ in hippocampus and then transformed by $\mathbf{m}^{\text{CTX}}$ into a consolidated cortical memory engram .
+%Components of the hippocampal engram that are orthogonal to the selection vector $\mathbf{n}$ are not consolidated and will be forgotten due to the passive decay that affects the entire hippocampal engram. 
+This formulation breaks the initial engram pattern~$\mathbf{p}_0$ into two components: a selectively retained component that aligns with the selection vectors~$\mathbf{n}_i$ and a forgotten component that is orthogonal to them (Fig.~\ref{fig2}B). The selected component is projected into the consolidated pattern $\mathbf{p}_1$, which is a superposition of the consolidation vectors~$\mathbf{m}_i$. %The rank $R$ of this consolidation matrix describes the extent to which the original memory is retained in consolidation: it gives the number of $(\mathbf{n}_i,\mathbf{m}_i)$ pairs where a component of the original engram pattern has a matching component in the consolidated pattern. 
+Thus, only memories that lie in the selection space are consolidated, while memories outside this space are passively forgotten (Fig.~\ref{fig2}C).
+
+
+%
+\begin{figure}
+  \centering
+  % 6.5in is the width set in the Google Slides page setup
+  \centerwidegraphic[width=6.5in]{figures/fig2.pdf}
+  \caption{
+    \textbf{Selective consolidation and stability through low-rank dynamics.}
+    \textbf{A}. Selective consolidation via a low-rank hippocampus-to-cortex consolidation matrix.
+    \textbf{B}. Illustration of low-rank consolidation: One hippocampal component (pink) of the initial engram pattern $\mathbf{p}_0$ (blue) is parallel to the selection vector $\mathbf{n}$ and is consolidated into a cortical engram pattern $\mathbf{p}_1$ (green) that is parallel to the projection vector $\mathbf{m}$. The other hippocampal component (black) is passively forgotten.
+    %\textbf{B}. Illustration of the consolidation matrix (left) implementing the hippocampus-to-cortex consolidation (right).
+    %\textbf{C} Geometry of selective consolidation. Left: Only the hippocampal component parallel to the selection vector $\mathbf{n}$ is consolidated. Right: The consolidated component is transformed into a cortical component by the projection vector $\mathbf{m}$.
+    \textbf{C}. Pattern strengths over time with identical forgetting times $\tau$. Both hippocampal components are passively forgotten (left, blue lines, small offset for visualization). The engram is consolidated into a cortical engram with a component only in direction of $\mathbf{m}$ (green, solid).
+    \textbf{D-F}. Same as \textbf{A-C} but with an additional hippocampus-to-hippocampus consolidation component with identical projection and selection vectors $\mathbf{k} \perp \mathbf{n}$, turning the previously non-consolidated hippocampal component (\textbf{A}, black) into a stable hippocampal engram (orange).
+    %\textbf{G}. Illustration of pattern $\mathbf{\tilde{\uptau}}$ and $\mathbf{\tilde{M}}$.
+    %\textbf{H}. Singular values from SVD of pattern $\mathbf{\tilde{M}}$ (blue) and reciprocal pattern time-scales (black).
+    %\textbf{I}. Similarity matrix between pattern vectors (columns of $\mathbf{\tilde{M}}$) and selection vectors from SVD ($\mathbf{V}$, left) and projection vectors from SVD ($\mathbf{U}$, right).
+    %\textbf{J,K}. Same as \textbf{H,I} but for neural $\mathbf{M}$.
+    %\textbf{L}. Outlook...
+    \label{fig2}
+  }
+\end{figure}
+%
+The selection vectors can select not only which \textit{memories}, but also which \textit{components} of a single memory, are consolidated. If the semantic component of a hippocampal memory aligns with the selection space and the episodic detail is orthogonal, the semantic memory is consolidated into cortex while episodic detail is forgotten.
+
+\subsection*{Memory stabilization through auto-associative dynamics}
+
+Some episodic memories last a lifetime and remain hippocampus-dependent throughout \citep{Winocur2011}. This retained hippocampus-dependence can be understood as an active consolidation \emph{within} the hippocampus. %:
+%\begin{equation}
+%  \mathbf{A} = \begin{pmatrix}
+%    \mathbf{A}^{\mathrm{HPC}\leftarrow\mathrm{HPC}} & \mathbf{0} \\[1ex]
+%    \mathbf{A}^{\mathrm{CTX}\leftarrow\mathrm{HPC}} & \mathbf{0}
+%  \end{pmatrix}.
+%\end{equation}
+
+A simple model variant for this phenomenon is obtained when hippocampal selection vectors are paired with themselves as consolidation vectors (Fig.~\ref{fig2}D, orange):
+\begin{equation}
+  \mathbf{A}^{\mathrm{HPC}\leftarrow\mathrm{HPC}} = \sum_i \mathbf{k}_i{\mathbf{k}}_i^\text{T}\,.
+\end{equation}
+%
+This describes the consolidation of a component of the hippocampal engram into itself over time (Fig.~\ref{fig2}E, orange), akin to auto-associative dynamics in RNNs \citep{Hopfield1982}. When the rate of this "self-consolidation" is balanced with passive forgetting, this results in a stable memory engram in the hippocampus (Fig.~\ref{fig2}F, orange). 
+
+A stable hippocampal engram component does not preclude a parallel consolidation into cortex. For example, a second selection vector~$\mathbf{n}$ could consolidate a different component of the memory into a cortical pattern~$\mathbf{m}$ (Fig.~\ref{fig2}E, F, pink). Thus, an engram can be separated into two parts: one aligned with the stable space~$\mathbf{k}$ that remains in hippocampus, and one aligned with the selection space~$\mathbf{n}$ that consolidates into cortex. Note that it is also possible to maintain hippocampal dependence while also having a dynamic engram within hippocampus; in this case, the selection and consolidation spaces would both be in hippocampus but would not be identical.
+
+%Selective or self-stabilising consolidation does not necessarily require a low-rank structure of the consolidation matrix. Any consolidation matrix can be decomposed into features with different degrees of consolidation through a singular value decomposition:
+%
+%\begin{equation}\label{eq:svd}
+%\mathbf{A} = \mathbf{U} \mathbf{S} \mathbf{V}
+%\end{equation}
+%
+%Here, $\mathbf{U}$ and $\mathbf{V}$ are orthonormal matrices that contain projection vectors in $\mathbf{U}$, and selection vectors in $\mathbf{V}$. The singular values in the diagonal matrix $\mathbf{S}$ quantify the degree of consolidation that occurs for the different selection vectors. In general, engrams or readouts that are aligned with selection vectors with small singular values will be forgotten quickly, although the exact dynamics also depend on the correlations between the selection vectors $\mathbf{V}$ and the consolidated patterns $\mathbf{U}$.\todo{SVD arguments comes from Henning. I don't have a good intuition for U and V correlation. Need to clarify this (at least for us). It might be a good idea to ask Friedrich?}
+
+%To illustrate this, we performed SVD on the power-law generating consolidation matrices from above (Fig.~\ref{fig3}B-F). The consolidation matrices had a feedforward structure with pattern-specific time scales. SVD on the $P$-dimensional consolidation matrix $\mathbf{\tilde{M}}$ in pattern space (Fig.~3G) recovered the reicprocal pattern time-scales as singular values (Fig.~3H) and pairs of consecutive patterns in the feedforward chain as selection and projection vectors, respectively (Fig.~3I). SVD on the $N$-dimensional consolidation matrix $\mathbf{M}$ in neural space recovered the neural time scales approximately (Fig.~3J)\todo{Not for the first and last neurons, why? Better with larger P maybe?}, but did not recover the neural pattern vectors as selection and projection vectors (Fig.~3K).
+
+% \begin{framed}
+%   Need some discussion for this. I thought neural $\mathbf{M}$ would be of rank $P$, is not invertible, hence SVD not unique. But that doesn't quite fit with the simulation prototype results here. Also can we save this somehow? Schur decomposition to get Goldman as Schur modes and neural pattern vectors as Schur vectors? Not sure if that works, probably not unique?
+% \end{framed}
+
+
+\subsection*{Stable memories despite unstable representations}
+
+%While memories can be forgotten over time, the memory content typically doesn't change. We might forget what clothes we were wearing during our birthday picnic last year, but we won't suddenly believe that we celebrated our birthday in a swimming pool instead. %Such memory stability exists despite changes in the underlying memory engram.
+While the neural representation of a memory changes with consolidation, the memory itself often remains surprisingly stable. The model offers a geometric interpretation for this phenomenon. The number of neurons in the brain is likely very large relative to the dimensionality of memory semantics, i.e., the number of elemental items we can bind together in a memory. This implies that the dimension of the memory readout $\mathbf{z}= \mathbf{A}^{\text{out}} \mathbf{e}$ (Fig.~\ref{fig1}A) is much smaller than that of the engram $\mathbf{e}$. As a consequence, many different engram patterns can produce the same readout. The space in which we can change the engram pattern without affecting the readout is referred to as the ``output-null space'' in the context of RNNs \citep{Kaufman2014}. %In fact, for an $N$-dimensional neural representation and a $K$-dimensional behavioral response, there is an $(N-K)$-dimensional subspace of changes that can be applied to the engram that leaves the memory readout unchanged.
+%
+For the readout to remain stable despite a changing engram, the consolidation dynamics must occur in this output-null space:
+\begin{equation*}
+    \mathbf{A}^\text{out} \left[ - \boldsymbol{\uptau}^{-1} + \mathbf{A}\right] = 0 \,.
+\end{equation*}
+
+Active consolidation and maintenance are mediated by the consolidation matrix $\mathbf{A}$, and its effects can be separated into two components, one in the output-potent and one in the output-null space:
+
+\begin{equation}\label{eq:output_decomp}
+\mathbf{A} = \mathbf{A}^{\text{potent}} + \mathbf{A}^{\text{null}} \,.
+\end{equation}
+
+\todo{Do we want more here? Math + sims as Henning once suggested? From Henning: Math on how to split this up and some simulations. I suspect that M\_potent is obtained by projecting all columns onto the set of readout vectors. Whatever remains it M\_null.}
+
+The output-null component is irrelevant for the stability of the memory, because it is by definition unable to change the memory response. Passive forgetting in the output-null space is also inconsequential. The \emph{output-potent} component~$\mathbf{A}^\text{potent}$ that affects the readout can have two effects. The beneficial effect is that it can counteract passive forgetting and thereby prolong memory lifetimes. However, it can also change the memory response. Take a memory consisting of an episodic and a semantic component that is stored in the hippocampus and decays over time (Fig.~\ref{fig2}D). If the hippocampal decay is in the potent space of the memory readout while the dynamics of the semantic component remain in the null-space, the memory will transform from a memory with episodic and semantic components into a purely semantic memory.
+
+% \begin{framed}
+%   In this section I struggled with how I ordered the first part of the paper, I keep refering back to figures with new concepts we introduce. Here is how I would do it now, but would want feedback first before I start changing things again:
+%   \begin{itemize}
+%     \item Fig. 1: As is but add pattern vs. neural space figure (Fig.~\ref{fig3}A) at bottom.
+%     \item Fig. 2: Selective consolidation figure without the SVD stuff. In main text just mention that we will illustrate SVD in the next section.
+%     \item Fig. 3: Power-law figure. But add section on input-null spaces before that and add a simulation with constant tau and constant readout, refering to Goldman paper. Maybe even a simulation where each pattern has an episodic and semantic component, and there is an episodic and semantic readout. Illustrating different changes in null and potent spaces and the what that means for consolidation. Finally add distributed taus and power-law results.
+%     \item If we want to illustrate SVD, we can add that to the same figure I guess.
+%     \item We would loose the transition from output null to representational drift. But I don't think it would change the next section at all.
+%   \end{itemize}
+% \end{framed}
+
+% I need a good transition here. Something along the lines of this paragraph from the introduction of an abstract I wrote
+%Representational drift bears striking similarities to systems memory consolidation, where memory engrams are systematically reorganized over time while memory content remains stable. However, it remains unclear if and how classical systems consolidation relates to the population-level view of drift and how apparently unstructured drift could be driven by a systematic consolidation process.
+%The phenomenon of representational drift, where neural representations change over time despite stable behavior, offers a compelling parallel to the dynamics observed in our model. This drift, characterized by changes in single-unit tuning curves and population activity, mirrors the consolidation processes we simulated.
+
+\subsection*{Power-law forgetting of distributed engrams}
+
+\begin{figure}
+  \centering
+  % 4.49in is 2/3 col figure width (11.4cm) in Cell press
+  \centerwidegraphic[width=4.49in]{figures/fig3.pdf}
+  \caption{
+  \textbf{Power-law forgetting from homogeneous neuronal forgetting times.}
+    {
+      \textbf{A.}~Schematic of sequential consolidation with distributed pattern forgetting times.
+      \textbf{B.}~Pattern strengths for all patterns (blue, green, gray lines) with geometrically distributed forgetting times. The readout (black line, sum of all pattern strengths) displays power-law decay.
+      \textbf{C.}~Neural engram participation for a random subset of neurons, inset showing a zoomed-in version of the same data.
+      \textbf{D.} Histogram of pattern forgetting times (gray) and their cumulative density (dotted line).
+      \textbf{E.} Histogram of neuronal forgetting times (orange). Lines show the probability density function of a reciprocal normal distribution fitted to the extracted neuronal forgetting times (orange) and computed analytically (black dashed).
+    }
+    \label{fig3}
+  }
+\end{figure}
+
+Theoretical work suggests that a central advantage of memory consolidation is the ability to maintain memories for long periods of time \citep{McClelland1995, Fusi2017}. Previous models have achieved slow forgetting, with memory decay following a power law, by sequentially consolidating memories from areas or sets of synapses with short memory lifetimes to areas with increasingly long memory lifetimes \citep{Roxin2013, Remme2021, Wixted2004}.
+
+With our model, we can attain similar gradual power-law forgetting in a system with largely \textit{homogeneous} neural forgetting times, by harnessing the distributed pattern-centric view (Fig.~\ref{fig1}F). We endow the patterns $\mathbf{p}_\alpha$ that make up the engram $\mathbf{e}$ with a broad range of forgetting times $\tilde{\uptau}_\alpha$. The bulk of patterns rapidly decay, while a few persist for a long time (Fig.~\ref{fig3}A). Each pattern consolidates to the next in sequence, then gradually decays (blue, green, grey lines, Fig.~\ref{fig3}B). With geometrically distributed forgetting times, these patterns together sum to an engram that decays as a power law (black line, Fig.~\ref{fig3}B), by the same mechanism as in earlier models \citep{Fusi2005, Remme2021}.
+
+Despite these patterns operating on time scales spanning several orders of magnitude, the neural population producing these patterns exhibit more homogeneous forgetting times (CV = 0.164). Because the patterns are distributed, every neuron contributes to a large number of patterns, such that---at least statistically---the engram participation of all neurons decays in the same way (Fig.~\ref{fig3}C). While the pattern forgetting times are geometrically distributed (Fig.~\ref{fig3}D), the effective neuronal forgetting times follow a reciprocal normal distribution (Fig.~\ref{fig3}D,E; Supplementary section \ref{sub:power_law_forgetting}). This demonstrates that it is possible for a system to achieve power-law forgetting without area- or neuron-specific learning rates.
+
+\subsection*{Consolidation reproduces key hallmarks of representational drift}
+
+While the long-term dynamics of neural representations of memory are not yet well understood, there is a growing body of work on how representations of task variables change over time \citep[e.g.,][]{Ziv2013,Driscoll2017,Schoonover2021}. This ``representational drift'' is characterized by gradual ongoing changes in the relationship between neural activity and task variables, such as position or head direction \citep{Rule2020}, without any accompanying change in task performance. Whether this phenomenon is a directed process or the result of stochastic changes remains unclear.
+
+Our model of engram dynamics produces representational changes reflective of those seen in representational drift. To illustrate this, we consider a set of task variables as the cues~$\mathbf{s}_\mu$ in our model. These task variables may be, for example, different visual stimuli or animal locations in the environment. %, each of which is represented by a different neural response. 
+Each cue evokes the associated engram $\mathbf{e}_\mu$, that is, a representation as a neuronal population vector (Fig.~\ref{fig4}A). In the model, these engrams are all consolidated independently with the same consolidation matrix, each following a sequential trajectory through pattern space (Fig.~\ref{fig4}B). We again used geometrically distributed forgetting times, producing a slowly decaying memory.
+
+\begin{figure}
+  \centering
+  % 6.5in is the width set in the Google Slides page setup
+  \centerwidegraphic[width=6.5in]{figures/fig4.pdf}
+  \caption{
+    \textbf{Hallmarks of representational drift.}
+    \textbf{A.}~Stimulus tuning of $S=21$ engrams at three different time points $T_0, T_1, T_2$ (grid columns). Each grid row shows same data with neurons sorted by preferred stimulus at a different time point.
+    \textbf{B.}~Illustration of model of sequential engram dynamics with geometrically distributed pattern forgetting times, same as Fig.~\protect{\ref{fig3}}.
+    \textbf{C.}~Changes in single neuron tuning for selected neurons, showing stability, gradual drift, abrupt remapping, gain and loss of stimulus-tuning.
+    \textbf{D.}~Left: Mean population vector correlation of all stimuli. Right: Tuning curve correlations for individual neurons (gray) and their mean (blue).
+    \label{fig4}
+  }
+\end{figure}
+
+Over the course of the consolidation, the responses of the neurons to the set of stimuli change, producing changes in their stimulus tuning (Fig.~\ref{fig4}C). This is accompanied by a gradual change in the population response, one of the main hallmarks of representational drift (Fig.~\ref{fig4}A). When neurons are sorted according to their preferred stimulus at an initial time~$T_0$, their responses tile the stimulus space. At later times, this ordered representation fades, resulting in a gradual decorrelation of the population vectors at each stimulus (Fig.~\ref{fig4}D, left). Neuronal tuning curves also decorrelate from their original tuning, albeit at variable rates (Fig.~\ref{fig4}D, right), consistent with neural data \citep[e.g.,][]{Rule2020,Geva2023,Schoonover2021}. Despite these changes, a resorting of the neurons by their preferred stimulus at any time point reveals that the neural responses continue to tile the stimulus space, though with different neurons playing different roles (Fig.~\ref{fig4}A).  %Individual neurons change their tuning in diverse ways (Fig.~\ref{fig4}C) and decorrelate from their original tuning at different rates (Fig.~\ref{fig4}D right), consistent with experimental observations \citep[e.g.,][]{Rule2020,Geva2023,Schoonover2021}. 
+Hence, a deterministic model of engram dynamics can produce key hallmarks of representational drift.
+
+\subsection*{Representational geometry in subsampled populations}
+
+Earlier theoretical work treated representational drift as driven by stochastic fluctuations \citep[e.g.,][]{Qin2023,Delamare2024}. In our model, it results from a deterministic consolidation process. We will now show that this qualitative difference is, unfortunately, difficult to discern in neural data due to subsampling effects: We can usually observe only a fraction of the relevant neurons simultaneously, and engram components in the---typically very large---unobserved neural population gradually consolidate into the observed population (Fig.~\ref{fig5}A), where they cause unpredictable changes that cannot be distinguished from stochastic fluctuations. 
+
+%In theoretical work, the source of representational drift is often modeled as random noise \citep[e.g.,][]{??}. Our model displays representational changes consistent with representational drift (Fig.~\ref{fig4}). However, because the model is deterministic, it does not explain other features of representational drift observed in previous work, such as the gradual degradation of a readout of task variables \citep{Rule2020} and the change in population geometry over time \citep{Schoonover2021}. We found that observing only a portion of neurons in our model can produce changes in the observed component of the engram that appear stochastic, as a result of the interaction with the unobserved engram component (Fig.~\ref{fig5}A), and we demonstrate that this partial observation gives rise to behaviors consistent with experimental observations.
+
+\begin{figure}%[H]
+  \centering
+  % 6.5in is the width set in the Google Slides page setup
+  \centerwidegraphic[width=6.5in]{figures/fig5.pdf}
+  \caption{
+    \textbf{Effects of subsampling.}
+    \textbf{A.}~Subsampling: The hidden population has an unpredictable effect (red arrow) on the dynamics of the observed population.
+    \textbf{B.}~Model: Engram dynamics in full population perform random rotation in the null-space of a stable behavior readout.
+    \textbf{C.}~Simulation timescales. Simulation time was chosen to match population vector decorrelation time (see \textbf{D,E}) and split into 4 time points $T_0, T_1, T_2, T_3$ with 15 recordings between time points. A later time point was used to evaluate dynamical system fits (see \textbf{K}) on out of distribution (OOD) data.
+    \textbf{D.}~Population vector correlations over time for different fractions of observed neurons.
+    \textbf{E.}~Tuning curve correlations over time for different fractions of observed neurons.
+    \textbf{F.}~Linear decoders trained to predict the behavioral readout (see \textbf{B}) based on 16 recordings from $T_0$ to $T_1$, and evaluated at each recording from $T_1$ to $T_3$.
+    \textbf{G.}~Dynamics of representational similarity over time for random stimulus tuning. Left: Pearson correlation between vectorized upper triangles of cosine-similarity matrices over time for different fractions of observed neurons. Right: Example similarity matrices for 2\% neurons observed at time $T_0$ (upper matrix triangle) and time $T_2$ (lower matrix triangle).
+    \textbf{H.}~Edge angle dissimilarity across recordings.
+    \textbf{D-H} show results for random stimulus tuning.
+    \textbf{I,J} Same as \textbf{G,H}, but for correlated stimulus tuning .
+    \textbf{K.}~Goodness of fit for linear dynamical systems fitted to simulated data, evaluated on training data within $[T_0, T_3]$ (black line), cross-validated (CV) on left out transitions from the training data (inside distribution, pink dashed line), on a future transition (out of distribution, see \textbf{C}, orange dashed line), on left out stimuli (solid green line) and evaluated on a model predicting no change (control, gray dashed line).
+    The number of observed neurons in \textbf{D-K} was fixed at $N=100$, while varying the size of the full population. Shaded areas in all panels show standard deviations across 10 random subsamples.
+    \label{fig5}
+  } \end{figure}
+To study the effects of this apparent stochasticity, we used a variant of the model in which both the behavioral readout and the representational geometry are stable in the full population. Specifically, we confined the engram dynamics to the null-space of a predefined but arbitrary readout variable (Fig.~\ref{fig5}B) and restricted the dynamics to high-dimensional random rotations. We then systematically varied the number of unobserved neurons while keeping the size of the observed population and the speed of consolidation fixed (cf.~Methods). We initialized engrams with random stimulus tuning and recorded engram activities at evenly spaced time points that cover the decorrelation timescale of the neuronal representation (Fig.~\ref{fig5}C). We found that the decorrelation timescales of both the population vector and the tuning curves are independent of the fraction of observed neurons (Fig.~\ref{fig5}D,E; Supplementary Fig.~\ref{sfig5}), in line with an analytial derivation using Green's functions  (Supplementary Section~\ref{sub:bath_math}). 
+
+In contrast, subsampling degrades a readout of task variables. To show this, we fit a linear decoder to read out the task variable from the observed component of the engrams during the first half of the simulation and then used this decoder to predict the task variable from the observed engrams over the second half of the simulation. Under full observation of the population, the decoder performance did not degrade over time because observing the full population guarantees access to the stable readout dimension. However, under subsampling, the decoder performance declines over time, with more rapid drops for smaller subsampling fractions (Fig.~\ref{fig5}F; Supplementary Fig.~\ref{sfig5}). Thus, subsampling obscures stable task representations that may be present in the full population.
+
+To determine the effect of partial observation on the stability of population geometry, we considered the representational similarity among different stimuli \citep{Deitch2021} and edge angles in representational space \citep{Schoonover2021,Sylte2025}. We considered neural representation with random stimulus tuning and with correlated tuning as, e.g., for place cells. %We can consider the population representations of the set of stimuli $\mathbf{s}_\mu$ as a set of points in high dimensional space, with the coordinates of each point given by the engram participation $\mathbf{e}_\mu$ of each neuron. 
+Representational similarity measures how similar pairs of stimuli are represented in the population, while edge angle similarity measures the extent to which triplets of stimuli maintain their relative arrangement. %
+%Because rotational dynamics preserve the representational geometry, both quantities remain stable during consolidation when the full population is observed (Fig.~\ref{fig5}G,H, black lines). Under partial observation, edge angles become increasingly dissimilar with decreasing sampling fraction (Fig~\ref{fig5}H). The stability of representational similarity under partial observation depends on the stimulus tuning. For random tuning, representational similarity becomes increasingly dissimilar with lower sampling fractions (Fig.~\ref{fig5}G, top left; cf.~\citet{Schoonover2021}), while it remains relatively stable for correlated stimulus tuning (Fig.~\ref{fig5}G, bottom left; cf.~\citet{Deitch2021}). This is because for random stimulus tuning, the representational similarity is determined by random correlations between the representations (Fig.~\ref{fig5}G, top right), which change under partial observation. However, for correlated stimulus tuning, the representational similarity is predominantly determined by stimulus correlation (Fig.~\ref{fig5}G, bottom right), which is much less affected by partial observation.
+Because rotational dynamics preserve the representational geometry, both quantities remain stable during consolidation when the full population is observed (Fig.~\ref{fig5}G-J, black lines). The stability of representational similarity under partial observation depends on stimulus tuning. For random tuning, representational similarity becomes increasingly labile with lower sampling fractions (Fig.~\ref{fig5}G, left; cf.~\citet{Schoonover2021}), while it remains relatively stable for correlated stimulus tuning (Fig.~\ref{fig5}I, left; cf.~\citet{Deitch2021}). This is because for random stimulus tuning, the representational similarity is determined by random correlations between the representations (Fig.~\ref{fig5}G, right), which change under partial observation. However, for correlated stimulus tuning, the representational similarity is predominantly determined by stimulus correlation (Fig.~\ref{fig5}I, right), which is much less affected by partial observation. The stimulus tuning also affects the stability of edge angles under partial observation. Independent of tuning, they become increasingly dissimilar with decreasing sampling fraction (Fig~\ref{fig5}H,J). However, for correlated stimulus tuning, edge angle dissimilarity saturates at a lower level (Fig.~\ref{fig5}H; cf.~\citet{Sylte2025}) than for random stimulus tuning (Fig.~\ref{fig5}J; cf.~\citet{Schoonover2021}).
+
+\subsection*{Stochastic dynamics in subsampled populations}
+
+An obvious test of our model would be to fit it to longitudinal recordings, to uncover the underlying consolidation dynamics. This approach suffers from two challenges. First, such a fit is prone to overfitting. Even for the assumed linear dynamics, the number of data points per neuron (number of stimuli $\times$ number of time points) should be at least as high as the number of free parameters per neuron. In the linear consolidation model, there are as many parameters per neuron as there are neurons. This is hard to achieve in longitudinal recordings. Second, even with sufficient data, it will be difficult to predict the influence of the unobserved population on the neural representation. To illustrate this, we fitted linear dynamical systems to simulated data, ensuring sufficient data to constrain the fit. We then evaluated the fitted models on held out stimuli, held out time points within the training data (inside distribution, ID) and observations from a future time point (out-of-distribution (OOD); Fig.~\ref{fig5}C). As expected, the fits succeed in the full population and generalize well (Fig.~\ref{fig5}K). However, even with relatively minor subsampling, the performance of the fit declined steeply, even on the training data. Hence, the influence of the unobserved population introduces an unpredictable component, such that the dynamics appear stochastic despite their deterministic origin. 
+
+%To better understand the effect of the unobserved population on the observed dynamics, we analytically described the observed and unobserved components of the engram as coupled systems and showed how the unobserved component influences the observed component using Green's function formalism (Supplementary Section \ref{sub:bath_math}).  On average, the observed engrams lose coherence over time independently on the sampling fraction. (Supplementary Figs.~\ref{sfig:full_system}B and \ref{sfig:subsampling_autocorr}B,D \textcolor{red}{SC: will add this subpanel?}). In the presence of subsampling, however, the dynamics of the observed engram are driven by the unobserved component of the system, that effectively acts as a source of stochasticity (Fig.~\ref{sfig:subsampling_autocorr}B,D).
+
+%Our results demonstrate that deterministic engram dynamics may appear stochastic when only a portion of the population is observed. Partial observation of a system undergoing rotational dynamics yields an observed system that exhibits degrading decoder performance and unstable geometry, despite the fully observed systems allowing a stable readout and stable geometry.
+
+%We modeled the observed and unobserved components of the engram as coupled systems and analytically described how the unobserved component influences the observed component using Green's function formalism (Supplementary Section \ref{sub:bath_math}).  On average, the observed engrams lose coherence over time independently on the sampling fraction. (Supplementary Figs.~\ref{sfig:full_system}B and \ref{sfig:subsampling_autocorr}B,D \textcolor{red}{SC: will add this subpanel?}).  In the presence of subsampling, however, the dynamics of the observed engram are driven by the unobserved component of the system, that effectively acts as a source of stochasticity (Fig.~\ref{sfig:subsampling_autocorr}B,D).
+
+%Our results demonstrate that deterministic engram dynamics may appear stochastic when only a portion of the population is observed. Partial observation of a system undergoing rotational dynamics yields an observed system that exhibits degrading decoder performance and unstable geometry, despite the fully observed systems allowing a stable readout and stable geometry.
+%
+%
+%\subsection*{Fitting linear engram dynamics to neural data}
+%
+%A key element of the suggested model is that the dynamics are deterministic. Hence, the future shape of the engram should be predictable from its current state. Assuming linear dynamics, it should be possible to fit the dynamical matrix~$- \boldsymbol{\uptau} + \mathbf{A}$ to longitudinal neural recordings (Fig.~\ref{fig5}G).
+%%In this study, we proposed a linear dynamical model describing the long-term evolution of neural representations and showed how it relates to systems consolidation and representational drift. This modeling framework suggests that it is possible to obtain estimates of the model parameters $\boldsymbol{\uptau}$ and $\mathbf{M}$ by fitting to data.
+%%To evaluate under which conditions such a fit would yield a predictive model, we first performed fits on synthetically data, such that we know that a fit it in principle possible (Fig.~\ref{fig6}A). We then applied the same fitting procedure to the data from \citet{Driscoll2017}.
+%%\subsubsection*{Fitting synthetic data}
+%
+%To first understand under which conditions fitting is possible and provides predictive power, we analyzed synthetic data. To obtain data akin to longitudinal recordings, we simulated the engram dynamics and recorded the engrams at a finite set of time points. To qualitatively mimic the character of representational drift, the interval between the time points was chosen such that the engram has substantially changed, but still retains sufficient similarity with the previous time point. We then performed a linear regression to predict the engram at a given moment in time from the previous time point. We also performed the same regression using only a subset of the neurons to evaluate how subsampling the population influences the fitting performance.
+%
+%We looked at the training score to assess whether the model is consistent with the data. Furthermore, we performed leave-one-out cross-valication (CV) across days and $k$-fold CV across locations to evaluate generalization of the learned time evolution. Lastly, we directly compare the inferred time evolution (i.e., the coefficients of the regression) with the actual time evolution $U = \exp{(A \Delta t/\tau)}$ generated by the model.
+%
+%For synthetic engram activity data that covered the entire dynamic subspace, fitting always succeeded and the fit had predictive power as long as the number of training samples (number of stimuli times number of included time points) was larger than the number of neurons (number of equations in the linear regression).
+%However, for synthetic data that was subsampled, the subsampling noise made fitting increasingly difficult even if there were enough training samples and even for fairly large subsampling fractions (Fig.~\ref{fig5}H). Additionally, generalization performance dropped even further with subsampling, because the training data did not cover the entire dynamical subspace.
+%%When the data did not cover the entire dynamical subspace, the fit was still able to reproduce the training data, but it failed to generalize for components outside the covered subspace.(Fig.~\ref{fig5}I).
+%
+%\subsubsection*{Fitting to the data from \citet{Driscoll2017}}
+%
+%We then fit the model to the data from \citet{Driscoll2017}, where mice had to perform a navigation task on a linear track. We treated different locations along the track as separate stimulus-behavior memories $\mu$ and used linear regression between trial-averaged population vectors of consecutive days from all memories together.
+%We found a linear model that could reproduce all observed neural activities, but it did not have predictive power for left out recording days or memories (Fig.~\ref{fig5}J).
+%

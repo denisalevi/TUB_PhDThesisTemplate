@@ -1,0 +1,1026 @@
+\subsection{Model derivation}
+\label{sub:model-derivation}
+
+The suggested model of memory consolidation describes the change in engrams over time as a linear dynamical system. This section gives a detailed derivation of this model.
+
+In our model, each of a set of $M$ cues or stimuli $s_\mu$ ($\mu \in \{1,\ldots,M\}$) is associated with a corresponding memory engram $\mathbf{e}_\mu$ describing the participation of a population of $N$ neurons. Each engram $\mathbf{e}_\mu$ is given as an $N$-dimensional vector $\mathbf{e}_\mu = (e_{\mu}^1, e_{\mu}^2, \ldots, e_{\mu}^N)^T$ with elements $e_{\mu}^i, \, (i \in \{1, \ldots, N\})$ giving the participation of each neuron in the population. 
+
+\subsubsection*{Assumption 1: Reactivations drive dynamics}
+
+First, we assume that changes in engrams are a function of the engrams themselves. This assumption is based on the findings that the disruption of replay during sleep impairs memory consolidation \citep{Girardeau2009} and cue reactivation strengthens memories \citep{Rasch2007a}, suggesting memory reactivation drives changes in the engram. This can be described by
+%
+\begin{equation}\label{eq:general_dynamics}
+  \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu = F(\mathbf{e}_{\mu=1}, \mathbf{e}_{\mu=2}, \ldots, \mathbf{e}_{\mu=M}),
+\end{equation}
+%
+where $F$ is a function of all reactivated memory engrams. This formulation represents the case in which engrams may be influenced by the reactivation of all other engrams; that is, reactivation of a given memory can influence engrams of not only that memory but also all other memories.
+
+\subsubsection*{Assumption 2: Non-interference of engrams}
+
+We next impose the constraint that the dynamics of a given engram $\mathbf{e}_\mu$ are influenced only by the reactivation of the engram itself and not by any of the other engrams represented in the system. This assumption decouples the dynamics of the engrams, as
+%
+\begin{equation}\label{eq:decoupled_dynamics}
+  \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu = F(\mathbf{e}_\mu).
+\end{equation}
+%
+This allows us to consider the dynamics of each engram independent of all other engrams in the system.
+
+\subsubsection*{Assumption 3: Decomposition into forgetting and consolidation terms}
+
+Changes in the engram involve both the redistribution of neural participation among the population and gradual decay due to forgetting or interference with newly encoded memories. We here assume that these two components can be treated as separate terms in $F$, as
+%
+\begin{equation}\label{eq:forgetting_dynamics}
+  \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu = -\boldsymbol{\uptau}^{-1} \mathbf{e}_\mu + G(\mathbf{e}_\mu),
+\end{equation}
+%
+where $\boldsymbol{\uptau} = \diag(\tau_1,\tau_2,\ldots, \tau_N)$ is a diagonal matrix of forgetting times for each of the $N$ neurons and $G$ is a function describing the redistribution of the engram.
+
+\subsubsection*{Assumption 4: Linearity}
+
+As a first approximation, we assume $G$ takes a linear form:
+%
+\begin{equation}
+  \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu = -\boldsymbol{\uptau}^{-1} \mathbf{e}_\mu + \mathbf{A} \mathbf{e}_\mu.
+\end{equation}
+
+We also assume linearity in reading the memory out from the system:
+%
+\begin{equation}
+  \mathbf{z}_\mu = H(\mathbf{e}_\mu) = \mathbf{A}^{\text{out}} \mathbf{e}_\mu.
+\end{equation}
+%
+
+Although this assumption of linear $G$ and $H$ is quite strong, this first-order approximation provides a geometric perspective on engram dynamics that yields valuable insights into the system.
+
+%\newpage
+\subsection{Transforming between neural space and pattern space}
+\label{sub:pattern-space}
+
+Our model describes engram dynamics as a sequential reconfiguration of the engram from pattern to pattern. In the classical view of hippocampus-to-cortex consolidation, these patterns $\mathbf{p}_0$ and $\mathbf{p}_1$ are each confined to a single brain region (Eqs.~\ref{eq:initial_engram} and \ref{eq:cortical_engram}):
+%
+\begin{equation}
+  \mathbf{e}(t=0) = \mathbf{p}_0 = \begin{pmatrix}
+    \mathbf{p}^{\mathrm{HPC}} \\[1ex]
+    \mathbf{0}
+  \end{pmatrix}, \quad %
+  \mathbf{p}_1 = \mathbf{A} \mathbf{p}_0 = \begin{pmatrix}
+    \mathbf{0} \\[1ex]
+    \mathbf{p}^{\mathrm{CTX}}
+  \end{pmatrix}.
+\end{equation}
+%
+Here, $\mathbf{p}_0$ is the initial engram pattern, located entirely within the hippocampus, and $\mathbf{p}_1$ is the engram pattern that emerges in cortex during consolidation. In this formulation, neurons are tied to a single area-specific pattern, and the neural dynamics are thus explicitly tied to the pattern dynamics.
+
+We release this constraint by viewing consolidation as a distributed process, whereby engrams traverse a trajectory in the space of patterns $\mathbf{p}_\alpha \in \mathbb{R}^N$ not confined to specific brain regions or populations of neurons. This distributed view also means that a single neuron may participate, to varying degrees, in multiple patterns. The engram is then given by (Eq.~\ref{eq:pattern_to_engram}):
+%
+\begin{equation}
+\mathbf{e}(t) = \sum_{\alpha=0}^{P-1} w_{\alpha}(t) \, \mathbf{p}_{\alpha} = \mathbf{P} \, \mathbf{w}(t)\,,
+\end{equation}
+%
+where $w_{\alpha}(t)$ are the time-varying pattern strengths linking the engram to the patterns $\mathbf{p}_\alpha$ and $\mathbf{P}\in \mathbb{R}^{N \times P}$ is the pattern matrix consisting of all possible patterns.  
+
+We can then describe the engram dynamics in this pattern-centric coordinate system by focusing on the dynamics of the pattern strengths $\mathbf{w}$ (Eq.~\ref{eq:pattern_dynamics}):
+%
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}t} \mathbf{w} = -\boldsymbol{\tilde{\uptau}}^{-1} \mathbf{w} + \tilde{\mathbf{A}} \mathbf{w},
+\end{equation}
+%
+where the time constants $\boldsymbol{\tilde{\uptau}} = \diag(\tilde{\tau}_0,\ldots,\tilde{\tau}_{P-1})$ and consolidation matrix $\tilde{\mathbf{A}}$ are described in pattern space rather than neural space.
+
+We can transform these pattern dynamics back to neural space with a suitable transformation of the consolidation matrix. The dynamics in neural space are given by
+%\begin{align*}
+%\label{eq:pattern_dynamics}
+%  \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu & = \mathbf{P} \left( \boldsymbol{- \tilde{\uptau}}^{-1} + \tilde{\mathbf{A}} \right) \mathbf{P}^{+} \mathbf{e}_\mu \\
+%  & = -\boldsymbol{\uptau}^{-1} \mathbf{e}_\mu + \mathbf{A} \mathbf{e}_\mu\,,
+%\end{align*}
+
+\begin{equation}\label{eq:transform_pattern_to_neural}
+  \begin{aligned}
+    \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}
+    &\stackrel{(\ref{eq:pattern_to_engram})}{=} \mathbf{P} \, \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{w} \\ 
+    &\stackrel{(\ref{eq:pattern_dynamics})}{=} \mathbf{P} (-\tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}} )&&\mathbf{w} \\
+    &\stackrel{\phantom{(\ref{eq:pattern_dynamics})}}{=} \underbrace{\mathbf{P} (-\tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}}) \mathbf{P}^{+}}_{\equiv \mathbf{A}^{\text{rec}}} &&\mathbf{e} \\
+    &\stackrel{(\ref{eq:linear_dynamics})}{=} -\boldsymbol{\uptau}^{-1} \mathbf{e} + \mathbf{A} \mathbf{e}\,,
+    %&\stackrel{(\ref{eq:linear_dynamics})}{=} &&(-\boldsymbol{\uptau}^{-1} + \mathbf{M}) &&\mathbf{e}_\mu.
+  \end{aligned}
+\end{equation}
+
+where $\mathbf{P}^{+}$ is the pseudoinverse of~$\mathbf{P}$. We interpret the diagonal entries of the matrix $\mathbf{A}^{\text{rec}}$ as inverse time constants~$\boldsymbol{\uptau}^{-1}$ and the non-diagonal entries as the consolidation matrix~$\mathbf{A}$ in neural space.
+
+To keep the readout the same when moving between neural and pattern spaces, we must also transform the readout matrix:
+\begin{equation*}
+\begin{split}
+    \mathbf{z} 	& = \mathbf{A}^{\text{out}} \mathbf{e} \\
+    			& = \mathbf{A}^{\text{out}} \mathbf{P} \mathbf{w} \\
+			& = \tilde{\mathbf{A}}^\text{out} \mathbf{w} \,,
+\end{split}
+\end{equation*}
+From this, the readout $\tilde{\mathbf{A}}^\text{out}$ from the pattern strengths and that $\mathbf{A}^\text{out}$ from the engram are related as~$\tilde{\mathbf{A}}^\text{out} = \mathbf{A}^{\text{out}} \mathbf{P}$.
+
+%\newpage
+\subsection{Mathematical derivation of power-law forgetting with homogeneous neuronal dynamics}
+\label{sub:power_law_forgetting}
+
+Power law forgetting is achieved by a consolidation matrix that represents a feedforward chain of $P$ patterns with geometrically distributed pattern forgetting times: %In a vanilla RNN with\todo{This intro can be done better. Instead of going the vanilla RNN route, lets just argue that $\mathbf{\tilde{M}}$ needs to be off-diagonal with entries proportional for the forgetting times because of stability?}
+%\begin{equation}
+%\mathbf{\uptau} \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{x} = \mathbf{W} \mathbf{x}
+%\end{equation}
+%
+% a feedforward chain can be implemented with a recurrent matrix $\mathbf{W}$ with $-1$ on the diagonal and $1$ on the off-diagonal \citep{Goldman2009}:
+%
+% \begin{equation}
+% \mathbf{W} = \begin{pmatrix}
+% -1 & 0 & \cdots & \cdots & 0 & 1 \\
+% 1 & -1 & \ddots & & & 0 \\
+% 0 & 1 & -1 & \ddots & & \vdots \\
+% \vdots & \ddots & \ddots & \ddots & \ddots & \vdots \\
+% 0 & \cdots & 0 & 1 & -1 & 0\\
+% \end{pmatrix} \in \mathbb{R}^{P \times P}.
+% \end{equation}
+%
+%In our model (Eq.~\ref{eq:pattern_dynamics}), this feedforward chain is implemented by a pattern consolidation matrix with $\frac{1}{\tilde{\tau}_i}$ on the off-diagonal entries:
+\begin{equation}
+- \mathbf{\tilde{\uptau}}^{-1} + \mathbf{\tilde{A}} =  \begin{pmatrix}
+- \frac{1}{\tilde{\tau}_0} & 0 & \cdots & \cdots & 0 \\%\frac{1}{\tilde{\tau}_{P-1}} \\
+ \frac{a}{\tilde{\tau}_1} & - \frac{1}{\tilde{\tau}_1} & \ddots & & \vdots \\
+0 & \frac{a}{\tilde{\tau}_2} & - \frac{1}{\tilde{\tau}_2} & \ddots & \vdots \\
+\vdots & \ddots & \ddots & \ddots & 0 \\
+0 & \cdots & 0 & \frac{a}{\tilde{\tau}_{P-1}} & -\frac{1}{\tilde{\tau}_{P-1}}\\
+\end{pmatrix} \in \mathbb{R}^{P \times P} \,.
+\end{equation}
+%
+%The entries of this matrix can be written as
+%\begin{equation}\label{eq:pattern_M_delta}
+%  \mathbf{\tilde{M}}_{ij} = \delta_{i+1,j} =
+%  \begin{cases}
+%  1 & \text{if } i+1 = j \\
+%  0 & \text{otherwise}.
+%  \end{cases}
+%\end{equation}
+%
+where we scaled the feedforward coupling between the patterns with the inverse forgetting times to avoid uncontrolled growth of the pattern strengths for later patterns. For geometrically distributed pattern forgetting times, we choose
+\begin{equation}
+\tilde{\tau}_\alpha = \tau_0 \beta^{\alpha} \quad \text{ for } \quad \alpha = 0,\ldots,P-1 \,, \label{eq:geometric_forgetting}
+\end{equation}
+with a time scale~$\tau_0$ and a factor~$\beta>1$ that controls the rate at which the forgetting times increase with the pattern number~$\alpha$. 
+%
+%Note that we connected the last pattern to the first to simplify the following mathematical derivations. Under the assumption of geometrically distributed time scales, a large number of patterns and limited lifetime (simulation time), the last pattern will not be reached and has in practice no effect on the dynamics.\todo{Make sure we are consistent with this. For SVD and EV analyses, this makes a big difference}
+
+To find the effective timescales of the dynamics of individual neurons, we transform the dynamics in pattern space back into neural space (Eq.~\ref{eq:transform_pattern_to_neural}) and analyze the diagonal entries
+\begin{equation}\label{eq:a_rec_powerlaw}
+    \mathbf{A}^{\text{rec}} = \mathbf{P} (-\tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}}) \mathbf{P}^{+} \,.
+\end{equation}
+%First, we write the neuronal engram dynamics in terms of the pattern-specific time constants $\tilde{\boldsymbol{\uptau}}$ and consolidation matrix $\tilde{\mathbf{A}}$:
+%
+%\begin{equation}\label{eq:engram_dynamics}
+%  \begin{aligned}
+%    \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu
+%    \stackrel{(\ref{eq:pattern_to_engram})}{=} \mathbf{P} \, \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{v}_\mu
+%    &\stackrel{(\ref{eq:pattern_dynamics})}{=} - \mathbf{P} &\tilde{\boldsymbol{\uptau}}^{-1}&& &\mathbf{v}_\mu  &+ && \mathbf{P} &\tilde{\mathbf{M}} &\mathbf{v}_\mu \\
+%    &\stackrel{\phantom{(\ref{eq:pattern_dynamics})}}{=} - \mathbf{P} &\tilde{\boldsymbol{\uptau}}^{-1}&& \mathbf{P}^{\mathrm{T}} &\mathbf{e}_\mu  &+ &&\mathbf{P} &\tilde{\mathbf{M}} \mathbf{P}^{\mathrm{T}} &\mathbf{e}_\mu \\
+%    &\stackrel{(\ref{eq:linear_dynamics_})}{=} &-\boldsymbol{\uptau}^{-1}&& &\mathbf{e}_\mu  &+ && &\mathbf{M} &\mathbf{e}_\mu.
+%  \end{aligned}
+%\end{equation}
+%
+%\begin{equation}\label{eq:engram_dynamics}
+%  \begin{aligned}
+%    \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{e}_\mu
+%    \stackrel{(\ref{eq:pattern_to_engram})}{=} \mathbf{P} \, \frac{\mathrm{d}}{\mathrm{d}t} \mathbf{w}_\mu
+%    &\stackrel{(\ref{eq:pattern_dynamics})}{=} \mathbf{P} (-\tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}} )&&\mathbf{w}_\mu \\
+%    &\stackrel{\phantom{(\ref{eq:pattern_dynamics})}}{=} \underbrace{\mathbf{P} (-\tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}}) \mathbf{P}^{\mathrm{T}}}_{\equiv \mathbf{A}^{\text{rec}}} &&\mathbf{e}_\mu \\
+%    %&\stackrel{(\ref{eq:linear_dynamics})}{=} &&(-\boldsymbol{\uptau}^{-1} + \mathbf{M}) &&\mathbf{e}_\mu.
+%  \end{aligned}
+%\end{equation}
+%
+In the limit of large $N > P$ and for random patterns, $\mathbf{P}$ becomes semi-orthogonal and left-invertible, turning the pseudoinverse in Eq.~\ref{eq:a_rec_powerlaw} into a transpose. 
+%\begin{equation}
+%\mathbf{P}^{\mathrm{T}} \mathbf{P} = \mathbf{I}.
+%\end{equation}
+%
+%With this, we can rewrite Eq.~\ref{eq:pattern_to_engram} as
+%
+%\begin{equation}\label{eq:engram_to_pattern}
+%  \mathbf{w}_\mu(t) = \mathbf{P}^{\mathrm{T}} \mathbf{e}_\mu(t).
+%\end{equation}
+
+To find the neuronal forgetting times $\tau_i$ from Eq.~\ref{eq:linear_dynamics}, we extract the diagonal entries of the recurrent dynamics in neural space $\mathbf{A}^{\text{rec}}$ and interpret them as the effective reciprocal neuronal time constants $\frac{1}{\tau_i}$ for each neuron $i$:
+%
+\begin{equation}
+  \begin{aligned}
+    \frac{1}{\tau_i} &= - \mathbf{A}^{\text{rec}}_{ii} \\
+    &= - \left[ \mathbf{P} (- \tilde{\boldsymbol{\uptau}}^{-1} + \tilde{\mathbf{A}}) \mathbf{P}^{\mathrm{T}} \right]_{ii} \\
+%    &= - \sum_{\alpha=1}^P \sum_{\alpha^\prime = 1}^P \left[ \mathbf{P}_{i \alpha} \underbrace{\tilde{\boldsymbol{\uptau}}_{\alpha \alpha^\prime}^{-1}}_{= \delta_{\alpha, \alpha^\prime} \frac{1}{\tilde{\tau}_\alpha}} \mathbf{P}_{i \alpha^\prime} + \mathbf{P}_{i \alpha} \underbrace{\tilde{\mathbf{A}}_{\alpha \alpha^\prime}}_{= \delta_{\alpha + 1, \alpha^\prime} \frac{1}{\tilde{\tau}_{\alpha}}} \mathbf{P}_{i \alpha^\prime} \right] \\
+    &= \sum_{\alpha=0}^{P-1} \frac{(\mathbf{P}_{i \alpha})^2}{\tilde{\tau}_\alpha} - \sum_{\alpha=1}^{P-1} \frac{a}{\tilde{\tau}_\alpha} \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha -1)} \\
+    %&= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \left[ (\mathbf{P}_{i \alpha})^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right].
+  \end{aligned}
+  \label{eq:neuronal_inv_tau}
+\end{equation}
+%
+%The effective consolidation matrix in neural space is then given by the recurrent dynamics without the forgetting times:
+%
+% TODO: Notation needsfixing, the A_ii above is not consolidaiton matrix A but A - tau, so we need to call it something else
+% \begin{equation}
+%   \mathbf{A} = \mathbf{A}^{\text{rec}} - \diag(\mathbf{A}^{\text{rec}})
+% \end{equation}
+%
+Due to the central limit theorem, the inverse neuronal forgetting times $\frac{1}{\tau_i}$ are approximately normally distributed for a sufficiently large pattern number~$P$. Their expectation value and variance depend on the statistics of the pattern vector entries $\mathbf{P}_{i\alpha}$ which we assume to be independent, Gaussian random variables with zero mean and finite variance, i.e.
+%
+\begin{equation}
+  \begin{aligned}
+    \left<\mathbf{P}_{i\alpha}\right> &= 0 \\
+    \var{\mathbf{P}_{i\alpha}} &= \left<\mathbf{P}_{i\alpha}^2\right> = \sigma_{\mathbf{P}}^2 < \infty \,.
+    \label{eq:pattern_stats}
+  \end{aligned}
+\end{equation}
+%
+To compute the mean and variance of the inverse neuronal forgetting times, we need to compute the mean and variance of the two pattern-dependent terms in Eq.~\ref{eq:neuronal_inv_tau}: 
+\begin{equation}
+    \begin{aligned}
+        \left< \mathbf{P}_{i\alpha}^2 \right> & = & \sigma_\mathbf{P}^2 & \quad \textrm{(Eq.~\ref{eq:pattern_stats})}\\
+        \var{\mathbf{P}_{i\alpha}^2} & = & 2 \sigma_{\mathbf{P}}^4 &  \quad \textrm{(for Gaussian patterns)} \\
+        \left< \mathbf{P}_{i\alpha} \mathbf{P}_{i(\alpha-1)} \right> & = & 0 & \quad \textrm{(independent patterns)}\\
+        \var{\mathbf{P}_{i\alpha} \mathbf{P}_{i(\alpha-1)}} & = & \sigma_{\mathbf{P}}^4 & \quad \textrm{(independent patterns)} \,.
+    \end{aligned}
+\end{equation}
+The mean of the inverse neuronal forgetting time is then given by: 
+\begin{equation}
+  \begin{aligned}
+    \left<\frac{1}{\tau_i}\right>
+    &= \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha} \underbrace{\left< \mathbf{P}_{i \alpha}^2 \right>}_{\sigma_\mathbf{P}^2} - \sum_{\alpha=1}^{P-1}\frac{a}{\tilde{\tau}_\alpha} \underbrace{\left< \mathbf{P}_{i \alpha}\mathbf{P}_{i (\alpha - 1)} \right>}_{=0}  \\
+    %&= P \left< \mathbf{P}_{i \alpha}^2\right> \left< \frac{1}{\tilde{\tau}_\alpha}\right> \\
+    &= \sigma_{\mathbf{P}}^2 \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha} \,,
+    %&= \left<\mathbf{P}_{i \alpha}^2\right> \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \\
+    \label{eq:expectation_neuronal_inv_tau}
+  \end{aligned}
+\end{equation}
+and its variance is: 
+% When we treat the reciprocal pattern forgetting times $\frac{1}{\tilde{\tau}_\alpha}$ also as random variables, the expectation value of the neural forgetting times is given by
+% %
+% \begin{equation}
+%   \begin{aligned}
+%     \left<\frac{1}{\tau_i}\right>
+%     &= \sum_{\alpha=1}^P \left<\frac{1}{\tilde{\tau}_\alpha}\right> \left( \left<\mathbf{P}_{i \alpha}^2\right> - \underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} \right) \\
+%     &= P \left< \mathbf{P}_{i \alpha}^2\right> \left< \frac{1}{\tilde{\tau}_\alpha}\right> \\
+%     &= P \sigma_{\mathbf{P}}^2 \left<\frac{1}{\tilde{\tau}_\alpha}\right>.
+%     %&= \left<\mathbf{P}_{i \alpha}^2\right> \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \\
+%     \label{eq:expectation_neuronal_inv_tau}
+%   \end{aligned}
+% \end{equation}
+%
+%And the variance can be written as
+%
+% \begin{equation}
+%   \begin{aligned}
+%     \var{\frac{1}{\tau_i}}
+%     &= \sum_{\alpha=1}^P \var{\underbrace{\frac{1}{\tilde{\tau}_\alpha}}_{\equiv X} \underbrace{\left( \vphantom{\frac{1}{\tilde{\tau}_\alpha}} \mathbf{P}_{i \alpha}^2 + \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right)}_{\equiv Y}} \\
+%     &= P \left( \left<X^2\right> \left<Y^2\right> - \left<X\vphantom{X^2}\right>^2 \left<Y\vphantom{X^2}\right>^2 \right) \\
+%     &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left<\left(\mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right)^2\right> - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \left<\mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right>^2 \right) \\
+%     &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> - 2 \left<\mathbf{P}_{i \alpha}^3\right> \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} + \left<\mathbf{P}_{i \alpha}^2\right>\left<\mathbf{P}_{i (\alpha + 1)}^2\right> \right) \right. \\
+%     &\quad \quad \quad \left. - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \big( \left<\mathbf{P}_{i \alpha}^2\right> - \underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} \big)^2 \right) \\
+%     &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \left<\mathbf{P}_{i \alpha}^2\right>^2 \right) - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \left<\mathbf{P}_{i \alpha}^2\right>^2 \right) \\
+%     &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left<\mathbf{P}_{i \alpha}^4\right> + \left<\mathbf{P}_{i \alpha}^2\right>^2 \left(\left<\frac{1}{\tilde{\tau}_\alpha^2}\right> - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \right) \right) \\
+%     %&= P \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \sigma_P^4 \left(1 - \frac{\left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}{\left<\frac{1}{\tilde{\tau}_\alpha^2}\right>}\right) \right) \\
+%     %&= P \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \sigma_P^4 \left(1 - \frac{\left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}{\left<\frac{1}{\tilde{\tau}_\alpha^2}\right>}\right) \right) \\
+%     &= P \left( \left<\mathbf{P}_{i \alpha}^4\right> \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> + \sigma_P^4 \var{\frac{1}{\tilde{\tau}_\alpha}} \right).
+%   \end{aligned}
+%   \label{eq:variance_neuronal_inv_tau}
+% \end{equation}
+%
+%
+%\begin{equation}
+%  \begin{aligned}
+%    &= P \left( \left<X^2\right> \left<Y^2\right> - \left<X\vphantom{X^2}\right>^2 \left<Y\vphantom{X^2}\right>^2 \right) \\
+%    &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left<\left(\mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right)^2\right> - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \left<\mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right>^2 \right) \\
+%    &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> - 2 \left<\mathbf{P}_{i \alpha}^3\right> \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} + \left<\mathbf{P}_{i \alpha}^2\right>\left<\mathbf{P}_{i (\alpha + 1)}^2\right> \right) \right. \\
+%    &\quad \quad \quad \left. - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \big( \left<\mathbf{P}_{i \alpha}^2\right> - \underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} \big)^2 \right) \\
+%    &= P \left( \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \left<\mathbf{P}_{i \alpha}^2\right>^2 \right) - \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2 \left<\mathbf{P}_{i \alpha}^2\right>^2 \right) \\
+%    &= P \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \left<\mathbf{P}_{i \alpha}^2\right>^2 - \left<\mathbf{P}_{i \alpha}^2\right>^2 \frac{\left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}{\left<\frac{1}{\tilde{\tau}_\alpha^2}\right>} \right) \\
+%    &= P \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> \left( \left<\mathbf{P}_{i \alpha}^4\right> + \sigma_P^4 \left(1 - \frac{\left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}{\left<\frac{1}{\tilde{\tau}_\alpha^2}\right>}\right) \right) \\
+%    &= P \left( \left<\mathbf{P}_{i \alpha}^4\right> \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> + \sigma_P^4 \var{\frac{1}{\tilde{\tau}_\alpha}} \right).
+%  \end{aligned}
+%\end{equation}
+
+%with the sample means of reciprocal pattern forgetting times
+%
+% \begin{equation}
+%   \begin{aligned}
+%     \left<\frac{1}{\tilde{\tau}_\alpha}\right> &= \frac{1}{P} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \,.\\
+%   \end{aligned}
+% \end{equation}
+%
+% 
+%and
+%
+\begin{equation}
+\begin{aligned}
+  \var{\frac{1}{\tau_i}}
+  & = \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} \var{\mathbf{P}_{i \alpha}^2} + a^2 \sum_{\alpha=1}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} \var{\mathbf{P}_{i \alpha}\mathbf{P}_{i (\alpha-1)}} \\
+  & = 2 \sigma_\mathbf{P}^4 \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} + a^2 \sigma_\mathbf{P}^4 \sum_{\alpha=1}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} \,.
+  %& \approx (2+a^2) \sigma_\mathbf{P}^4 \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \,.
+  %&= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \left<\mathbf{P}_{i \alpha}^4\right> + \sigma_P^4 \left(1 - \frac{1}{P} \frac{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2}{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}\right)}\right) \right).
+  \label{eq:variance_neuronal_inv_tau_with_moments}
+\end{aligned}
+\end{equation}
+%The last line is an approximation that is correct up to a single summand that contains the inverse time constant of the first pattern. 
+
+To keep the scale of the neuronal representation/engrams independent of the number of patterns, the patterns must be normalized by the square root of their number. In the simulations, we chose 
+\begin{equation}
+    \var{P_{i\alpha}} = \sigma^2_\mathbf{P} = \frac{1}{P} \,.
+\end{equation}
+Inserting this into the expressions for the mean and the variance of the inverse neuronal time constants yields: 
+\begin{equation}
+\begin{aligned}
+\left< \frac{1}{\tau_i} \right> &= \frac{1}{P} \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha} \,, \\
+\var{\frac{1}{\tau_i}} &= \frac{2}{P^2} \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} +  \frac{a^2}{P^2} \sum_{\alpha=1}^{P-1} \frac{1}{\tilde{\tau}_\alpha^2} \,.
+\end{aligned}
+\end{equation}
+Because the forgetting times of the patterns are geometrically distributed (Eq.~\ref{eq:geometric_forgetting}), these sums are geometric series and can be solved analytically: 
+\begin{equation}
+\begin{aligned}
+\left< \frac{1}{\tau_i} \right> &= \frac{1}{P} \sum_{\alpha=0}^{P-1} \frac{1}{\tilde{\tau}_\alpha} = \frac{1}{\tau_0 P} \sum_{\alpha=0}^{P-1} \beta^{-\alpha} = \frac{1}{\tau_0 P} \frac{1-\beta^{-P}}{1-\beta^{-1}} \approx \frac{1}{\tau_0 P} \frac{1}{1-\beta^{-1}} \,, \\
+\var{\frac{1}{\tau_i}} &= \frac{2}{\tau_0^2 P^2} \frac{1-\beta^{-2P}}{1-\beta^{-2}} + \frac{a^2}{\tau_0^2 \beta^2 P^2} \frac{1-\beta^{-2(P-1)}}{1-\beta^{-2}} \approx  \left(2 + \frac{a^2}{\beta^2}\right) \frac{1}{\tau_0^2 P^2} \frac{1}{1-\beta^{-2}}  \,,
+\end{aligned}
+\end{equation}
+where the approximations become accurate for a large pattern number~$P$. 
+
+Based on these expressions, we can compute the coefficient of variation of the inverse time constants as a measure of relative variability: 
+\begin{equation}
+\begin{aligned}
+\textrm{CV} &= \sqrt{\var{\frac{1}{\tau_i}}/\left< \frac{1}{\tau_i} \right>^2} \\
+&\approx \sqrt{\left(2+\frac{a^2}{\beta^2}\right) \frac{1-\beta^{-1}}{1+\beta^{-1}}} \,.
+\end{aligned}
+\end{equation}
+For the parameter choices in the model ($a=1$, $P=500$, $\beta = 10000^{1/(P-1)}$), this yields a CV of approximately~0.165. The inverse neuronal time constants are therefore relatively homogeneous. The same is true for the time constants themselves, although in a strict sense, the mean and variance of the inverse of a Gaussian variable do not exist. 
+
+%
+% ALTERNATIVE COMPUTATION OF VARIANCE
+% \begin{framed}
+%   \noindent
+%   If we don't treat $\frac{1}{\tilde{\tau}_\alpha}$ as random variables but instead as constants, the variance result is different. We first compute
+%   %
+%   \begin{equation}
+%     \begin{aligned}
+%       \var{\left( \mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right)}
+%       &= \left<\left( \mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right)^2\right> - \left<\mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right>^2 \\
+%       &= \left<\mathbf{P}_{i \alpha}^4\right> - 2 \left<\mathbf{P}_{i \alpha}^3\right> \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} + \underbrace{\left<\mathbf{P}_{i \alpha}^2\right>}_{=\sigma_P^2} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}^2\right>}_{=\sigma_P^2} \\
+%       & \qquad - \big( \underbrace{\left<\mathbf{P}_{i \alpha}^2\right>}_{=\sigma_P^2} - \underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} \big)^2 \\
+%       &= \left<\mathbf{P}_{i \alpha}^4\right>.
+%     \end{aligned}
+%   \end{equation}
+%   %
+%   The variance is then given by
+%   %
+%   \begin{equation}
+%     \begin{aligned}
+%       \var{\frac{1}{\tau_i}}
+%       &= \sum_{\alpha=1}^P \var{\frac{1}{\tilde{\tau}_\alpha} \left( \mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right)} \\
+%       &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \var{\left( \mathbf{P}_{i \alpha}^2 - \mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)} \right)} \\
+%       &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left<\mathbf{P}_{i \alpha}^4\right>.
+%       \label{eq:variance_neuronal_inv_tau_alternative}
+%     \end{aligned}
+%   \end{equation}
+%   %
+%   Comparing this result with Eq.~\protect{\ref{eq:variance_neuronal_inv_tau}}, we see that the results are only the same if $\var{\frac{1}{\tilde{\tau}_\alpha}} = 0$. In the simulations, we can see that the variance from Eq.~\ref{eq:variance_neuronal_inv_tau_alternative} fits the sample variance from the data exactly, while the result from Eq.~\ref{eq:variance_neuronal_inv_tau} is slightly too high. I don't get it. Can anybody help?
+%   %, which is true if we treat $\frac{1}{\tilde{\tau}_\alpha}$ as constant.\todo{I don't really get it. We can't just say they are constant with zero variance if they follow a geometric series?}.
+% \end{framed}
+% %
+% The moments of the pattern vector entries $\mathbf{P}_{i\alpha}$ depend on their normalization.\todo{Rephrase this as "We sample isotropic pattern vectors. The normalization we talk about governs the radius of the sphere."} A sensible choice is to normalize the neural engram activities, such that each neuron's activity is in expectation the same, independent of the number of neurons participating in a pattern, and the number of patterns the neuron participates in. For the case where each neuron participates in all $P$ patterns, we achieve this normalization by normalizing each pattern vector to have a length of $\sqrt{\frac{N}{P}}$, i.e.
+% %
+% \begin{equation}
+%   \sum_{i=1}^N (\mathbf{P}_{i\alpha})^2 = \frac{N}{P} \quad \forall \alpha \in \{1, \cdots, P\}.
+% \end{equation}
+% %
+% We sample isotropic pattern vectors with the given length. For large $N$, the pattern vectors are approximately orthogonal and hence are approximately Haar-distrited on a sphere of radius $\sqrt{\frac{N}{P}}$. The moments of vectors uniformly distritued on a unit sphere are given by:
+% %
+% \begin{align}
+%     \left<\mathbf{P}_{i\alpha}^2\right> &= \frac{1}{N} \label{eq:second_moment} \\
+%     \left<\mathbf{P}_{i\alpha}^4\right> &= \frac{3}{N(N+2)} \approx \frac{3}{N^2} \quad \text{(for large $N$)} \label{eq:fourth_moment}
+% \end{align}
+% %
+% The moments for vectors on a sphere of radius $\sqrt{\frac{N}{P}}$ are then given by:
+% %
+% \begin{align}
+%     \left<\mathbf{P}_{i\alpha}^2\right> &= \sigma_{\mathbf{P}}^2 = \frac{1}{P} \\
+%     \left<\mathbf{P}_{i\alpha}^4\right> &\approx \frac{3}{P^2} \quad \text{(for large $N$)}
+% \end{align}
+% %
+% Substituting these moments into Eq.~\ref{eq:expectation_neuronal_inv_tau_with_moments} and Eq.~\ref{eq:variance_neuronal_inv_tau_with_moments}, we get
+% %
+% \begin{equation}
+%   \begin{aligned}
+%     \left<\frac{1}{\tau_i}\right> &= \frac{1}{P} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \\
+%     %\var{\frac{1}{\tau_i}} &= \left< \mathbf{P}_{i \alpha}^4 \right> \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} + \sigma_P^4 \left( \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} - \frac{1}{P} \left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2 \right) \\
+%     \var{\frac{1}{\tau_i}} &= \frac{3}{P^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} + \frac{1}{P^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} - \frac{1}{P^3} \left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2 \\
+%     &= \frac{4}{P^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} - \frac{1}{P^3} \left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2 \\
+%     %&= \frac{4}{P^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \quad \text{(for large $P$)} \\
+% % ALTERNATEVELY WRITTEN AS FRACTION OF SUMS
+% %    \var{\frac{1}{\tau_i}} &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \frac{3}{P^2} + \frac{1}{P^2} \left(1 - \frac{1}{P} \frac{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2}{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}\right)}\right) \right) \\
+% %    &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \frac{4}{P^2} - \frac{1}{P^3} \frac{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^2}{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}\right)}\right) \\
+% %    &\approx \frac{4}{P^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}  \quad \text{(for large $P$)}
+%   \end{aligned}
+% \end{equation}
+%
+% ARGUMENTATION FOR HAAR FROM NORMALIZATION!
+%For large $N$, the normalization ensures that the variance of each entry is $1$, and the marginal distribution of each entry is approximately Gaussian due to the central limit theorem, regardless of the original distribution\todo{Please someone check what I'm saying here. Normalization removes independence. But for large $N$, the central limit theorem should apply, correct?}. The normalized pattern vectors are thus uniformly distributed on a sphere with radius $N$ in $\mathbb{R}^N$ (the Haar measure \todo{Fix this paragraph after changin normalization to length $N$}). The moments of the entries of such Haar-distributed pattern vectors are given by\todo{This is hand waving, are we sure?}
+%%
+%\begin{align}
+%    \left<(\mathbf{P}_{i\alpha})^2\right> &= \frac{1}{N} = 1 \label{eq:second_moment} \\
+%    \left<(\mathbf{P}_{i\alpha})^4\right> &= \frac{3}{N(N+2)} = 3, \label{eq:fourth_moment}
+%\end{align}
+%%
+%from which we can compute the variance of the second moment
+%%
+%\begin{equation}
+%  \begin{aligned}
+%    \var{(\mathbf{P}_{i\alpha})^2}
+%    &= \left<(\mathbf{P}_{i\alpha})^4\right> - (\left<(\mathbf{P}_{i\alpha})^2\right>)^2 \\
+%    &= \frac{3}{N(N+2)} - \frac{1}{N^2} \\
+%    &= \frac{2 (N-1)}{N^2(N+2)}, \label{eq:variance_second_moment} \\
+%    &= 2
+%  \end{aligned}
+%\end{equation}
+%%
+%and the variance of mixed moments
+%%
+%\begin{equation}
+%  \begin{aligned}
+%    \var{\mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}}
+%    &= \left<\mathbf{P}_{i \alpha}^2 \mathbf{P}_{i (\alpha + 1)}^2\right> - (\left<\mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}\right>)^2 \\
+%    &= \underbrace{\left<\mathbf{P}_{i \alpha}^2\right>}_{=1/N} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}^2\right>}_{=1/N} - (\underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0})^2 \\
+%    &= \frac{1}{N^2} \\
+%    &= 1
+%  \end{aligned}
+%\end{equation}
+%%
+%For large enough $P$, the reciprocal effective neuronal forgetting times $\frac{1}{\tau_i}$ (Eq.~\ref{eq:neuronal_inv_tau}) are approximately normal distributed by the central limit theorem with the following expectation value and variance:
+%%
+%\begin{equation}
+%  \begin{aligned}
+%    \left<\frac{1}{\tau_i}\right> &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \left( \underbrace{\left<(\mathbf{P}_{i \alpha})^2\right>}_{=\frac{1}{N}} - \underbrace{\left<\mathbf{P}_{i \alpha}\right>}_{=0} \underbrace{\left<\mathbf{P}_{i (\alpha + 1)}\right>}_{=0} \right) \\
+%    &= \frac{1}{N}\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha} \\
+%    &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}
+%  \end{aligned}
+%\end{equation}
+%%
+%\begin{equation}
+%  \begin{aligned}
+%    \var{\frac{1}{\tau_i}}
+%    &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \var{(\mathbf{P}_{i \alpha})^2} + \var{\mathbf{P}_{i \alpha} \mathbf{P}_{i (\alpha + 1)}} \right) \\
+%    &= \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \frac{2 (N-1)}{N^2(N+2)} + \frac{1}{N^2} \right) \\
+%    &\approx \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \left( \frac{2}{N^2} + \frac{1}{N^2} \right) \quad \text{(for large $N$)} \\
+%    &= \frac{3}{N^2} \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2} \\
+%    &= 3 \sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}
+%  \end{aligned}
+%\end{equation}
+%\todo{Could approximate with $P/N^2$, though this depends on beta of geometric taus}
+%
+The neuronal forgetting times $\tau_i$ are the reciprocal of the normally distributed variable~$1/\tau_i$, and thus follow a reciprocal normal distribution with probability density function
+\begin{equation}
+  \text{PDF}(\tau_i) = \frac{1}{\tau_i^2 \sqrt{2\pi \var{\frac{1}{\tau_i}}}} \exp\left( -\frac{(\frac{1}{\tau_i} - \left<\frac{1}{\tau_i}\right>)^2}{2\var{\frac{1}{\tau_i}}} \right), \qquad \tau_i > 0 \,.
+\end{equation}
+%{\Large Please double check my math! For $a=1$, which I presume you have used, the results are the same as the math in the box. I commented out the computation of the moments, because I assume that we will only plot the distribution of the taus in the main text.}
+%
+% The moments for a reciprocal normal distribution are generally not defined, but for a finite number of positive reciprocal forgetting times $\frac{1}{\tau_i}$ we can approximate the moments of $\tau_i$ using a Taylor expansion of the moments of $f(X) = \frac{1}{X}$ around $X = \left<\frac{1}{\tau_i}\right>$. For the first moment, we get
+% %
+% \begin{equation}
+%   \begin{aligned}
+%     \left<\tau_i\right> &= \left<f(X)\right> \\
+%     &\approx f(\left<X\right>) + \frac{1}{2} f''(\left<X\right>) \var{X} \\
+%     &= \frac{1}{\left<X\right>} + \frac{\var{X}}{\left<X\right>^3} \\
+%     &= \frac{1}{\left<\frac{1}{\tau_i}\right>} + \frac{\var{\frac{1}{\tau_i}}}{\left<\frac{1}{\tau_i}\right>^3} \\
+%     %&= \frac{\left<\frac{1}{\tau_i}\right>^2}{\left<\frac{1}{\tau_i}\right>^3} + \frac{\left<\frac{1}{\tau_i^2}\right> - \left<\frac{1}{\tau_i}\right>^2}{\left<\frac{1}{\tau_i}\right>^3} \\
+%     %&= \frac{\left<\frac{1}{\tau_i^2}\right>}{\left<\frac{1}{\tau_i}\right>^3} \\
+%     &= \frac{1}{P \sigma_{\mathbf{P}}^2 \left<\frac{1}{\tilde{\tau}_\alpha}\right>} \frac{P^2 \sigma_{\mathbf{P}}^4 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}{P^2 \sigma_{\mathbf{P}}^4 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2}
+%       + \frac{P \left<\mathbf{P}_{i \alpha}^4\right> \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> + P \sigma_P^4 \var{\frac{1}{\tilde{\tau}_\alpha}}}
+%       {P^3 \sigma_{\mathbf{P}}^6 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^3} \\
+%     &= \frac{
+%       P^2 \sigma_{\mathbf{P}}^4 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + P \left<\mathbf{P}_{i \alpha}^4\right> (\var{
+%         \frac{1}{\tilde{\tau}_\alpha}
+%       }
+%         + \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2)
+%       + P \sigma_P^4 \var{\frac{1}{\tilde{\tau}_\alpha}}
+%     }
+%     {P^3 \sigma_{\mathbf{P}}^6 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^3}
+%     \\
+%     &= \frac{
+%       (
+%         P^2 \sigma_{\mathbf{P}}^4
+%         + P \left<\mathbf{P}_{i \alpha}^4\right>
+%       ) \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + (
+%         P \sigma_P^4
+%         + P \left<\mathbf{P}_{i \alpha}^4\right>
+%       ) \var{\frac{1}{\tilde{\tau}_\alpha}}
+%     }
+%     {P^3 \sigma_{\mathbf{P}}^6 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^3}
+%     \\
+%     &= \frac{
+%       (
+%         P \sigma_{\mathbf{P}}^4
+%         + \left<\mathbf{P}_{i \alpha}^4\right>
+%       ) \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + (
+%         \sigma_P^4
+%         + \left<\mathbf{P}_{i \alpha}^4\right>
+%       ) \var{\frac{1}{\tilde{\tau}_\alpha}}
+%     }
+%     {P^2 \sigma_{\mathbf{P}}^6 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^3}
+%     \\
+%     &= \frac{
+%       (
+%         \frac{1}{P}
+%         + \frac{3}{P^2}
+%       ) \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + (
+%         \frac{1}{P^2}
+%         + \frac{3}{P^2}
+%       ) \var{\frac{1}{\tilde{\tau}_\alpha}}
+%     }
+%     {\frac{1}{P^3} \left<\frac{1}{\tilde{\tau}_\alpha}\right>^3}
+%     \\
+%     &= \frac{
+%       P^2 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + 3P \left<\frac{1}{\tilde{\tau}_\alpha}\right>^2
+%       + 4P \var{\frac{1}{\tilde{\tau}_\alpha}}
+%     }
+%     {\left<\frac{1}{\tilde{\tau}_\alpha}\right>^3}
+%   \end{aligned}
+% \end{equation}
+% %
+% For the second moment, we get
+% %
+% \begin{equation}
+%   \begin{aligned}
+%     \var{\tau_i} &= \var{f(X)} \\
+%     &\approx \left(f'(\left<X\right>)\right)^2 \var{X} \\
+%     &= \frac{\var{X}}{\left<X\right>^4} \\
+%     &= \frac{\var{\frac{1}{\tau_i}}}{\left<\frac{1}{\tau_i}\right>^4} \\
+%     %&= N^2 \frac{\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}}{\left(\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}\right)^4} \\
+%     &= \frac{P \left( \left<\mathbf{P}_{i \alpha}^4\right> \left<\frac{1}{\tilde{\tau}_\alpha^2}\right> + \sigma_P^4 \var{\frac{1}{\tilde{\tau}_\alpha}} \right)}{P^4 \sigma_{\mathbf{P}}^8 \left<\frac{1}{\tilde{\tau}_\alpha}\right>^4}
+%   \end{aligned}
+% \end{equation}
+% %
+% For large $N$ and with the requirements from above, the reciprocal normal distribution can be approximated by an inverse Gaussian distribution $\text{IG}(\left<\frac{1}{\tau_i}\right>, \lambda)$ with mean $\left<\frac{1}{\tau_i}\right>$ and shape parameter $\lambda$. It's variance is given by
+% %
+% \begin{equation}
+%   \var{\frac{1}{\tau_i}} = \frac{\left(\left<\frac{1}{\tau_i}\right>\right)^3}{\lambda}.
+% \end{equation}
+% %
+% Equating the two expressions for the variance and solving for $\lambda$, we get
+% %
+% \begin{equation}
+%   \lambda = \frac{\left<\frac{1}{\tau_i}\right>}{\var{\frac{1}{\tau_i}}} = N \frac{\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha}}{\sum_{\alpha=1}^P \frac{1}{\tilde{\tau}_\alpha^2}}
+% \end{equation}
+%
+
+%\newpage
+\subsection{Effects of subsampling for correlated stimulus tuning} 
+\label{sub:fig5}
+
+\begin{figure}[H]
+  \centering
+  % 6.5in is the width set in the Google Slides page setup
+  \centerwidegraphic[width=6.5in]{figures/fig5_supplementary.pdf}
+  \caption{For correlated stimulus tuning (same simulations as shown in Fig.~\ref{fig5}I,J), the results on population vector correlation, tuning curve correlation and readout decoding are qualitatively similar to those for random stimulus tuning (Fig.~\ref{fig5}D-F).
+  \label{sfig5}}
+\end{figure}
+
+%\newpage
+\subsection{Mathematical derivation of apparent stochasticity under subsampling}
+\label{sub:bath_math}
+
+To characterize the effect of unrecorded neuronal activity on the recorded engram dynamic, we model the two corresponding neural populations as interacting physical systems: a measured subsystem coupled to a bath.
+For analytical tractability we restrict our calculations to the case of rotational consolidation dynamics and exclude the forgetting component.
+%In our model, interactions between different neurons are described by the consolidation matrix that causes representational changes.
+%Forgetting is instead captured by single-neuron components that are neglected for the scope of this analysis.
+
+Using Green's function formalism we calculate measurable properties of the engram dynamics, such as the cosine similarity between one engram at two moments in time, an analogous to a time-autocorrelation function.
+We quantify the contributions from the coupling with the bath using self-energy calculations and we derive the explicit dependence on the sampling fraction (the fraction of neurons that are observed). We derive an exact solution for the time-autocorrelation in the case of Gaussian random hamiltonians in the thermodynamic limit. We show that the coupling with the bath causes a decay in the time-autocorrelation of rotation eigenstates, indicating that the unobserved population effectively acts as noise on the observed subspace. Analytical results are compared with numerical simulations that show a qualitative agreement already in systems with $N=10^3$ neurons.
+
+These calculation indicate that, even with a deterministic model, engram dynamics might appear stochastic if observed on a subset of neurons.
+
+\subsubsection*{Full engram dynamics}
+The full dynamics for an engram $\mb{e}$ is given by
+\begin{equation*}
+    \ddt \mathbf{e} = \mb{A} \mb{e}
+\end{equation*}
+To generate rotations, the $N\times N$ consolidation matrix $\mb{A}$ must be taken anti-symmetric: $\mb{A}_{ij} = -\mb{A}_{ji}$.
+Multiplying the equation above by the imaginary unit $i$, one obtains an analogous of the Schrödinger equation, with the Hermitian Hamiltonian $\mb{H} = i \mb{A}$:
+\begin{equation}
+    i \ddt \mathbf{e}(t) = \mb{H} \mathbf{e}
+(t)
+    \label{eq:SchrödingerEq}
+\end{equation}
+Let~$E_i$ be the eigenvalues of the Hamiltonian\footnote{The anti-symmetric structure of $\mb{H}$ implies that for each eigenvalue $E_i\in \mathbb{R}$, there is one of opposite sign $-E_i$.} and $\bd{\psi}_i$ its eigenvectors , which form a basis for the space of engrams:
+$\mb{e} = \sum_{i=1}^N e_i \bd{\psi}_i$.
+The solution to the engram dynamical model Eq. \ref{eq:SchrödingerEq} takes a simple form in this basis:
+\begin{equation*}
+    \mb{e}(t) =  \mb{U}(t, t_0) \mb{e}(t_0) = e^{-i \mb{H} (t-t_0)} \sum_{i=1}^N e_i(t_0) \bd{\psi}_i =
+    \sum_{i=1}^N e_i(t_0) e^{-i E_i (t-t_0)} \bd{\psi}_i =
+    \sum_{i=1}^N e_i(t) \bd{\psi}_i
+\end{equation*}
+We introduced the time-evolution operator $\mb{U}(t, t_0) = \exp[-i \mb{H} (t-t_0)]$.
+The dynamics for an eigenstate $\bd{\psi}_i$ of the consolidation Hamiltonian is given by a rotation with frequency~$\frac{E_i}{2\pi}$:
+$$\bd{\psi}_i(t) = e^{-i E_i (t-t_0)} \bd{\psi}_i(t_0)$$
+One common mathematical tool to study interacting systems are Green's functions. We define the \textit{Green's function} operator $\mb{G}(t, t_0)$ as the solution to the following equation:
+\begin{equation}
+\l(i\frac{d}{dt} - \mb{H}\r)\mb{G}(t, t_0) =  \bd{\delta}(t-t_0) \,.
+\label{eq:greensfunctiondefinition}
+\end{equation}
+Green's functions are generally not unique. The one of our specific interest is called \textit{retarded Green's function}, which connects two points in time that are causally related ($t>t'$). In the temporal and the Fourier domain, it reads
+\begin{align}
+    \mb{G}(t-t') &= -i \theta(t-t') \mb{U}(t-t')\\
+%    \label{eq:greenfunc_qm}
+    \Tilde{\mb{G}}(\omega) &=
+    \lim_{\epsilon\to 0}\l[\omega - \mb{H} + i\epsilon\r]^{-1} \,.
+%    \label{GreenfunctionInverse}
+\end{align}
+The matrix elements for one eigenstate $\bd{\psi}_j$ are
+\begin{align}
+ G_j(t-t') &= \mathbf{e}_j^\dagger \mb{G}(t-t')\mathbf{e}_j =-i \theta(t-t') e^{-i E_j(t-t')}
+ \label{eq:Gfree_time}
+\\
+\Tilde{G}_j(\omega) &= \mathbf{e}_j^\dagger \Tilde{\mb{G}}(\omega)\mathbf{e}_j =
+\lim_{\epsilon \to 0} \frac{1}{\omega-E_j + i\epsilon}
+\label{eq:Gfree_omegas}
+\end{align}
+The Green's function for a generic engram (in time or frequency domain) is
+\begin{equation}
+    G_{\mb{e}_\mu} = \mb{e}_\mu^\dagger \mb{G} \mb{e}_\mu =  \sum_{ij} e^*_i e_j \bd{\psi}_i^\dagger \mb{G} \psi_j = \sum_i \l|e_i\r|^2 G_i \,.
+\end{equation}
+Green's functions are tightly related to temporal correlations: the cosine similarity $S_{\mb{e}_\mu}$ between $\mathbf{e}_\mu$ and itself at later time $t>0$ is given by
+\begin{align}
+    S_{\mb{e}_\mu}(t)  := \mathbf{e}_\mu^\dagger \hspace{0.1cm}\mathbf{e}_\mu(t)
+    & = \mathbf{e}_\mu^\dagger \mb{U}(t)\mathbf{e}_\mu  = i\mathbf{e}_\mu^\dagger \mb{G}(t)\mathbf{e}_\mu \\& = i G_{\mb{e}_\mu}(t) \,.
+\end{align}
+For real engrams, the cosine similarity is a real number, and it can be expressed in terms of the spectral function  $\mc{S}_{\mb{e}_\mu}(\omega)$ via Fourier transform:
+\begin{align}
+   \mc{F} \l[  S_{\mb{e}_\mu}(t) \r] = \mc{S}_{\mb{e}_\mu}(\omega) \propto
+    \text{Im}  \l[  G_{\mb{e}_\mu}(\omega) \r] \,.
+\end{align}
+
+\subsubsection*{Gaussian random Hamiltonians}
+We now consider Hamiltonians $\mb{H} = i\mb{A}$ to be Gaussian random $N\times N$ matrices, with purely imaginary elements $\mb{H}_{ij} = i\mb{A}_{ij}$. Above-diagonal entries $\mb{A}_{i<j}$ are independent random variables with identical  normal distribution $\mc{N}(0, \sigma_H)$. Below-diagonal elements, instead, are fixed by anti-symmetry:  $\mb{A}_{ij}= -\mb{A}_{ji}$.
+To properly scale the transformation generated by the Hamiltonian with the number of neurons~$N$, we set $\sigma_H = \frac{\sigma_0}{\sqrt{N}}$.
+In the continuum limit ($N\to\infty$), the distribution of the eigenvalues $E_i$ converges to the semicircular distribution (Fig.~\ref{sfig:full_system}A)
+\begin{equation}
+    \rho_H(E) = \frac{2}{\pi R^2}\sqrt{R^2 -E^2} \,,
+    \label{eq:semicircle_law}
+\end{equation}
+defined in the interval $\l|E\r|<R = 2\sigma_H \sqrt{N}= 2\sigma_0$.
+For each Gaussian random Hamiltonian, we can apply the results of Equations~\ref{eq:Gfree_time} and~\ref{eq:Gfree_omegas} to compute the Green's function of an $\mb{H}$-eigenstate~$\bd{\psi}_i$ with eigenvalue~$E_i$. As before, the time-autocorrelation will oscillate in time with frequency $\frac{E_i}{2\pi}$, without decaying.
+
+In general, we might assume an engram to be a random superposition of eigenstates of the rotational consolidation matrix: $$\mb{e}_\mu = \sum_i c_i \bd{\psi}_i \,,$$ with $c_i$ randomly sampled from a distribution with zero mean, and standard deviation $\sigma_c = 1/\sqrt{N}$.
+Its average Green's function is given by
+\begin{align*}
+    G_{\l<\mb{e}_\mu\r>} (\omega) & = \l< \mb{e}_\mu^\dagger \mb{G}(\omega) \mb{e}_\mu \r> =
+    \sum_i \l< \l|c_i\r|^2 \r> \frac{1}{\omega - E_i+ i \epsilon} \\
+    &
+    = \sigma_c^2 \sum_i \frac{1}{\omega - E_i + i \epsilon} =
+    \frac{1}{N} \sum_i \frac{1}{\omega - E_i + i \epsilon}
+\end{align*}
+For large $N$ we use the continuous approximation:
+\begin{equation*}
+    G_{\l<\mb{e}_\mu\r>} (\omega)  \approx \hspace{0.1cm} \int dE \frac{\rho_H(E)}{w-E+ i \epsilon}.
+\end{equation*}
+This integral corresponds to the Stieltjes transformation of the semicircle law. It can be solved performing a geometric series expansion of $\rho_H(E)$, and interchanging summation and integration. Alternative solutions make use of analytical continuation and contour integration. We refer to \cite{jiang2021wigner} and to \cite{bai2010spectral} for detailed calculations.
+Instead, we report here an intuitive derivation of the result. Multiplying both numerator and denominator by $(\omega-E+i\epsilon)$, we obtain
+\begin{equation*}
+    G_{\l<\mb{e}_\mu\r>} (\omega) =
+    \hspace{0.1cm} \int dE \frac{\omega-E}{(w-E)^2+ \epsilon^2}\rho_H(E) +
+    i \hspace{0.1cm} \int dE \frac{\epsilon}{(w-E)^2+ \epsilon^2}\rho_H(E)
+\end{equation*}
+We recall one definition for the Dirac-$\delta$ in terms of Lorentzian distributions:
+$
+\lim_{\epsilon\to0^+}\frac{\epsilon}{(z-z_0)^2 + \epsilon^2} = \pi \delta(z-z_0)
+$.
+The imaginary part of the integral, which relates to the spectral function $\mc{S}(\omega)$, is therefore given by the density of eigenvalues:
+$$
+\mc{S}(\omega)=\lim_{\epsilon\to0^+} \frac{1}{\pi} \text{Im}\l[ G_{\l<\mb{e}_\mu\r>} (\omega) \r] =
+\rho_H(w)
+$$
+We can therefore reconstruct the autocorrelation function for a random state $\mb{e}_\mu$ by inverse Fourier transform of the semicircle law:
+\begin{equation}
+    S(t-t') = \mc{F}^{-1}\l[ \mc{S}(\omega \r)] = \mc{F}^{-1}\l[ \rho_H(\omega) \r] =
+    \frac{1}{2 \pi}\int_{-R}^{R} d\omega \rho_H(\omega) e^{-i\omega(t-t')} = 2 \frac{J_1\l(R|t-t'|\r)}{R|t-t'|}
+    \label{eq:autocorrelation_bessel}
+\end{equation}
+Here, $J_1(x)$ is a Bessel function of the first kind of order 1. The autocorrelation $S(t)$ presents a decaying oscillation (Figure \ref{sfig:full_system}). For large $t$, the decay is described by a power law $S(t) \sim t^{-3/2}$.
+
+Although the dynamics is deterministic and purely rotational, the autocorrelation of a generic (random) state decays in time. A generic engram evolves in time becoming, on average, uncorrelated to its initial representation, as shown in Fig.~\ref{fig4}D. This result might appear counterintuitive when picturing rotations in low dimensional spaces. However, rotations in high-dimensions can be expressed as a composition of several independent planar rotations with incommensurate frequencies (the eigenvalues $\pm E_i$). This random superposition of independently-rotating modes (the eigenstates $\bd{\psi}_i$) generates a complex trajectory, in which the engram takes a long time (infinite, in the limit of $N\to \infty$) to return to its initial state.
+
+\begin{figure}%[H]
+    \centering
+    \centerwidegraphic[width=\linewidth]{figures/supplementary_full_engram.pdf}
+    \caption{ \small
+    Dynamics in the fully-observed system.
+    \textbf{(A)}The distribution of the eigenvalues for Gaussian random matrix $\mb{H}$ with size $N=1000$ and entries standard deviation $\sigma_H=\sigma_0/\sqrt{N} = 1/\sqrt{N}$. The red line corresponds to the semicircle law Eq.\ref{eq:semicircle_law}.
+    \textbf{(B)} 
+    Time-autocorrelation:  eigenstate of the rotation hamiltonian (blue line) and average 
+    autocorrelation of 50 independent random states (black line). The orange lines corresponds to the analytical expressions in Eq.~\ref{eq:Gfree_omegas} and Eq.~\ref{eq:autocorrelation_bessel}.
+    }
+    \label{sfig:full_system}
+\end{figure}
+
+\subsubsection*{The problem of subsampling}
+The goal of this section is to compute the effect of subsampling, that is, how the rotational dynamics is changed when only a subspace of the total engram space is observed (for instance, measuring a fraction of the total number of neurons).
+We model the observed and unobserved subspaces as two coupled physical systems. We referred to the former as the "observed" or "sampled" system, and to the latter as a "bath" (in analogy to the physics of open systems).
+The full Hamiltonian $\mb{H}$ is rewritten as a composition of the following blocks:
+\begin{equation*}
+    \mb{H} = \begin{pmatrix}
+        \mb{H}_s & \mb{V} \\
+        \mb{V}^\dagger & \mb{H}_b
+    \end{pmatrix}
+\end{equation*}
+Here,  $\mb{H}_s$ and $\mb{H}_b$ are the Hamiltonians of the observed subsystem and the bath, with dimensions $N_s$ and $N_b$ respectively. The interaction between the two systems is described by $\mb{V}$ (a $N_s \times N_b$ matrix).
+
+We initially apply the Green's function formalism to the sampled subsystem when the interaction $\mb{V}=0$ is momentarily switched off. In this case, the observed dynamics is rotational and purely governed by $\mb{H}_s$. This Hamiltonian is Hermitian and it can be diagonalized:
+$$
+\mb{H}_s = \mb{U}_s^{-1} \hat{\mb{H}}_s\mb{U}_s \,,
+$$
+where $\hat{\mb{H}}_s$ is diagonal. Similarly, the dynamics in the bath (the unobserved subspace) is uniquely described by the hamiltonian
+$
+\mb{H}_b = \mb{U}_b^{-1} \hat{\mb{H}}_b\mb{U}_b
+$.
+Given an eigenstate~ $\bd{\psi}_i^s$ of the sampled subspace with eigenvalue~$E_i^s$, we can use the results of the previous sections to define its respective Green's function:
+$$
+G^{s_0}_i(\omega)_{\text{Ret}} = \bd{\psi}_i^{s\dagger} \mb{G}^{s_0}(\omega) \bd{\psi}^s_i =  \lim_{\epsilon \to 0}  \frac{1}{\omega -E^s_i + i \epsilon}
+$$
+We denote $\mb{G}^{s_0}(\omega)$ with a superscript ${s_0}$ to indicate the absence of coupling ($\mb{V}=0$).
+In case of Gaussian random matrices, the autocorrelation of a random state is given by Eq. \ref{eq:autocorrelation_bessel}, with the density of states of the subsystem $\rho_s(\omega)$.
+
+We now switch on the interaction $\mb{V}$ and compute the full Green's function $\mb{G}^{s}(\omega)$, in terms of $\mb{G}^{s_0}(\omega)$ and a correction $\bd{\Sigma}(\omega)$, referred to as self-energy. This correction accounts for the coupling with the unobserved neurons, the activity of which affects the dynamics in the observed subspace. The Green's function in the absence of coupling and the corrected one are commonly referred to as \textit{free} and \textit{interacting} (or \textit{full}) propagators.
+
+\subsubsection*{Self-energy formalism}
+To compute the full propagator $\mb{G}^{s}$ we start with the definition of the Green's function operator in Fourier space:
+$$
+\Tilde{\mb{G}}(\omega) = \l[\omega - \mb{H} \r]^{-1}
+$$
+We use the structure of our system to rewrite the relation above as
+\begin{equation*}
+    \begin{pmatrix}
+        \omega - \mb{H}_s & -\mb{V} \\
+        -\mb{V}^\dagger & \omega-\mb{H}_b
+    \end{pmatrix}
+    \begin{pmatrix}
+        \mb{G}^{s} & \mb{G}_V \\
+        \mb{G}^\dagger_V & \mb{G}^b
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \mathds{1} & \bd{0} \\
+        \bd{0} & \mathds{1}
+    \end{pmatrix}
+\end{equation*}
+We extract a system of two equations for $\mb{G}^{s}$:
+\begin{equation}
+    \begin{cases}
+        (\omega-\mb{H}_s)\mb{G}^s - \mb{V}\mb{G}^\dagger_V = \mathds{1}
+        \\
+        -\mb{V}^\dagger \mb{G}^s + (\omega-\mb{H}_b)\mb{G}^\dagger_V = 0
+    \end{cases}
+\end{equation}
+which has the solution
+\begin{equation}
+    \mb{G}^s(\omega) = \l[ \omega - \mb{H}_s - \mb{V} \l(\omega-\mb{H}_b\r)^{-1}\mb{V}^\dagger \r]^{-1} =
+     \l[\l(\mb{G}^{s_0}\r)^{-1} - \bd{\Sigma}(\omega) \r]^{-1}
+     = \l(\bd{\Lambda}(\omega)\r)^{-1} \,.
+     \label{eq:dysonInverse}
+\end{equation}
+The term $\bd{\Sigma}(\omega)$ is commonly named \textit{self-energy} and it describes the correction to the free propagator $\mb{G}^{s_0}(\omega)$, due to the coupling with the bath.
+This expression leads to a self-consistent relation for $\mb{G}^s(\omega)$, known as the Dyson equation:
+\begin{equation}
+    \mb{G}_s(\omega) = \mb{G}^{s_0}(\omega) + \mb{G}^{s_0}(\omega) \bd{\Sigma}(\omega)\mb{G}^s(\omega) \,.
+    \label{eq:dyson}
+\end{equation}
+We can express Eq.~\ref{eq:dysonInverse} in the diagonal representation, diagonalizing both the Hamiltonian of the observed subsystem and the Hamiltonian of the bath:
+\begin{align}
+\bd{\Lambda}(\omega) = \l(\mb{G}^{s_0}\r)^{-1} - \bd{\Sigma}(\omega)
+& =
+\mb{U}_s^{-1} \l(\Tilde{\mb{G}}^{s_0}\r)^{-1} \mb{U}_s -
+\mb{V} \mb{U}_b^{-1} \l(\omega-\hat{\mb{H}}_b\r)^{-1} \mb{U}_b \mb{V}^\dagger
+\\
+& = \mb{U}_s^{-1} \l[ \l(\Tilde{\mb{G}}^{s_0}\r)^{-1} - \hat{\mb{V}} \l(\omega-\hat{\mb{H}}_b\r)^{-1} \hat{\mb{V}}^\dagger \r] \mb{U}_s \,,
+\end{align}
+where we defined $\hat{\mb{V}} = \mb{U}_s \mb{V} \mb{U}_b^{-1}$. We compute now the explicit expression for the matrix elements of $\bd{\Lambda}(\omega)$ in the diagonal representation: $\hat{\bd{\Lambda}} (\omega) = \mb{U}_s \bd{\Lambda} \mb{U}_s^{-1} $.
+The diagonal elements read:
+\begin{align}
+    \hat{\bd{\Lambda}}_{ii} (\omega)
+    & = \l(\Tilde{\mb{G}}^0_s\r)^{-1}_{ii} - \sum_{jk} \hat{\mb{V}}_{ij}(\omega-\hat{\mb{H}}_b)_{jk} \hat{\mb{V}}^\dagger_{ki}
+    \\
+    &=
+    \omega - E^s_i - \sum_j \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^\dagger_{ji} (\omega-E^b_j)^{-1}
+    \\
+    &=
+    \omega - E^s_i - \sum_j \l| \Tilde{\mb{V}}_{ij} \r|^2 (\omega-E^b_j)^{-1}
+    \label{eq:Lambdadiagonal}
+\end{align}
+Similarly, the off-diagonal elements are given by
+\begin{align}
+    \Tilde{\bd{\Lambda}}_{ik} (\omega) =
+    \sum_j \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} (\omega-E^b_j)^{-1}
+    \label{eq:Lambdaoffdiagonal}
+\end{align}
+The full Green's function operator is given by the inverse of the matrix $\bd{\Lambda}$, which is generally non-diagonal. In the next section we focus on the case of Gaussian random matrix, for which this result can be simplified.
+
+
+\subsubsection*{Self-energy for Gaussian random matrices}
+We are interested now in the case of the full Hamiltonian~$\mb{H}$ being a Gaussian random matrix, with independent entries that are normally distributed: $\mb{H}_{ij}\sim\mc{N}(0, \frac{\sigma_0^2}{N})$.
+The results of the previous section can be simplified by an ensemble average of the matrix elements of $\Tilde{\mb{V}}$ (assuming a self-averaging in this large neuronal system):
+\begin{align}
+    &\Tilde{\bd{\Lambda}}_{ii} (\omega) \approx
+    \omega - E^s_i - \sum_j \l< \l| \Tilde{\mb{V}}_{ij} \r|^2 \r> (\omega-E^b_j)^{-1}
+    \\
+    &
+    \Tilde{\bd{\Lambda}}_{ik} (\omega) \approx
+    \sum_j \l< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \r> (\omega-E^b_j)^{-1} \,.
+\end{align}
+The two averages read
+\begin{align}
+     \l< \l| \Tilde{\mb{V}}_{ij} \r|^2 \r> & =
+    \sum_{kl} \l< \l| \mb{V}_{kl} \r|^2 \r>
+    \l| (\mb{U}_s)_{ik} \r|^2
+    \l| (\mb{U}_b^{-1})_{lj} \r|^2
+    \\
+    & =
+    \frac{\sigma_0^2}{N}
+    \sum_{k}
+    \l| (\mb{U}_s)_{ik} \r|^2
+    \sum_j
+    \l| (\mb{U}_b^{-1})_{lj} \r|^2
+    \\
+    & =
+    \frac{\sigma_0^2}{N}
+    \\
+    \l< \Tilde{\mb{V}}_{ij} \Tilde{\mb{V}}^*_{kj} \r>
+    & =
+    \frac{\sigma_0^2}{N}
+    \sum_l
+    (\mb{U}_s)_{il} (\mb{U}_s^{-1})_{lk}
+    \sum_m
+    (\mb{U}_b)_{km} (\mb{U}_b^{-1})_{mi}
+    \\
+    & = \frac{\sigma_0^2}{N} \delta_{ik}
+    = 0
+\end{align}
+where we used the orthogonality of $\mb{U}_s$ and $\mb{U}_b$.
+The elements of the matrix $\bd{\Lambda}(\omega)$ read:
+\begin{align}
+    &\Tilde{\bd{\Lambda}}_{ii} (\omega) \approx
+    \omega - E^s_i - \frac{\sigma_0^2}{N} \sum_j (\omega-E^b_j)^{-1}
+    \\
+    &
+    \Tilde{\bd{\Lambda}}_{ik} (\omega) \approx 0
+\end{align}
+We can recover the full Green's function for an eigenstate $\bd{\psi}_i^s$ of the observed subsystem from the diagonal components of $\tilde{\mb{G}}_s$:
+\begin{equation}
+    G^s_i(\omega) = \bd{\psi}_i^{s\dagger} \mb{G}_s(\omega) \bd{\psi}^s_i =  \l(\Tilde{\bd{\Lambda}}_{ii} (\omega) \r)^{-1} \approx
+    \l[ \omega - E^s_i + i\epsilon - \frac{\sigma_0^2}{N} \sum_{j=1}^{N_b} (\omega-E^b_j)^{-1} \r]^{-1}
+    \label{eq:FullGreenFunctionSum}
+\end{equation}
+The self-energy for Gaussian random matrices is given by the sum of contributions from all the modes of the bath $\bd{\psi}_j^b$, which energy is $E_j^b$:
+\begin{equation}
+    \boxed{
+    \Sigma(\omega) \approx \frac{\sigma_0^2}{N} \sum_{j=1}^{N_b} \frac{1}{\omega-E^b_j}
+    }
+    \label{eq:selfenergySum}
+\end{equation}
+
+\paragraph{Thermodynamic limit}
+We now focus on the case for large number of dimensions $N$, which can be studied in the continuum approximation where $N\to\infty$. In this setting, the result of the previous section becomes exact.
+Because the system is split into two parts ($N=N_s+N_b$) one can make different continuum approximations by taking different continuous limits in the two subspaces. Whether one sends to infinity $N_s$ or $N_b$ or both - and if both, at what relative speed - determines different thermodynamic limits.
+In our model, we are concerned with the problem of observing only a fraction of the total number of neurons and how the observed dynamics depend on this fraction. It is therefore natural to consider the thermodynamic limit in which the fraction is preserved. This is obtained by sending the size of both the sampled subsystem and the bath to infinity, while keeping their fraction fixed:
+\begin{equation}
+    \lim_f :=
+    \begin{cases}
+        N_s \to \infty \\
+        N_b \to \infty \\
+        f = \frac{N_s}{N} & \text{constant}
+    \end{cases}
+    \label{eq:samplingFraction}
+\end{equation}
+In the absence of coupling, the distribution of eigenvalues in the sampled subsystem and in the bath are described by semicircle laws:
+\begin{align}
+    \rho_s(E) = \frac{2}{ \pi R_s^2}\sqrt{R_s^2 -E^2} \\
+    \rho_b(E) = \frac{2}{ \pi R_b^2}\sqrt{R_b^2 -E^2}
+    \label{eq:semicircle_laws_subs}
+\end{align}
+for $|E|<R_{s/b}$.
+The radii of the two semicircles are given by
+\begin{align}
+    & R_s =  2 \sigma_H\sqrt{N_s} =
+     2 \sigma_0\sqrt{\frac{N_s}{N}} =
+    2 \sigma_0 \sqrt{f} \\
+    & R_b =
+     2 \sigma_H\sqrt{N_b} =
+     2 \sigma_0\sqrt{\frac{N_b}{N}} =
+    2 \sigma_0 \sqrt{1-f} \,.
+\end{align}
+The continuum limit allows us to simplify the self-energy Eq.~\ref{eq:selfenergySum}, by transforming the summation over the modes of the bath into an integral weighted by the density of eigenstates. Specifically
+\begin{align}
+    \Sigma(\omega) & = \frac{\sigma_0^2}{N} \sum_{j=1}^{N_b} \frac{1}{\omega-E^b_j+i\epsilon}
+    \approx
+    \frac{\sigma_0^2}{N}
+    \int_{-R_b}^{R_b} dE^b \hspace{0.1cm} \frac{ N_b \hspace{0.1cm}\rho_b(E_b)}{\omega-E^b+i\epsilon}
+    \\[0.2cm]
+    & =
+    \sigma_0^2 \frac{N_b}{N}\l(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{R_b^2/2} \r) =
+    \sigma_0^2 \frac{N_b}{N}\l(\frac{ \omega \mp \sqrt{\omega-R_b^2} }{2 \sigma_0^2 N_b/N } \r)
+    \\[0.2cm]
+    & = \frac{ \omega \mp \sqrt{\omega-R_b^2} }{2} \,,
+\end{align}
+where the $\mp$ is taken such that $\Sigma(\omega) \sim \frac{1}{\l|\omega\r|}$ for $\omega\to\infty$.
+The integral above is the Stieltjes transform of the semicircle law\footnote{Given the semicircle distribution $\rho(E) = \frac{2}{\pi R^2} \sqrt{R^2 - E^2}$, the Stieltjes transform reads
+\begin{align}
+    m(\omega) = \int_{-R}^R dE \frac{\rho(E)}{\omega-E} = \frac{\omega - \text{sign}(\omega) \sqrt{\omega^2 - R^2}}{R^2/2} 
+\end{align}\,.
+}
+We separate the self-energy into its real and imaginary parts:
+\begin{align}
+    \Delta(\omega) &= \text{Re}\l[ \Sigma(\omega)\r] =
+    \frac{1}{2} \l(\omega - \text{sign}(\omega)\sqrt{\omega^2-R_b^2}   \r)
+    \label{eq:selfenergy_real}
+    \\[0.2cm]
+    \Gamma(\omega) &= \text{Im}\l[ \Sigma(\omega)\r] =
+    \frac{\sqrt{R_b^2-\omega^2}}{2}
+    = \frac{\pi R_b^2}{4} \rho_b(\omega) = \pi \sigma_0^2 \frac{N_b}{N} \rho_b(\omega)
+    \label{eq:selfenergy_imag} \,.
+\end{align}
+Note that the second term in $\Delta(\omega)$ vanishes for $\l|\omega\r|<R_b$, and viceversa the imaginary part $\Gamma(\omega)$ vanishes for $\l|\omega\r|>R_b$.
+The full Green's function takes the following form:
+\begin{equation}
+    G^s_i(\omega) \approx
+    \lim_{\epsilon\to0}
+    \hspace{0.1cm}
+    \frac{1}{\omega - E^s_i -\Delta(\omega) + i\Big(\epsilon - \Gamma(\omega)\Big)} \,.
+    \label{eq:FullGreenFunctionIntegral}
+\end{equation}
+The spectral function is computed as
+\begin{equation}
+    \mc{S}_i(\omega) =
+    \frac{1}{\pi}\text{Im}\l[ G^s_i(\omega) \r] =
+    \lim_{\epsilon\to 0} \l(
+    \frac{1}{\pi}\frac{\Gamma(\omega)-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \big(\Gamma(\omega)^2-\epsilon\big)^2}  \r) \,.
+    \label{eq:spectralfunction_limit}
+\end{equation}
+We study this limit in two different cases, namely for
+$\Gamma(\omega)\neq 0$ and $\Gamma(\omega) = 0$. These are given by $\l|\omega\r|<R_b$ and $\l|\omega\r|>R_b$ respectively, and are indicated by $_<$ and $_>$ subscripts.
+In the first case, the spectral function reads:
+\begin{equation}
+    \mc{S}_i(\omega)_< =
+    \frac{1}{\pi}\frac{\Gamma(\omega)}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \Gamma(\omega)^2}
+    \hspace{2cm} \text{for} \hspace{0.3cm} \l|\omega\r|<R_b \,.
+    \label{eq:spectral<}
+\end{equation}
+In the second case instead,
+the function reads
+\begin{equation}
+    \mc{S}_i(\omega)_> =
+    \lim_{\epsilon\to0}
+    \frac{1}{\pi}\frac{-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \epsilon^2}
+    \hspace{2cm} \text{for} \hspace{0.3cm} \l|\omega\r|>R_b \,.
+    \label{eq:spectral>}
+\end{equation}
+The behavior of this second limit depends on the zero of the term $\mc{E}(\omega) = \omega - E^s_i - \Delta(\omega)$, which corresponds to shifted energy of the original mode\footnote{Since the function $\mc{E}(\omega)$ is continuous, monotonic and $
+\lim_{\omega\to\pm\infty}\mc{E}(\omega) = \pm\infty$, it has only one zero.}.
+If $\mc{E}(\omega)$ vanishes at $\l|\omega\r|>R_b$, the limit in Eq.\ref{eq:spectral>} gives a finite contribution. If, instead, the zero of $\mc{E}(\omega)$ lies in $[-R_b, R_b]$, the limit for $\mc{S}_i(\omega)_>$ is zero, and the only contribution comes from $\mc{S}_i(\omega)_<$.
+This second case is always given when $E_i^s<R_s\leq \frac{R_b}{2}$, that corresponds to $f \leq \frac{1}{5}$. We refer to this situation as ``low sampling fraction".
+Figure~\ref{sfig:subsampling_autocorr}A shows how theory captures the behavior of the autocorrelation and spectral density.
+If instead $E_i^s>\frac{R_b}{2}$, the limit reads
+\begin{equation}
+    \mc{S}_i(\omega)_> =
+    \lim_{\epsilon\to0}
+    \frac{1}{\pi}\frac{-\epsilon}{\big(\omega-E^s_i - \Delta(\omega)\big)^2 + \epsilon^2}
+    \approx
+    -\delta(\omega-E_i) = -\delta\l(\omega-E_i^s-\frac{R_b^2}{4E_i^s}\r)
+\end{equation}
+
+The spectral function, which was peaked at one frequency when no coupling was present, takes now finite values at all frequencies $\l|\omega\r|<R_b$.
+This is a consequence of the coupling with the bath, and it results in a decay of time-autocorrelations. This effect, known as \textit{damping} or \textit{dephasing}, gives a finite life-time to the rotational eigenstates in the observed subspace. An analogous damping profile would be observed in the presence of stochasticity in the engram dynamics. The similarity is not surprising, since the coupling with the bath can be interpreted as a noise source in the dynamics of the sampled subsystem. 
+
+In conclusion, the autocorrelation of a rotational eigenstates, that would oscillate in a fully-observed system, decays in the presence of subsampling, because of the coupling with the unobserved population. 
+In the case of \textit{low} sampling fraction, this dephasing is equivalent to the autocorrelation decay in the full system for a random engram (Eq.~\ref{eq:autocorrelation_bessel}). This is not surprising, since the bath -- whose contribution on the dynamics dominates for low sampling fraction -- has the same statistics as the full system.
+However, the substantial difference between the dephasing caused by subsampling (Fig.~\ref{sfig:subsampling_autocorr}B-D) and the decay in the fully observed system for a random engram  (Fig.~\ref{sfig:full_system}B), is that in the latter the dynamics is predictable. This can be seen in the linear dynamical system fits to simulated engram dynamics, where in the fully observed system the fitting succeeds while it fails in a partially observed system (Fig.~\ref{fig5}I). This analysis shows that characterizing and fitting engram dynamics from data is in general strongly limited by the problem of subsampling.
+
+
+\begin{figure}%[H]
+    \centering
+    \centerwidegraphic[width=0.94\linewidth]{figures/supplementary_subsampling.pdf}
+    \caption{ \small \textbf{Low and high sampling fractions}
+    \\
+    Spectral functions (\textbf{A,C}) and time-autocorrelations (\textbf{B,D}) of a rotation eigenstate $\bd{\psi}^s_i$ of the sampled subsystem, with energy $E_i^s$. Numerical values are obtained simulating a full rotation hamiltonian $\mb{H}$ of size $N=10000$, using Euler integration (time constant $\tau=1$, time step $\Delta t=0.001$, simulation time length $T_f = 1000$). The activity is observed in the first $N_s=100$ (\textbf{A, B}) and $N_s=9000$ (\textbf{C, D}) dimensions. $\sigma_0=1$.
+    }
+    \label{sfig:subsampling_autocorr}
+\end{figure}
+
+\paragraph{Numerical simulations}
+We simulate the rotational dynamics sampling an $N\times N$ anti-symmetric matrix $\mb{H}$. Above diagonal entries $
+\mb{H}_{i<j}$ are independent random variables with identical normal distribution $\mc{N}\l(0, \frac{\sigma_0^2}{N}\r)$. All the remaining entries are fixed by anti-symmetry.
+We simulate the decorrelation of one eigenstate $\bd{\psi}_i^s$ of $\mb{H}_s$ with energy $E_i^s$ (that is, one rotational eigenstate of the sampled subsystem), caused by the coupling with the bath. We define the initial state as following: the first $N_s$ dimensions correspond to $\bd{\psi}_i$, and the remaining $N_b$ are set to zero to  reflect no initial activity in the bath:
+    $\mb{e}(0)= \begin{pmatrix}
+        \bd{\psi}_i &
+        \bd{0}_b
+    \end{pmatrix}^T$.
+Here, we referred to $\bd{0}_b$ as a zero-vector of $N_b$ components. The dynamics is simulated using Euler integration, and the time-autocorrelation is measured by measuring at the activity $\mb{e}_s(t)$ in the first $N_s$ dimensions:
+$S(t) = \mb{e}_s^\dagger(0) \hspace{0.05cm} \mb{e}_s(t) = \bd{\psi}_i^\dagger \hspace{0.05cm} \mb{e}_s(t)$.
