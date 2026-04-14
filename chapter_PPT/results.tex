@@ -206,7 +206,7 @@ Sign and magnitude depend on the interplay between the learning window~$\LW$ and
 defined in Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}, respectively. For the assumed separable statistics, $f$ is fully determined by the autocorrelation of the input in the direct path, and $f(\tau)$ is therefore symmetric in time~$\tau$.
 
 A first interesting observation is that for the special case of an antisymmetric learning window~$L$, we obtain $A=0$ for symmetry reasons. Mathematically, this implies that the first term of the learning dynamics in Eq~\eqref{eq:update STDP2}  --- the dependence of the change of the weights $\W$ in the direct path on their actual value --- vanishes.
-Intuitively, the balance of potentiation and depression in an antisymmetric learning window implies that the direct path, although able to drive the postsynaptic neuron, is causing equal amounts of potentiation and depression in all of its synapses. On average, synaptic changes are caused only by the indirect pathway with weights $\V$, which therefore acts as a supervisor for the learning dynamics of $\W$ in the direct path. A thorough analysis under which conditions STDP can be used for supervised learning has been provided elsewhere \cite{Legenstein2005, Pfister2006}, and the results of this analysis are applicable in the present case. Functionally, the depressing part of an STDP learning window serves to neutralize the impact of the direct pathway on its own learning dynamics, effectively creating a supervised learning scenario.
+Intuitively, the balance of potentiation and depression in an antisymmetric learning window implies that the direct path, although able to drive the postsynaptic neuron, is causing equal amounts of potentiation and depression in all of its synapses. On average, synaptic changes are caused only by the indirect pathway with weights $\V$, which therefore acts as a supervisor for the learning dynamics of $\W$ in the direct path. A thorough analysis under which conditions STDP can be used for supervised learning has been provided elsewhere \cite{Legenstein2005, Pfister2006a}, and the results of this analysis are applicable in the present case. Functionally, the depressing part of an STDP learning window serves to neutralize the impact of the direct pathway on its own learning dynamics, effectively creating a supervised learning scenario.
 
 
 \makeStandardFigure[!htp]
@@ -285,7 +285,7 @@ Notably, the \ppca~is itself part of an indirect pathway from EC to the subiculu
 This suggests that the PPT can be reiterated to further consolidate memories from the \ppca~to the \ppsub~and beyond.
 
 To illustrate this idea, we considered a standard paradigm for memory research in rodents: the Morris water maze
-\cite{morris1982place}.
+\cite{Morris1982}.
 In the water maze, the rodent needs to find a submerged platform (object), i.e., it must store an object-place association.
 Thus this paradigm requires neural representations of objects (such as the submerged platform) and places.
 We hence constructed a model in which subregions of the hippocampal formation included neurons that encode places and neurons that encoded the identity of objects (Fig~\ref{fig:lesion}A, right).
