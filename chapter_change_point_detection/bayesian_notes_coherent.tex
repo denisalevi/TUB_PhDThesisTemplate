@@ -1,0 +1,176 @@
+%!TEX root = ../thesis.tex
+
+\section{Coherent reconstruction of the Bayesian notes}
+\label{sec:change-point-coherent-notes}
+
+The copied notes appear to develop a Bayesian account of learning cue--response contingencies in a changing environment. The intended model starts with a single Bernoulli contingency, generalizes to multiple response categories with a Dirichlet posterior, and then introduces a latent ``age since last change'' variable that allows the posterior to forget old evidence in a principled way.
+
+\subsection{Single Bernoulli contingency}
+
+For a single binary response $R_t\in\{0,1\}$, let $p$ denote the probability of response $1$:
+\[
+P(R_t=r\mid p)=p^r(1-p)^{1-r}.
+\]
+With a Beta prior,
+\[
+p\sim\operatorname{Beta}(\alpha_0,\beta_0),
+\]
+the posterior after observations $R_{1:t}$ is
+\[
+p\mid R_{1:t}\sim
+\operatorname{Beta}\left(
+\alpha_0+\sum_{i=1}^{t}R_i,\,
+\beta_0+\sum_{i=1}^{t}(1-R_i)
+\right).
+\]
+The notes repeatedly reinterpret these sufficient statistics through a memory kernel $F(i,t)$:
+\[
+\alpha_t=\alpha_0+\sum_{i=1}^{t}F(i,t)R_i,\qquad
+\beta_t=\beta_0+\sum_{i=1}^{t}F(i,t)(1-R_i).
+\]
+Two candidate kernels are written down: a hard capacity window,
+\[
+F(i,t)=\Theta(i-(t-C)),
+\]
+and exponential forgetting,
+\[
+F(i,t)=\exp[-\tau(t-i)].
+\]
+Different pathways or layers can then be modeled by different $C$, $\tau$, or learning-speed parameters. Shallow pathways may retain many observations and learn slowly; deeper or more specific pathways may learn from fewer observations and adapt quickly.
+
+\subsection{Multiple cues and response categories}
+
+For a categorical response $R_t\in\{1,\ldots,K\}$, the Bernoulli likelihood becomes categorical and the conjugate prior becomes Dirichlet. For cue $q$, let
+\[
+\boldsymbol{\pi}_q=(\pi_{q1},\ldots,\pi_{qK}),\qquad
+\sum_{r=1}^{K}\pi_{qr}=1.
+\]
+With prior
+\[
+\boldsymbol{\pi}_q\sim\operatorname{Dirichlet}(\alpha_{q1}^{0},\ldots,\alpha_{qK}^{0}),
+\]
+the posterior is
+\[
+\boldsymbol{\pi}_q\mid R_{1:t},Q_{1:t}
+\sim
+\operatorname{Dirichlet}(\alpha_{q1}^{t},\ldots,\alpha_{qK}^{t}),
+\]
+where
+\[
+\alpha_{qr}^{t}
+=\alpha_{qr}^{0}
+\sum_{i=1}^{t}F(i,t)\,\mathbf{1}\{Q_i=q\}\mathbf{1}\{R_i=r\}.
+\]
+The marginal posterior for one response probability is Beta:
+\[
+\pi_{qr}\mid R_{1:t},Q_{1:t}
+\sim
+\operatorname{Beta}\left(\alpha_{qr}^{t},\sum_{\ell\neq r}\alpha_{q\ell}^{t}\right).
+\]
+This is the natural extension needed for the Francesco task, where a cue can map onto four answer categories rather than two.
+
+\subsection{Combining parallel-pathway estimates}
+
+The notes ask how a downstream readout should combine multiple shortcut/pathway posteriors. If pathway $s$ has posterior
+\[
+P_s^t(p)=\operatorname{Beta}(\alpha_s^t,\beta_s^t),
+\]
+two readout sketches are given:
+\[
+P_{\Sigma}^t(p)=\sum_s c_s(t)P_s^t(p),
+\qquad
+P_{\Pi}^t(p)\propto\prod_s P_s^t(p).
+\]
+The product form is only valid if pathway estimates are conditionally independent. Because the pathways are based on the same observations, a mixture or learned weighting is probably the safer interpretation. In thesis terms, this suggests that hippocampal and cortical pathways may represent different posterior approximations over the same latent contingency rather than independent evidence streams.
+
+\subsection{Latent changepoints}
+
+The later notes replace ad hoc forgetting with an explicit latent variable. Let $s_t$ be the current association strength and let $n_t$ be the number of time steps since the last changepoint. The graphical model is:
+\[
+n_{t-1}\rightarrow n_t,\qquad
+s_{t-1}\rightarrow s_t,\qquad
+s_t\rightarrow x_t.
+\]
+The posterior of interest is
+\[
+P(s_t,n_t\mid x_{1:t}).
+\]
+The transition model is
+\[
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+=(1-\gamma(n_{t-1}))
+\delta_{n_t,n_{t-1}+1}\delta(s_t-s_{t-1})
+\gamma(n_{t-1})\delta_{n_t,0}U(s_t),
+\]
+where $\gamma(n)$ is the changepoint hazard. A constant hazard gives exponential survival times; a decreasing hazard such as $\gamma(n)=k/n$ gives heavier-tailed survival and permits long stable periods.
+
+Given Bernoulli observations,
+\[
+P(x_t\mid s_t)=\operatorname{Bernoulli}(x_t;s_t),
+\]
+the update is
+\[
+P(s_t,n_t\mid x_{1:t})
+\propto
+P(x_t\mid s_t)
+\sum_{n_{t-1}}\int
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+P(s_{t-1},n_{t-1}\mid x_{1:t-1})
+\,ds_{t-1}.
+\]
+
+\subsection{Mixture-of-Beta implementation}
+
+Because the Bernoulli likelihood is conjugate to the Beta prior, the posterior over $s_t$ can be represented as a mixture of Beta components indexed by possible run length or evidence window:
+\[
+P(s_t,n_t\mid x_{1:t})
+=\frac{1}{Z_t}\sum_i f_i(n_t\mid x_{1:t})\,
+\operatorname{Beta}(s_t;a_i(t),b_i(t)).
+\]
+For a component that uses the most recent $i$ observations,
+\[
+a_i(t)=1+\sum_{j=0}^{i-1}\mathbf{1}\{x_{t-j}=1\},
+\qquad
+b_i(t)=1+\sum_{j=0}^{i-1}\mathbf{1}\{x_{t-j}=0\}.
+\]
+Updating a component by one observation gives another Beta component:
+\[
+\operatorname{Bernoulli}(x_t;s)\operatorname{Beta}(s;a_i(t-1),b_i(t-1))
+=Z_i(t)\operatorname{Beta}(s;a_i(t),b_i(t)),
+\]
+with
+\[
+Z_i(t)=\frac{B(a_i(t),b_i(t))}{B(a_i(t-1),b_i(t-1))}.
+\]
+Thus the algorithm can update only mixture weights and Beta parameters rather than storing all past switch histories explicitly.
+
+\subsection{Multinomial/Dirichlet extension for Francesco's task}
+
+For four categories, each cue has a categorical probability vector
+\[
+\boldsymbol{\pi}_t=(\pi_{t1},\pi_{t2},\pi_{t3},\pi_{t4}),\qquad
+\sum_{k=1}^{4}\pi_{tk}=1.
+\]
+If a block contains counts $\mathbf{x}=(x_1,x_2,x_3,x_4)$ with $\sum_k x_k=n$, the multinomial likelihood is
+\[
+P(\mathbf{x}\mid \boldsymbol{\pi})
+=\frac{n!}{\prod_{k=1}^{4}x_k!}\prod_{k=1}^{4}\pi_k^{x_k}.
+\]
+With Dirichlet prior
+\[
+\boldsymbol{\pi}\sim\operatorname{Dirichlet}(\alpha_1,\alpha_2,\alpha_3,\alpha_4),
+\]
+the posterior is
+\[
+\boldsymbol{\pi}\mid \mathbf{x}
+\sim
+\operatorname{Dirichlet}(\alpha_1+x_1,\alpha_2+x_2,\alpha_3+x_3,\alpha_4+x_4).
+\]
+The changepoint model can therefore be reused by replacing each Beta component with a Dirichlet component:
+\[
+P(\boldsymbol{\pi}_t,n_t\mid x_{1:t})
+=\frac{1}{Z_t}\sum_i f_i(n_t\mid x_{1:t})\,
+\operatorname{Dirichlet}(\boldsymbol{\pi}_t;\boldsymbol{\alpha}_i(t)).
+\]
+For participant-level fitting, the most likely intended model comparison is between different hazards $\gamma(n)$ and different pathway-like memory kernels. The behavioral predictions are trial-wise category probabilities, and the model can be fit per participant by maximizing the predictive likelihood of the observed category choices.
+

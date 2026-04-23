@@ -1,0 +1,814 @@
+%!TEX root = ../thesis.tex
+
+\section{Copied Bayesian notes}
+\label{sec:change-point-copied-notes}
+
+\noindent\textit{Draft transcription note.}
+The source PDFs are handwritten image-only notebook exports. The page images below are included as facsimiles so that every page is preserved in the thesis draft. The text following each page is a first-pass transcription of the content that was legible during copying; uncertain words and symbols are marked explicitly.
+
+\providecommand{\notepage}[4]{%
+\clearpage
+\subsection*{#1, page #2}
+\begin{center}
+\includegraphics[height=0.58\textheight,width=\linewidth,keepaspectratio]{chapter_change_point_detection/#3}
+\end{center}
+#4
+}
+
+\subsection{Source 1: \texttt{all-the-bayesian-math.pdf}}
+
+\notepage{All-the-Bayesian-math}{1}{figures/note_pages/all_the_bayesian_math/page-01.png}{%
+\begin{itemize}
+\item Heading: ``Spontaneous meeting with Henning'', dated 04.06.19.
+\item Questions: generation in direct and indirect pathways; how many animals does not work; capacity problem or time-scale issue.
+\item Idea: does prefrontal capacity influence learning of semantic generalization?
+\item Capacity is not comparable across different sizes of animals/persons.
+\item Need to get generalization, i.e. generalization drops at a certain level.
+\item Find point where generalization breaks. Fewer manipulable prefrontal capacity without changing representation, e.g. hidden layer.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{2}{figures/note_pages/all_the_bayesian_math/page-02.png}{%
+\begin{itemize}
+\item Network 2: just best, certainly problematic.
+\item Causality to semantic makes sense. What happens when episodic contradicts with semantic?
+\item How are wrong mistakes in memory?
+\item Retropale amnesia depends on lesion size.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{3}{figures/note_pages/all_the_bayesian_math/page-03.png}{%
+\begin{itemize}
+\item Heading: ``Meeting Henning (Lund)'', dated 15.11.19.
+\item Difference between reinforcement learning and association learning: value learning is stimulus-reward association learning.
+\item Schema learning in deep nets: hidden-layer size works for perceptual learning; dynamics in different layers determine what other layers have already learned.
+\item Hypothesis: first layer learns at one point, lower layers after, depending on what layer learned, such that the next layer can learn better after.
+\item Generality transfer learning: use another net, starting point, and add a new layer that learns based on that schema.
+\item Model as meta-learning, autoencoder with bottleneck, new episodes learned only in hippocampus; the rest is trained to make learning in hippocampus easier.
+\item Semantic development in children: representations in hippocampus are better suited for learning associations; input pathway develops further.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{4}{figures/note_pages/all_the_bayesian_math/page-04.png}{%
+\begin{itemize}
+\item MRI study with Yee Lee: test statistical learning with paired associations and different category-correlation strengths.
+\item Task sketch: shape parameter/cue 1 (houses), response 1, circles, shape parameter/cue 2 (trees), response 2.
+\item Hierarchical structure: hippocampal layer $\eta_1>\eta_2>\eta_3>\eta_4>\eta_5$.
+\item Learning-specific cue-response associations and global house-to-squares association, probably parameters $P_1$ and $P_2$.
+\item Hypothesis: given weak connection $p$, all layers with $\eta<\eta^\ast$ can learn statistics well. For different $p$, different layers should be involved in the recall process; perhaps all layers are involved but some just do not produce useful answers.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{5}{figures/note_pages/all_the_bayesian_math/page-05.png}{%
+\begin{itemize}
+\item Response paths are drawn from a Bernoulli distribution. Compute posterior distribution $q$.
+\item Samples enter the model with connection probability $p$. $T_i$ are number of samples layer $i$ can store and use for estimate $\hat p_i$.
+\item If layers learn at same speed but remember only $T_i$ samples, the smaller $T_i$ gives worse estimate.
+\item If $\eta_i>\eta_{i+1}$ and $T_i<T_{i+1}$, deeper layers learn faster and also remember less or forget faster. The best estimate of a layer should also be reached slower for deeper layers.
+\item Proposed readout:
+\[
+q(P_i,t\mid \eta_i,T_i)
+\]
+and question whether the brain uses $\hat q(\hat P_i,\hat\eta_i,t,\hat T_i)$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{6}{figures/note_pages/all_the_bayesian_math/page-06.png}{%
+\begin{itemize}
+\item Heading: ``Calculating the posterior (best estimate of $p$ that a given shortcut could learn from its observations)''.
+\item Random variable $R\in\{0,1\}$ is a response.
+\item Likelihood of single trial:
+\[
+\Pr(R=1)=p,\qquad \Pr(R;p)=
+\begin{cases}
+p,&R=1,\\
+1-p,&R=0,
+\end{cases}
+=p^R(1-p)^{R-1}.
+\]
+\item Likelihood after $n$ binary cues:
+\[
+X\sim \operatorname{Bin}(n,p),\qquad
+\Pr(X=k;n,p)=\binom{n}{k}p^k(1-p)^{n-k}.
+\]
+\item Conjugate prior for Bernoulli/binomial:
+\[
+\Pr(p;\alpha,\beta)=Zp^{\alpha-1}(1-p)^{\beta-1},
+\quad
+Z=\frac{1}{B(\alpha,\beta)}
+=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)+\Gamma(\beta)}.
+\]
+\item Posterior:
+\[
+\Pr(p=x\mid k)\propto x^{\alpha_0+k-1}(1-x)^{n-k+\beta_0-1}
+=\operatorname{Beta}(\alpha_0+k,\beta_0+n-k).
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{7}{figures/note_pages/all_the_bayesian_math/page-07.png}{%
+\begin{itemize}
+\item Posterior rewritten:
+\[
+\Pr(p;k,n)=
+\frac{x^{k+\alpha_0-1}(1-p)^{n-k+\beta_0-1}}
+{B(k+\alpha_0,n-k+\beta_0)}
+=\operatorname{Beta}(\alpha_0+k,\beta_0+n-k).
+\]
+\item How to get $\eta_i$ and $T_i$ into $Z$:
+\begin{enumerate}
+\item First ignore learning rate $\eta_i$; shortcuts just have different capacity $C_i$, so $k_i$ are the $R=1$ responses in the last $n_i$ observations.
+\item Total time $t$ is all shown samples. Compile $\operatorname{Beta}(\alpha',\beta')$ with
+\[
+\alpha'=\alpha_0+\sum_{i=1}^{t} F(i)\delta(R_i-1),
+\qquad
+\beta'=\beta_0+\sum_{i=1}^{t} F(i)\delta(R_i),
+\]
+where $F(i)=\Theta(i-(t-C_j))$ or $F(i)=e^{-\tau_j(t-i)}$.
+\end{enumerate}
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{8}{figures/note_pages/all_the_bayesian_math/page-08.png}{%
+\begin{itemize}
+\item Heading: ``Multiple response classes ($>2$)''.
+\item Likelihood becomes categorical distribution and conjugate prior becomes Dirichlet distribution.
+\item If $N_r$ is number of response classes:
+\[
+\operatorname{Dir}(\vec\alpha)=\frac{1}{B(\vec\alpha)}
+\prod_{r=1}^{N_r}x_r^{\alpha_r-1},
+\qquad
+\vec\alpha=(\alpha_1,\ldots,\alpha_{N_r}).
+\]
+\item Position/posterior:
+\[
+\alpha'_r=\alpha^0_r+\sum_{i=1}^{T}F(i)\delta(R(i)-r),
+\]
+with $F(t)=\Theta(t-(T-C_j))$ or $F(t)=e^{-\tau_j(T-t)}$.
+\item Multiple cues: now $t$ is current observation index; $\eta_q(t)$ is number of observations with cue $q$ until $t$ and $\sum_q \eta_q(T)=T$. $R_t,Q_t$ are response and cue at observation $t$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{9}{figures/note_pages/all_the_bayesian_math/page-09.png}{%
+\begin{itemize}
+\item Heading: ``Multiple cues with marginal posterior [Beta$(\alpha_r,\sum_i\alpha_i-\alpha_r)$]''.
+\item $t$ is current observation index. $\eta_q(t)$ is number of observations with cue $q$ until $t$, $\sum_q\eta_q(T)=T$.
+\item $R_t,Q_t$ are response and cue at observation $t$.
+\item Posterior per cue:
+\[
+\operatorname{Beta}(\alpha^q_1,\beta^q_1),\qquad
+\alpha^q_r=\alpha^q_0+\sum_{i=1}^{t}F(i)\delta(R_i-r)\delta(Q_i-q).
+\]
+\item Equivalently,
+\[
+\beta^q_r=\sum_{r=1}^{N_r}\alpha^q_r-\alpha^q_r
+=(N_r-1)\alpha_0+\sum_{r=1}^{N_r-1}\sum_{i=1}^{t}F(i)\delta(Q_i-q)\delta(R_i-r).
+\]
+\item Red annotation: associated response is $r=0$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{10}{figures/note_pages/all_the_bayesian_math/page-10.png}{%
+\begin{itemize}
+\item Heading: ``Readout: combining shortcut posteriors'', dated 3.2.20.
+\item Let $N_s$ shortcuts each compute a different posterior over $p$:
+\[
+P_s^t=P_s(p\mid\{R_i\}_{i=1}^t)=\operatorname{Beta}(\alpha',\beta'),
+\]
+\[
+\alpha'=\alpha_0+\sum_{i=1}^{t}F_s(i)\delta(R_i-1),\qquad
+\beta'=\beta_0+\sum_{i=1}^{t}F_s(i)\delta(R_i).
+\]
+\item How would an optimal readout combine posteriors?
+\begin{enumerate}
+\item Weighted sum:
+\[
+P_\Sigma^t=\sum_{s=1}^{N_s}C_s(t)P_s^t,
+\]
+with $C_s(t)$ chosen by comparing with true posterior.
+\item Product:
+\[
+P_\Pi^t=\prod_{s=1}^{N_s}P_s^t.
+\]
+\end{enumerate}
+\item Issue: assumes statistical independence, but posteriors depend on the same observations.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{11}{figures/note_pages/all_the_bayesian_math/page-11.png}{%
+\begin{itemize}
+\item Heading: ``Random switching of association $P$''.
+\item $P$ switches approximately with Poisson switching; inter-switch interval is exponential.
+\item Transition probability:
+\[
+P_{\mathrm{trans}}(t)=P(P_t\mid P_{t-1})
+=\alpha\,U(0,1)+(1-\alpha)\delta(P_{t-1}-P_t).
+\]
+\item Prior at $t=1$: $P(P_1)=U(0,1)=\operatorname{Beta}(1,1)$.
+\item Example posterior update:
+\[
+P(R_2=1\mid P_2,P_1)
+=\alpha\,\operatorname{Beta}(\alpha_2^1,\beta_2^1)
+(1-\alpha)\operatorname{Bern}(P_2)\delta(P_2-P_1).
+\]
+\item Bayes theorem box:
+\[
+P(p\mid R_i)=\frac{P(R_i\mid p)P(p)}{P(R_i)}.
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{12}{figures/note_pages/all_the_bayesian_math/page-12.png}{%
+\begin{itemize}
+\item Page contains a tree/table expansion for full posterior, not normalized.
+\item First level:
+\[
+P(p_1)=U(0,1)=\operatorname{Beta}(1,1),\quad
+P(R_1\mid p_1)=\operatorname{Bern}(p_1),\quad
+P(p_1\mid R_1)=\operatorname{Beta}(\alpha_1^1,\beta_1^1).
+\]
+\item State counters:
+\[
+\alpha_i^j=1+\sum_{k=i}^{j}\delta(R_k-1),\qquad
+\beta_i^j=1+\sum_{k=i}^{j}\delta(R_k).
+\]
+\item Full posterior sketched as a sum over switch histories:
+\[
+P(p_n\mid\{R_i\}_{i=1}^{n})
+=\sum_{m=1}^{n}\alpha^{\,n-m}(1-\alpha)^{m-1}
+\cdots
+\]
+with products of Beta terms and delta constraints linking equal $p$ values between switches.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{13}{figures/note_pages/all_the_bayesian_math/page-13.png}{%
+\begin{itemize}
+\item Heading: ``Normalize posteriors''.
+\item Beta density and normalizer:
+\[
+\operatorname{Beta}(\alpha,\beta)=
+\frac{p^{\alpha-1}(1-p)^{\beta-1}}{B(\alpha,\beta)},\qquad
+B(\alpha,\beta)=\int_0^1 q^{\alpha-1}(1-q)^{\beta-1}\,dq.
+\]
+\item Product identity:
+\[
+\operatorname{Beta}(\alpha,\beta)\operatorname{Beta}(\gamma,\delta)
+\propto \operatorname{Beta}(\alpha+\gamma-1,\beta+\delta-1).
+\]
+\item Boxed special case:
+\[
+\operatorname{Beta}(\alpha_i^j,\beta_i^j)\operatorname{Beta}(\alpha_k^\ell,\beta_k^\ell)
+=\operatorname{Beta}(\alpha_i^j+\alpha_k^\ell-1,\beta_i^j+\beta_k^\ell-1)
+\]
+for matching intervals/indices.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{14}{figures/note_pages/all_the_bayesian_math/page-14.png}{%
+\begin{itemize}
+\item Heading: ``Normalize posteriors contd.''
+\item Integral of Beta times deltas:
+\[
+\int_0^1 \operatorname{Beta}(\alpha_i^j,\beta_i^j)\delta(q_j-p_i)\,dq_j
+\]
+leading to terms $p_i^{\alpha_i^j-1}(1-p_i)^{\beta_i^j-1}$ and cancellation of $B(\alpha_i^j,\ldots)$.
+\item Counting observations:
+\[
+\alpha_i^j=1+\sum_{m=i}^{j}\delta(R_m-1),
+\]
+and for total observations $n=j-i+1$ and $k=\sum_{m=i}^{j}\delta(R_m-1)$,
+\[
+2p_i^k(1-p_i)^{n-k}
+=\operatorname{Binom}(n,p_i\mid k)\frac{1}{\binom{n}{k}}.
+\]
+\item Product of Bernoulli terms:
+\[
+\operatorname{Bn}(p\mid k)\operatorname{Bn}(p\mid \ell)
+=p^{k+\ell}(1-p)^{2-(k+\ell)}
+=\operatorname{Binom}(2,p\mid k+\ell)\frac{1}{\binom{2}{k+\ell}},
+\quad k,\ell\in\{0,1\}.
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{15}{figures/note_pages/all_the_bayesian_math/page-15.png}{%
+\begin{itemize}
+\item Page repeats the switching prior tree with $\operatorname{Beta}_i^j(p)=\operatorname{Beta}(p,\alpha_i^j,\beta_i^j)$.
+\item For $n=2$, one branch gives:
+\[
+P(p_2\mid R_2,R_1)=
+\operatorname{Beta}_1^2(p_2)\left[\alpha+(1-\alpha)\delta(p_2-p_1)\right],
+\]
+with normalization via
+\[
+\int_0^1 \operatorname{Beta}(\alpha_i^j,\ldots)\delta(q_j-p_i)\,dq_j
+=p_i^k(1-p_i)^{n-k}
+=\frac{1}{\binom{n}{k}}\operatorname{Binom}(n,p_i\mid k).
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{16}{figures/note_pages/all_the_bayesian_math/page-16.png}{%
+\begin{itemize}
+\item Heading: ``If switch, use flat prior.''
+\item Prior/likelihood/posterior tree expanded for $n=1,2,3,4$ with switch probability $\alpha$ and no-switch probability $1-\alpha$.
+\item Intermediate terms for $P(p_3\mid R\ldots)$ are expanded into powers of $\alpha$ and $(1-\alpha)$.
+\item Red-boxed generalization:
+\[
+P(p_n\mid R\ldots)=\beta_1(1-\alpha)^{n-1}
+\sum_{i=2}^{n}\beta_i
+\sum_{m=n-i+1}^{n-1}\binom{i-2}{t-m-1}\alpha^{n-m}(1-\alpha)^{m-1}
+\]
+where the exact handwritten indices are ambiguous.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{17}{figures/note_pages/all_the_bayesian_math/page-17.png}{%
+\begin{itemize}
+\item Factor derivation:
+\[
+P(p_t\mid\{R_i\}_{i=0}^{t})
+=\beta_{1,t}(1-\alpha)^{t-1}
+\sum_{i=2}^{t}\beta_{i,t}\sum_{m=t-i+1}^{t-1}
+\binom{i-2}{t-m-1}\alpha^{t-m}(1-\alpha)^{m-1}.
+\]
+\item Listed factors:
+\[
+\beta_{1,t}:(1-\alpha)^{t-1},
+\]
+\[
+\beta_{2,t}:\sum_{m=t-1}^{t-1}\binom{0}{t-1-m}\alpha^{t-m}(1-\alpha)^{m-1}
+=\alpha(1-\alpha)^{t-2},
+\]
+and analogous expressions for $\beta_{3,t}$ and $\beta_{4,t}$.
+\item Boxed general form:
+\[
+P(p_t\mid\{R_i\}_{i=0}^{t})
+=\beta_{0,t}(1-\alpha)^t
+\sum_{i=1}^{t}\beta_{i,t}\sum_{m=1}^{i}
+\binom{i-1}{m-1}\alpha^m(1-\alpha)^{(t-1)-(\cdots)}.
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{18}{figures/note_pages/all_the_bayesian_math/page-18.png}{%
+\begin{itemize}
+\item Posterior represented as mixture:
+\[
+P(p_t\mid\{R_i\}_{i=0}^{t})=\sum_{i=0}^{t} f_i(t)\beta_i(t).
+\]
+\item Recursive/closed form weights:
+\[
+f_i(t)=
+\begin{cases}
+(1-\alpha)^t,&i=0,\\
+\sum_{i=1}^{t}\beta_i(t)\sum_{m=1}^{i}\binom{i-1}{m-1}\alpha^m(1-\alpha)^{t-m},&\text{else}.
+\end{cases}
+\]
+\item Examples:
+\[
+f_1(t)=\alpha(1-\alpha)^{t-1},\quad
+f_2(t)=\alpha(1-\alpha)^{t-1}+\alpha^2(1-\alpha)^{t-2},
+\]
+\[
+f_t(t)=\sum_{m=1}^{t}\binom{t-1}{m-1}\alpha^m(1-\alpha)^{t-m}=\alpha.
+\]
+\item Initial term $f_0(t)=1-\alpha$ is noted in the lower red box.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{19}{figures/note_pages/all_the_bayesian_math/page-19.png}{%
+\begin{itemize}
+\item Markovian likelihood note. For $t=3$:
+\[
+P(p_3)=P(p_2\mid p_1)\{R_i\}_{i=1}^{2},
+\]
+\[
+P(R_3=1\mid p_3,p_2)=P(R_3=1\mid p_3)P(p_3\mid p_2)
+\]
+and terms with switch/no-switch:
+\[
+\alpha\operatorname{Beta}(\alpha_1',\beta_1')
+(1-\alpha)\delta(p_3-p_2)\operatorname{Bern}(p_3).
+\]
+\item Posterior expanded as products of the previous posterior and current likelihood. Red note says ``TODO: check!''.
+\item Result shows terms in $\alpha^2$, $\alpha(1-\alpha)$, and $(1-\alpha)^2$ with products of Beta densities and delta functions.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{20}{figures/note_pages/all_the_bayesian_math/page-20.png}{%
+\begin{itemize}
+\item Generalized version of page 19 for $t=n$:
+\[
+P(p_n)=P(p_n\mid p_{n-1})\{R_i\}_{i=1}^{n-2},
+\qquad
+P(R_n=1\mid p_n,p_{n-1})=P(R_n=1\mid p_n)P(p_n\mid p_{n-1}).
+\]
+\item Transition likelihood:
+\[
+P(R_n=1\mid p_n)P(p_n\mid p_{n-1})
+=\alpha\operatorname{Beta}(\alpha_1',\beta_1')
+(1-\alpha)\delta(p_n-p_{n-1})\operatorname{Bern}(p_n).
+\]
+\item Posterior:
+\[
+P(p_n\mid p_{n-1},R_n)=
+\alpha^{n-1}[\operatorname{Beta}(\alpha_1',\beta_1')]^n
+(1-\alpha)\left[\prod_{i=1}^{n-1}\delta(p_{i+1}-p_i)\right]\operatorname{Beta}(\alpha_n',\beta_n')
+\cdots
+\]
+\item Lower part copies from $t=3$ and simplifies terms with $\delta(p_3-p_2)$ and $\delta(p_2-p_1)$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{21}{figures/note_pages/all_the_bayesian_math/page-21.png}{%
+\begin{itemize}
+\item Normalization constants $Z_i^j$ for products of Bernoulli and Beta terms.
+\item Prior $p=\beta_0$, likelihood $\ell=\operatorname{Bn}(p)$ and posterior $\beta_2^2=p\ell/Z$.
+\item Identities:
+\[
+Z_2^2=\frac{B(\alpha_2^2,\beta_2^2)}{B(1,1)},\qquad
+Z_1^2=\frac{B(\alpha_1^2,\beta_1^2)}{B(\alpha_1^1,\beta_1^1)}.
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{22}{figures/note_pages/all_the_bayesian_math/page-22.png}{%
+\begin{itemize}
+\item Continues normalization:
+\[
+P(p_2\mid\{R_i\})=
+\left[\alpha Z_2^2\beta_2^2(p)+(1-\alpha)Z_1^2\beta_1^2(p)\right]\frac{1}{Z}.
+\]
+\item Normalizing integral:
+\[
+Z=\int_0^1 dp\left[
+\alpha\frac{B(\alpha_2^2,\beta_2^2)}{B(1,1)}\beta_2^2(p)
++(1-\alpha)\frac{B(\alpha_1^2,\beta_1^2)}{B(\alpha_1^1,\beta_1^1)}\beta_1^2(p)
+\right].
+\]
+\item Because each beta density integrates to one:
+\[
+P(p_2\mid\{R_i\})=
+\frac{\alpha Z_2^2\beta_2^2(p)+(1-\alpha)Z_1^2\beta_1^2(p)}
+{\alpha Z_2^2+(1-\alpha)Z_1^2}.
+\]
+\item For $t=3$, analogous mixture weights are derived, ending in a rational expression with $\alpha Z_3^3$, $\alpha(1-\alpha)Z_2^3Z_2^2$, and $(1-\alpha)^2Z_1^3Z_1^2$ terms.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{23}{figures/note_pages/all_the_bayesian_math/page-23.png}{%
+\begin{itemize}
+\item Heading: ``Bernoulli--Beta conjugate pair''.
+\item Bernoulli:
+\[
+X\sim\operatorname{Bernoulli}(p),\qquad P(X=1)=p,
+\]
+\[
+\operatorname{Bn}(k\mid p)=\operatorname{Bn}(X=k\mid p)=p^k(1-p)^{1-k},\quad k\in\{0,1\}.
+\]
+\item Beta:
+\[
+X\in[0,1],\quad
+\operatorname{Beta}(x\mid\alpha,\beta)
+=x^{\alpha-1}(1-x)^{\beta-1}
+\left[\int_0^1 u^{\alpha-1}(1-u)^{\beta-1}du\right]^{-1}
+=\frac{x^{\alpha-1}(1-x)^{\beta-1}}{B(\alpha,\beta)}.
+\]
+\item Posterior from Bernoulli likelihood and Beta prior:
+\[
+P(p\mid k)=\frac{P(k\mid p)P(p)}{\int_0^1P(k\mid q)P(q)dq}
+=\operatorname{Beta}(k+\alpha_0,1-k+\beta_0).
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{24}{figures/note_pages/all_the_bayesian_math/page-24.png}{%
+\begin{itemize}
+\item Heading: ``Henning notes / Underlying graphical model''.
+\item Variables: time since last change in contingency $n_t$, association strength $s_t$, observations $o_t$. Graphical sketch: $n_t\to n_{t+1}$, $n_t\to s_{t+1}$, $s_t\to s_{t+1}$, $s_t\to o_t$.
+\item Object of interest:
+\[
+P(s,n;t\mid o_{1:t})
+\]
+as joint probability that last change of contingency happened $n$ time steps ago and association strength is $s$.
+\item Marginal:
+\[
+P(s;t\mid o_{1:t})=\sum_n P(s,n;t\mid o_{1:t}).
+\]
+\item Update rule for posterior:
+\[
+P(s,n;t+1\mid o_{1:t+1})
+=\frac{1}{Z}P(o_{t+1}\mid s_{t+1})P(s,n;t\mid o_{1:t})
+\]
+with an integral/sum over prior states and transition probability $P(s,n\mid s',n')$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{25}{figures/note_pages/all_the_bayesian_math/page-25.png}{%
+\begin{itemize}
+\item Heading: ``Choices for $P(s,n\mid s',n')$''.
+\item Perfect integrator:
+\[
+P(s,n\mid s',n')=\delta_{n,n'+1}\delta(s-s').
+\]
+World never changes.
+\item Leaky/exponential model:
+\[
+P(s,n\mid s',n')=(1-\alpha)\delta_{n,n'+1}\delta(s-s')+\alpha\delta_{n,0}U(s).
+\]
+Probability that world changes is constant for all time steps. Switch probability can depend on how long ago the last switch occurred; allows long survival times, e.g. power law for $\alpha(n)=k/n$.
+\item Hippocampus as a cascade model: hidden states $n=0,1,2,3$ with transition probabilities $1-\gamma^{(0)},1-\gamma^{(1)},1-\gamma^{(2)}$ and links to cortex through $\alpha^{(1)},\alpha^{(2)},\alpha^{(3)}$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{26}{figures/note_pages/all_the_bayesian_math/page-26.png}{%
+\begin{itemize}
+\item $t=1$ initialization:
+\[
+P(s)=U(s)=\operatorname{Beta}(1,1)=\beta_0,\quad s\in[0,1],
+\]
+\[
+P(o\mid s)=\operatorname{Bn}(s),\qquad
+P(s\mid o)=\operatorname{Bn}(s)\beta_0=\beta_1^{(1)}.
+\]
+\item At time $t$:
+\[
+P(s\mid o_{1:t})=\sum_{i=1}^{t}f_i(t,n,o_{1:t})\beta_i(t,s,o_{1:t}).
+\]
+\item Beta component:
+\[
+\beta_i(t)=\operatorname{Beta}(a_i(t),b_i(t)),
+\]
+\[
+a_i(t)=1+\sum_{j=0}^{i-1}\delta(o_{t-j}-1),\quad
+b_i(t)=1+\sum_{j=0}^{i-1}\delta(o_{t-j}).
+\]
+\item Update:
+\[
+\operatorname{Bn}(s,o_{t+1})\beta_i(t,s,o_{1:t})
+=\beta_{i+1}(t+1,s,o_{1:t+1})Z_{i+1}(t+1),
+\]
+\[
+Z_{i+1}(t+1)=\frac{B(a_{i+1}(t+1),b_{i+1}(t+1))}
+{B(a_i(t),b_i(t))}.
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{27}{figures/note_pages/all_the_bayesian_math/page-27.png}{%
+\begin{itemize}
+\item Continuation of update rule:
+\[
+P(s,n;t+1\mid o_{1:t+1})
+=\frac{1}{Z}P(o_{t+1}\mid s_{t+1})P(s,n;t\mid o_{1:t})
+\]
+with transition probability and old posterior.
+\item General transition:
+\[
+P(s,n\mid s',n')
+=(1-\alpha(n'))\delta_{n,n'+1}\delta(s-s')+\alpha(n')\delta_{n,0}U(s).
+\]
+\item Likelihood:
+\[
+P(o_t\mid s_t)=\operatorname{Bn}(o_t;s).
+\]
+\item Prior/old posterior:
+\[
+P(s,n;t\mid o_{1:t})
+=\sum_{i=1}^{t}f_i(t,n,o_{1:t})\beta_i(t,s,o_{1:t}).
+\]
+\item Resulting posterior expression separates no-change terms and new-change terms with $\alpha(n')$ and $(1-\alpha(n'))$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{28}{figures/note_pages/all_the_bayesian_math/page-28.png}{%
+\begin{itemize}
+\item Boxed expression:
+\[
+P(s,n;t\mid o_{1:t})
+=\frac{1}{Z}\sum_{i=1}^{t}f_i(t-j,n,o_{1:t})\beta_i(t,s,o_{1:t}).
+\]
+\item For $i\ge2$:
+\[
+f_i(t,n,o_{1:t})=(1-\alpha(n-1))Z_i(t)f_{i-1}(t-1,n-1,o_{1:t-1})
+\]
+with
+\[
+Z_i(t)=\frac{B(a_i(t),b_i(t))}{B(a_{i-1}(t-1),b_{i-1}(t-1))}.
+\]
+\item New state normalization:
+\[
+Z=\int_0^1 ds'\,P(s,n;t+1\mid o_{1:t+1})
+=\sum_{i=1}^{t}f_i(t,n,o_{1:t}).
+\]
+\item Initialization:
+\[
+P(s,n;t=1\mid o_1)=\frac{1}{Z}f_1(t=1,n=0,o_1)\beta_1(t=1,s,o_1).
+\]
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{29}{figures/note_pages/all_the_bayesian_math/page-29.png}{%
+\begin{itemize}
+\item Repeats underlying graphical model, now with observation $x_t$ rather than $o_t$.
+\item Object of interest:
+\[
+P(s_t,n_t\mid x_{1:t})=\sum_t P(s_t,n_t\mid x_{1:t})
+\]
+and posterior probability of association strength $s$.
+\item Update rule:
+\[
+P(s_t,n_t\mid x_{1:t})
+=\frac{1}{Z}P(x_t\mid s_t)P(s_t,n_t\mid x_{1:t-1})
+\]
+with transition probability and old posterior:
+\[
+\sum_{n_{t-1}}\int ds_{t-1}\,
+P(s_t,n_t\mid s_{t-1},n_{t-1})P(s_{t-1},n_{t-1}\mid x_{1:t-1}).
+\]
+\item Notes: factorization from graphical model, conjugate priors/media.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{30}{figures/note_pages/all_the_bayesian_math/page-30.png}{%
+\begin{itemize}
+\item Heading: ``Choices for $P(s_t,n_t\mid s_{t-1},n_{t-1})$''.
+\item Perfect integrator:
+\[
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+=\delta_{n_t,n_{t-1}+1}\delta(s_t-s_{t-1}).
+\]
+\item Exponential/leaky model:
+\[
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+=(1-\gamma)\delta_{n_t,n_{t-1}+1}\delta(s_t-s_{t-1})
+\gamma\delta_{n_t,0}U(s_t).
+\]
+\item More general model:
+\[
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+=(1-\gamma(n_{t-1}))\delta_{n_t,n_{t-1}+1}\delta(s_t-s_{t-1})
+\gamma(n_{t-1})\delta_{n_t,0}U(s_t).
+\]
+\item Allows long survival times, e.g. power law $\gamma(n_t)=k/n_t$. Includes the same hippocampus-to-cortex cascade sketch as page 25.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{31}{figures/note_pages/all_the_bayesian_math/page-31.png}{%
+\begin{itemize}
+\item Heading: ``Update rule for the posterior''.
+\item New posterior:
+\[
+P(s_t,n_t\mid x_{1:t})
+=\frac{1}{Z}P(x_t\mid s_t)P(s_t,n_t\mid x_{1:t-1}).
+\]
+\item Transition probability:
+\[
+P(s_t,n_t\mid s_{t-1},n_{t-1})
+=(1-\gamma(n_{t-1}))\delta_{n_t,n_{t-1}+1}\delta(s_t-s_{t-1})
+\gamma(n_{t-1})\delta_{n_t,0}U(s_t).
+\]
+\item Likelihood $P(x_t\mid s_t)=\operatorname{Bn}(x_t\mid s_t)$.
+\item Prior/old posterior:
+\[
+P(s_{t-1},n_{t-1}\mid x_{1:t-1})
+=\sum_{i=1}^{t-1}f_i(n_{t-1}\mid x_{1:t-1})\beta_i(s_{t-1}\mid x_{1:t-1}).
+\]
+\item Posterior contains a normalized expression with two sums: no-change terms using $(1-\gamma(n_{t-1}))$ and reset terms using $\gamma(n_{t-1})$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{32}{figures/note_pages/all_the_bayesian_math/page-32.png}{%
+\begin{itemize}
+\item Red-boxed unnormalized posterior:
+\[
+P'(s_t,n_t\mid x_{1:t})
+=\sum_{i=1}^{t} f_i(n_t\mid x_{1:t})\beta_i(s_t\mid x_{1:t}).
+\]
+\item Reindexed no-change term:
+\[
+\left[\sum_{i=2}^{t}(1-\gamma(n_t-1))f_{i-1}(n_t-1\mid x_{1:t-1})
+Z_i(x_t)y(u-1)\beta_i(s_t\mid x_{1:t})\right]
+\]
+plus reset term with $\gamma(n_{t-1})f_i(\cdots)$, $\delta_{n_t,0}$, $Z_0(x_{1:t})$, and $\beta_1(s_t\mid x_{1:t})$.
+\item Normalization:
+\[
+Z=\sum_{n_t=0}^{t-1}\int_0^1 ds_t\,P'(s_t,n_t\mid x_{1:t})
+=\sum_{n_t=0}^{t-1}\sum_{i=1}^{t} f_i(n_t\mid x_{1:t}).
+\]
+\item Marginalized posterior:
+\[
+P(s_t\mid x_{1:t})=\sum_{n_t=0}^{t}P(s_t,n_t\mid x_{1:t})
+=\sum_{n_t=0}^{t}\sum_{i=1}^{t}f_i(n_t\mid x_{1:t})\beta_i(s_t\mid x_{1:t}).
+\]
+\item At bottom: for $t=1,n_t=0$, $P(s,n\mid x)=f_1(n=1\mid x_1)\beta_1(s_1\mid x_1)$.
+\end{itemize}
+}
+
+\notepage{All-the-Bayesian-math}{33}{figures/note_pages/all_the_bayesian_math/page-33.png}{%
+\begin{itemize}
+\item Heading: ``In Einstein notation''.
+\item Posterior written as:
+\[
+P(s_t,n_t\mid x_{1:t})
+=\sum_{i=1}^{t} f_i(n_t\mid x_{1:t})\beta_i(s_t\mid x_{1:t}).
+\]
+\item Need tensors for $t_i,n_t,t_s\to t_{sn},f,\beta$; $f=\beta=\delta_{i,j}$ is noted.
+\item Initial condition: $P(0;0)=1$.
+\item Normalizer:
+\[
+Z=\sum_{n_t=0}^{t-1}\sum_{i=1}^{t}f_i(n_t\mid x_{1:t}),
+\qquad
+Z=\operatorname{einsum}(\text{``tin->t''},f)\quad\text{[in sum()]}.
+\]
+\item Recursion:
+\[
+f_1(n_t\mid x_{1:t})
+=\frac{1}{Z}\left(\sum_{n_{t-1}=0}^{t-1}\gamma(n_{t-1})
+\sum_{j=1}^{t-1}f_j(n_{t-1}\mid x_{1:t-1})Z_0\delta_{n_t,0}\right).
+\]
+\item Last line:
+\[
+f[t,1,0]=\frac{1}{2}\operatorname{einsum}(\text{``n,jn->''},\gamma(\operatorname{arange}(t)),f[t-1])\cdot Z_0\cdot \delta_{n_t,0}.
+\]
+\end{itemize}
+}
+
+\subsection{Source 2: \texttt{2025-01-meeting-francesco-AND-multinomial-math.pdf}}
+
+\notepage{Francesco/multinomial notes}{1}{figures/note_pages/francesco_multinomial_math/page-1.png}{%
+\begin{itemize}
+\item Heading: ``Slides from Francesco'', dated 14.01.25.
+\item Character $\to$ category association. Examples: A/B mapped to furniture, food, utensils, toys.
+\item Question: what category given clue? Response: one item of the category, with category contingency roughly 75\%--25\%.
+\item Aim: test episodic memory after interim stimulus. Before run also change probability?
+\item Five blocks, one day? Three change points. About 24 trials per clue per block.
+\end{itemize}
+}
+
+\notepage{Francesco/multinomial notes}{2}{figures/note_pages/francesco_multinomial_math/page-2.png}{%
+\begin{itemize}
+\item Questions for Francesco:
+\begin{itemize}
+\item What data exists? Any fMRI?
+\item What is needed for a minimal paper?
+\item Do you want to detect change points per participant based on their behaviour?
+\end{itemize}
+\item Need to look into papers again: Nassar, Wilson.
+\item Variable per participant: likely fit for each participant.
+\end{itemize}
+}
+
+\notepage{Francesco/multinomial notes}{3}{figures/note_pages/francesco_multinomial_math/page-3.png}{%
+\begin{itemize}
+\item Data structure: full behavior dataset, full train/test.
+\item High-resolution ALC? subfields.
+\item Agreements:
+\begin{itemize}
+\item Francesco sends behavior data, prototype, same category/item pair for each clue/participant.
+\item fMRI: different pairs per participant; without MRI protocol; Nassar/Wilson; Dario/Nesa? current model from multiple-choice task (2-to-2) to this task (2-to-4 categories), needs Dirichlet instead of Bernoulli.
+\item Later: fit different models, Nassar/Wilson; run their analyses in cascade.
+\end{itemize}
+\end{itemize}
+}
+
+\notepage{Francesco/multinomial notes}{4}{figures/note_pages/francesco_multinomial_math/page-4.png}{%
+\begin{itemize}
+\item Model to human behavior, fit per participant.
+\item Not based on rule/truth; includes times, level learning rate.
+\item Check papers for individual human differences (Nassar/Wilson).
+\end{itemize}
+}
+
+\notepage{Francesco/multinomial notes}{5}{figures/note_pages/francesco_multinomial_math/page-5.png}{%
+\begin{itemize}
+\item Heading: ``Multinomial extension for $k=4$ answers'', dated 19.3.25.
+\item Multinomial PMF:
+\[
+f(x_1,x_2,x_3,x_4;n,p_1,p_2,p_3,p_4)
+=P(X_1=x_1,\ldots,X_4=x_4)
+=\frac{n!}{\prod_i x_i!}\prod_i p_i^{x_i},
+\]
+where $\sum_i x_i=n$.
+\item Extracting $n$ balls of different colors, replacing after each draw; $x_i$ is number of draws of ball color $i$.
+\end{itemize}
+}
+
+\notepage{Francesco/multinomial notes}{6}{figures/note_pages/francesco_multinomial_math/page-6.png}{%
+\begin{itemize}
+\item Heading: ``Variable Bayes model''.
+\item Parameters of multinomial with $k=4$:
+\[
+P_1,P_2,P_3,P_4,\qquad \sum_i P_i=1.
+\]
+\item Update rule for posterior:
+\[
+P(\vec P,s,n)
+=\frac{1}{Z}P(X_t\mid \vec P,s)\,P(s)
+\]
+with intended dependence on latest changepoint.
+\item The notes indicate replacing the Bernoulli/Beta update by a multinomial/Dirichlet update for four response categories.
+\end{itemize}
+}
