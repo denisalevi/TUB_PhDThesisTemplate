@@ -46,11 +46,8 @@ This stationary learner is useful in a stable environment, but it fails after ch
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.28\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure A1: Bernoulli change-point task.}
-Panel A: latent Bernoulli parameter \(\theta_t\) over trials, with vertical lines marking change points. Panel B: observed binary sequence \(x_t\). Panel C: stationary Beta learner accumulating all evidence and therefore adapting slowly after changes. Panel D: BOCPD prediction adapting after inferred change points.
-\end{minipage}}
-\caption{Learning a Bernoulli contingency in a changing environment. The figure should show why a stationary learner fails after a change point and why a run-length-dependent learner is needed.}
+\includegraphics[width=0.92\linewidth]{cpd_bernoulli_task.pdf}
+\caption{Learning a Bernoulli contingency in a changing environment. Panel A: latent Bernoulli parameter $\theta_t$ over trials, with vertical lines marking change points. Panel B: observed binary sequence $x_t$. Panel C: stationary Beta learner accumulates all evidence and therefore adapts slowly after changes, while BOCPD adapts after inferred change points.}
 \label{fig:cpd-bernoulli-task-placeholder-a}
 \end{figure}
 
@@ -90,11 +87,8 @@ For a continuing run, the run length grows from \(r_{t-1}\) to \(r_t=r_{t-1}+1\)
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.30\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure A2: BOCPD internals.}
-Panel A: heat map of \(p(r_t\mid x_{1:t})\) over trials. Panel B: posterior mean estimates \(a_t^{(r)}/(a_t^{(r)}+b_t^{(r)})\) for selected run lengths. Panel C: final predictive mean after marginalizing over run lengths. Panel D: inferred change-point probability or posterior mass near \(r_t=0\).
-\end{minipage}}
-\caption{Bayesian online change-point detection for Bernoulli observations. The model maintains a posterior over run length and a Beta posterior for each run-length hypothesis.}
+\includegraphics[width=0.92\linewidth]{cpd_bocpd_internals.pdf}
+\caption{Bayesian online change-point detection for Bernoulli observations. The model maintains a posterior over run length and a Beta posterior for each run-length hypothesis. Panel A: heat map of $\log_{10} p(r_t\mid x_{1:t})$. Panel B: run-length conditional means $a_t^{(r)}/(a_t^{(r)}+b_t^{(r)})$ for selected $r$. Panel C: marginal predictive after summing over run lengths. Panel D: data-driven change-point indicator $p(r_t\leq 5\mid x_{1:t})$, which spikes after inferred change points (under constant hazard $p(r_t=0)$ is equal to the hazard itself, so the recent-run indicator is more informative).}
 \label{fig:cpd-bocpd-internals-placeholder-a}
 \end{figure}
 
@@ -115,11 +109,8 @@ where \(\hat\theta_t^{(k)}\) is the estimate in pathway \(k\), and \(w_t^{(k)}\)
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.28\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure A3: pathway interpretation.}
-Panel A: exact BOCPD as a mixture over run lengths \(r_t\). Panel B: finite pathway hierarchy with fast, intermediate, and slow estimates \(\hat\theta_t^{(k)}\). Panel C: readout weights \(w_t^{(k)}\) shifting toward fast pathways after changes and toward slower pathways during stable periods. Panel D: conceptual mapping to PPT pathways from hippocampus to cortex.
-\end{minipage}}
-\caption{A pathway-timescale interpretation of change-point inference. The exact model mixes over run lengths; the proposed biological approximation mixes over pathway-specific estimates with different effective learning rates.}
+\includegraphics[width=0.92\linewidth]{cpd_pathway_interpretation.pdf}
+\caption{A pathway-timescale interpretation of change-point inference. Panel A: exact BOCPD as a mixture over run lengths $r_t$. Panel B: finite pathway hierarchy with fast, intermediate, and slow estimates $\hat\theta_t^{(k)}$. Panel C: readout weights $w_t^{(k)}$, which shift toward fast pathways after change points and toward slower pathways during stable periods. Panel D: mixture prediction compared to exact BOCPD. Panel E: conceptual mapping to PPT pathways from hippocampus to cortex.}
 \label{fig:cpd-pathway-placeholder-a}
 \end{figure}
 

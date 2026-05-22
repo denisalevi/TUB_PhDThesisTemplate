@@ -46,11 +46,8 @@ This stationary learner is useful in a stable environment, but it fails after ch
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.28\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure B1: Bernoulli change-point task.}
-Panel A: latent Bernoulli parameter \(\theta_t\) over trials, with vertical lines marking change points. Panel B: observed binary sequence \(x_t\). Panel C: stationary Beta learner accumulating all evidence and therefore adapting slowly after changes. Panel D: BOCPD prediction adapting after inferred change points.
-\end{minipage}}
-\caption{Learning a Bernoulli contingency in a changing environment. The figure should show why a stationary learner fails after a change point and why a run-length-dependent learner is needed.}
+\includegraphics[width=0.92\linewidth]{cpd_bernoulli_task.pdf}
+\caption{Learning a Bernoulli contingency in a changing environment. Panel A: latent Bernoulli parameter $\theta_t$ over trials, with vertical lines marking change points. Panel B: observed binary sequence $x_t$. Panel C: stationary Beta learner accumulates all evidence and therefore adapts slowly after changes, while BOCPD adapts after inferred change points.}
 \label{fig:cpd-bernoulli-task-placeholder-b}
 \end{figure}
 
@@ -90,11 +87,8 @@ For a continuing run, the run length grows from \(r_{t-1}\) to \(r_t=r_{t-1}+1\)
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.30\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure B2: BOCPD internals.}
-Panel A: heat map of \(p(r_t\mid x_{1:t})\) over trials. Panel B: posterior mean estimates \(a_t^{(r)}/(a_t^{(r)}+b_t^{(r)})\) for selected run lengths. Panel C: final predictive mean after marginalizing over run lengths. Panel D: inferred change-point probability or posterior mass near \(r_t=0\).
-\end{minipage}}
-\caption{Bayesian online change-point detection for Bernoulli observations. The model maintains a posterior over run length and a Beta posterior for each run-length hypothesis.}
+\includegraphics[width=0.92\linewidth]{cpd_bocpd_internals.pdf}
+\caption{Bayesian online change-point detection for Bernoulli observations. The model maintains a posterior over run length and a Beta posterior for each run-length hypothesis. Panel A: heat map of $\log_{10} p(r_t\mid x_{1:t})$. Panel B: run-length conditional means $a_t^{(r)}/(a_t^{(r)}+b_t^{(r)})$ for selected $r$. Panel C: marginal predictive after summing over run lengths. Panel D: data-driven change-point indicator $p(r_t\leq 5\mid x_{1:t})$, which spikes after inferred change points (under constant hazard $p(r_t=0)$ is equal to the hazard itself, so the recent-run indicator is more informative).}
 \label{fig:cpd-bocpd-internals-placeholder-b}
 \end{figure}
 
@@ -124,11 +118,8 @@ In the simplest version, the readout weights \(w_t^{(k)}\) could be fit or chose
 
 \begin{figure}[htbp]
 \centering
-\fbox{\begin{minipage}[c][0.34\textheight][c]{0.92\linewidth}
-\textbf{Placeholder figure B3: finite pathway approximation.}
-Panel A: latent \(\theta_t\), observations, and exact BOCPD prediction. Panel B: estimates \(\hat\theta_t^{(k)}\) for fast, intermediate, and slow pathway-like learners. Panel C: readout weights \(w_t^{(k)}\), shifting toward fast learners after change and slow learners during stability. Panel D: mixture prediction compared with exact BOCPD. Panel E: predictive loss for one fixed learning rate, finite pathway bank, Wilson-style reduced mixture if implemented, and exact BOCPD.
-\end{minipage}}
-\caption{A finite bank of fixed-timescale learners as a pathway-like approximation to BOCPD. This is the minimal additional simulation most directly connected to PPT.}
+\includegraphics[width=0.92\linewidth]{cpd_finite_bank.pdf}
+\caption{A finite bank of fixed-timescale learners as a pathway-like approximation to BOCPD. Panel A: latent $\theta_t$, observations, and exact BOCPD prediction. Panel B: estimates $\hat\theta_t^{(k)}$ for fast, intermediate, and slow pathway-like learners (delta rules with fixed $\alpha_k$). Panel C: Bayesian readout weights $w_t^{(k)}$ over the bank, shifting toward fast learners after a change and toward slow learners during stable periods. Panel D: mixture prediction compared with exact BOCPD, the Wilson, Nassar \& Gold 2013 reduced mixture (18 log-spaced nodes between $r=1$ and $r=100$), and a single fixed-rate baseline. Panel E: mean predictive negative log-likelihood for each model. The reduced Wilson 2013 mixture matches or beats exact BOCPD here because exact BOCPD assumes the wrong (constant) hazard.}
 \label{fig:cpd-finite-bank-placeholder-b}
 \end{figure}
 
