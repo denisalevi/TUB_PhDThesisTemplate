@@ -87,7 +87,7 @@ Although we use Bernoulli observations for clarity, the same logic generalizes t
 \section{A finite pathway approximation}
 \label{sec:cpd-finite-pathway}
 
-The exact BOCPD posterior is supported on every possible run length up to the current trial. A biological system is unlikely to maintain such a trellis explicitly. Approximations that replace the full trellis with a small number of fixed-timescale estimates have therefore been proposed \citep{Nassar2010, Wilson2013}, and it is this class of approximations that connects most directly to the parallel-pathway architecture of PPT.
+The exact BOCPD posterior is supported on every possible run length up to the current trial. A biological system is unlikely to maintain so many run-length-conditional estimates explicitly. Approximations that replace the full posterior with a small number of fixed-timescale estimates have therefore been proposed \citep{Nassar2010, Wilson2013}, and it is this class of approximations that connects most directly to the parallel-pathway architecture of PPT.
 
 We approximate the posterior by a bank of $K$ pathway-like estimates
 \begin{equation}
@@ -118,7 +118,7 @@ The pathway estimates display the timescale separation that motivates them (Fig.
 
 \section{From run lengths to pathway estimates}
 
-The run-length posterior of exact BOCPD already has a natural interpretation in terms of evidence windows. A short run length means that only recent observations should be trusted, a long run length that a longer history can be integrated, and the Bayesian prediction is a mixture over all such windows weighted by their posterior probability. Replacing the full trellis with a finite bank of fixed-timescale delta rules makes this interpretation concrete: each pathway corresponds to one effective window and the readout weights play the role of the run-length posterior on a reduced grid.
+The run-length posterior of exact BOCPD already has a natural interpretation in terms of evidence windows. A short run length means that only recent observations should be trusted, a long run length that a longer history can be integrated, and the Bayesian prediction is a mixture over all such windows weighted by their posterior probability. Replacing the dense run-length posterior with a finite bank of fixed-timescale delta rules makes this interpretation concrete: each pathway corresponds to one effective window and the readout weights play the role of the run-length posterior on a reduced grid.
 
 The parallel-pathway architecture of PPT provides exactly such a bank. Fast pathways are dominated by recent observations, slow pathways integrate over longer histories, and the consolidation gradient from hippocampus to cortex naturally arranges them along a continuum of effective learning rates (Ch.~\ref{ch:ppt}; Fig.~\ref{fig:cpd-pathway-interpretation}E). A pathway does not literally represent one value of $r_t$, but the set of pathway estimates can serve as a basis from which a downstream readout approximates the run-length mixture used by exact change-point inference (Fig.~\ref{fig:cpd-pathway-interpretation}A--D). This reframes the learning-rate diversity of systems consolidation from a mechanism solely for graded semantic generalization to one that simultaneously supports adaptive prediction in changing environments.
 
