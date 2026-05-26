@@ -12,95 +12,98 @@
 \graphicspath{{chapter_change_point_detection/figures/}}
 % ----------------------- contents from here ------------------------
 
-% LLM-generated review drafts requested on 2026-05-22.
-% Version A uses only the current Bernoulli BOCPD simulation.
-% Version B defines minimal additional simulations that would strengthen the chapter.
-\input{chapter_change_point_detection/llm_generated_mvp_existing_sims}
-\input{chapter_change_point_detection/llm_generated_extended_sim_plan}
-
-% Section names (all or some of these instead of results)
-% - Context within thesis
-% - Learning in changing environments
-% - Bayesian change-point inference for Bernoulli observations
-% - Multiple evidence windows as an approximation
-% - Pathway-timescale interpretation
-% - Discussion
+\input{chapter_change_point_detection/llm_generated_extended_sim_plan-EDITED}
 
 
-\section{Context within thesis}
-In the previous chapter, we introduced the parallel pathways theory (PPT) as a mechanistic basis for systems memory consolidation. The model suggests that during systems consolidation memories are transferred through a hierarchy of parallel synaptic pathways, and that the learning rate in each pathway could control the ratio of retained episodic detail in the stored memories vs.~extracted semantic generalizations. Following classical theories of systems consolidation, which suggest increasing learning rate from hippocampus to cortex \citep{McClelland1995,Roxin2013}, our model suggests that this would lead to spatial gradients of episodic detail and semantic generalizations, where the former increases with learning rate while the latter decreases. In the present chapter, we explore what such a gradient of semantic generalization could be useful for in the context of statistical learning. Specifically, we argue that the learning rate controls the number of observations that are taken into account when estimating statistics from the environment, and we hypothesise that a diversity of learning rates could build a basis to approximate Bayes-optimal learning in changing environments.
-The content of this chapter is not published.
-
-\section{Introduction Denis}
-
-%- Intro generally for learning in changing environments, volatility, volatility types (expected/unexpected), change point detection generally, brain regions potentially involved etc. Doesn't have to be super long.
-%- Fan in / out story:
-
-
-% Learning and memory, where does that happen?, systems consolidation
-Memories allow us to predict the future based on the past. This requires the integration of previous experiences into an internal model of the world. This is thought to occur during systems memory consolidation \citep{Squire}, where new experiences stored in the hippocampus are transferred into neocortex and thereby integrated into existing knowledge. This is especially true when learning the statistics of the world \citep{statistical learning, consolidaiton, Schapiro stuff}. However, the world and its statistics are not stationary, and when the world around us changes, it can be best to stop considering old experiences when predicting the future. For example, imagine your commute to work used to be reliably quick in the mornings. However, after roadworks started, the travel time has increased and become less predictable. Your memories of past commutes no longer tell you how long you will take to get to work tomorrow.%
-%if our favourite restaurant changes ownership, our past experience of the food and service might no longer predicts what we will get on our next visit.
-%For example, when our favourite café changes its opening hours, our memories of when it used to be open are no longer useful for predicting whether we will find it open tomorrow morning.
-A principled way to predict such changes in the environment and to adjust our predictions accordingly are Bayesian change point detection algorithms \citep{Adams2007}. Whether the brain implements such Bayesian computations, however, remains unclear \citep{bayesian brain hypotehsis}, especially because computing the optimal predictive distributions in these algorithms is often computationally expensive. Some attempts have been made to reduce this computational complexity. E.g~by approximating the computations in the form of a delta-rule update with an adaptive learning rate \citep{Nassar2010}, or a finite set of delta-rule updates with different learning rates \citep{Wilson2013}. Different computations have been shown to correlate with activity in specific brain regions\ldots [Add all the brain region things we know, ACC, Meder, Behrens etc. McGuire whatever is there].
-Nevertheless, it remains unclear if and how exactly the brain implements Bayesian change point detection, and whether systems memory consolidation and reconsolidation are a part of such an implementation.
-In the previous chapter (Ch.~\ref{ch:ppt}), we introduced a circuit mechanism for systems memory consolidation, the parallel pathway theory (PPT), where parallel synaptic pathways learn with different learning rates, leading to different strengths of extracted semantic generalizations.
-Here, we illustrate that this diversity of semantic generalization could be a neural mechanism for computing statistical predictions from different time windows into the past, building an approximation basis for Bayesian change point detection.
-
-%Wilson et al. show that a mixture of fixed learning-rate estimators can approximate Bayesian changepoint inference. This is important because PPT already proposes a hierarchy of pathways with different effective learning rates; therefore, the required approximation basis may already be present in the consolidation architecture.
-
-%-> statistical learning / generalization (where) -> world is dynamic, how can we / do we deal with that? (check what other neuroscience content exists there, all that volatility stuff) -> Optimal learning via Change Point Detection algorithms -> different types (hazard fixed/learned etc.) -> Approximations for the efficiency / brain (pruning, adaptive delta-rule, mix of fixed delta-rules) -> Locations of these computations in the brain -> PPT reference for systems consolidation, also MCClelland, Roxin with their normative reasons for learning rate distribution HPC to CTX -> Our hypothesis: Diversity of learning rates in a consolidation hierarchy could build a basis for approximating Bayes-optimal learning in changing environments via change point detection algorithms (new normative reason for learning rate distributions).
-
-\section{Introduction revised by GPT 5.5}
-
-Memories allow us to predict the future based on the past. This requires the integration of previous experiences into an internal model of the world. Such integration is thought to occur during systems memory consolidation \citep{Squire}, where new experiences stored in the hippocampus are gradually integrated into neocortical knowledge structures. This is especially relevant when learning the statistical regularities of the environment \citep{statistical learning, consolidation, Schapiro stuff}. However, the world and its statistics are not stationary. When the environment changes, old experiences can become misleading, and the predictions that were useful before may no longer be appropriate. For example, if a commute used to be reliably quick but then roadworks start, the previous distribution of travel times is no longer the right basis for predicting how long the commute will take tomorrow.
-
-A principled solution to this problem is provided by Bayesian change point detection algorithms \citep{Adams2007}. These algorithms infer whether a change point has occurred and adjust predictions by weighting evidence from different possible intervals since the last change. In other words, they do not simply average all past observations, but maintain predictions conditional on different possible run lengths. This allows an agent to combine two requirements that are in tension: integrating evidence over long periods when the world is stable, but rapidly discounting old evidence when the world changes.
-
-Whether and how the brain implements such computations remains unclear \citep{bayesian brain hypothesis}. Exact Bayesian change point detection requires maintaining a posterior over possible run lengths and predictive distributions for each of them, which is computationally expensive. Several approximations have therefore been proposed. One approach is to reduce Bayesian updating to a delta-rule update with an adaptive learning rate \citep{Nassar2010}. Another is to approximate the Bayesian solution by a mixture of fixed-learning-rate estimators \citep{Wilson2013}. This latter result is especially important here, because it shows that Bayesian change point inference can be approximated by a set of predictors that differ in how strongly they weight recent observations relative to older ones.
-
-This connects change point detection to a central feature of systems memory consolidation. In the previous chapter (Ch.~\ref{ch:ppt}), we introduced the parallel pathway theory (PPT), a circuit mechanism for systems consolidation in which parallel pathways learn with different effective learning rates. In that model, fast pathways extract relatively specific and recent regularities, whereas slower pathways integrate over longer timescales and extract more stable semantic structure. Such a diversity of learning rates was introduced as a mechanism for building semantic generalizations at different levels of abstraction. Here, we suggest that the same diversity could also serve a different normative function: it could provide the set of parallel predictive estimates required to approximate Bayesian learning in changing environments.
-
-The key idea is therefore simple. Bayesian change point detection requires predictions based on different possible time windows into the past. Approximate algorithms show that such predictions can be implemented by a mixture of fixed-learning-rate estimators. A consolidation hierarchy with multiple pathways learning at different rates may already provide such a mixture. This suggests that learning-rate diversity in systems consolidation could be useful not only for extracting semantic structure, but also for adapting predictions when the statistics of the world change.
-
-In this chapter, we develop this idea formally. We first describe Bayesian change point detection in a simple statistical setting and show how predictions can be represented as a mixture over possible run lengths. We then relate this representation to approximations based on multiple fixed learning rates. Finally, we discuss how the diversity of learning rates proposed by PPT could provide a neural basis for such approximations, and what this implies for the role of systems consolidation in volatile environments.
-
-
-
-
-\section{Results}
-
-(I'm not sure how to structure this chapter section-wise. I feel like this more of an opinion chapter rather than something with novel results. So not sure what to call this. Maybe results is fine as this is the  ``results'' of this  chapter...?)
-
-- General formalism for change point detection, where shape of hazard is not yet defined.
-- We will illustrate it for the case of Bernoulli data, but this generalized to estimating sufficient statistics of any exponential family distributions (cite CPD papers that do that).
-- Derive optimal change point detection for Bernoulli/Beta, factorize such that we have Beta's over different run lengths. This should be the notes I already have. We might want to potentially update the notation to the typical notation used in the CPD papers (needs checking). Also need to check if my math is in any way different from the papers.
-- Also add the exponential forgetting format? Would be closer to the delta-rule version? Double check. If too complicated, leave this out.
-- Discuss different forms / shape of hazard rate, including specifically time-dependent hazard rates, e.g. k/t, or changing hazard rates via hierarchical models (Wilson 2010).
-- Conclude with the fact all of these models require different posterior estimates for different run lengths. And that a diversity of learning rates in systems consolidation could provide exactly that, or phrased differently, that this could be another normative argument for having a diversity of learning rates.
-
-- (bonus) Is there anything to get out of the power-law hazard thingy? Could it be beneficial somehow? Somewhere? When humans don't know the statistics? Does it describe human behavior better? Would probably require simulations... for comparison. Could be some actual ``result'' if I need/want one.
-
-\section{Discussion}
-
-- Normative reasons for systems consolidation, this is a new one.
-- Location of Bayesian change point detection computations in the brain and our suggested addition to it. Discuss how all models require theses estimates, and approximations show we don't need to track them all.
-- Discuss assumptions on environment. Power-law style hazards, ``whats been stable for longer will be assumed to be stable for longer''
-- Different window estimates required for all algorithms (maybe better in discussion than in results section)
-- Normalization across pathways is an issue for bayes algorithm
-- XXX: all of this assumes all pathways learn simultaneously. What about replay? What is the effect of that? Is there anything there thats useful to discus?
-  - LLM: Useful points to discuss:
-    - Replay can decouple learning rate from real time: A slow cortical pathway may not update much online, but replay can later train it on selected past samples. So its effective evidence window is shaped by replay policy, not just synaptic learning rate.
-    - Replay can bias which observations survive: If recent, surprising, rewarded, or boundary-related episodes are preferentially replayed, then pathway estimates are not simple fixed windows. Replay becomes an active sampling / compression mechanism.
-    - Replay could help approximate BOCPD better: After a suspected changepoint, replay might preferentially reinforce post-change observations and avoid contaminating the new estimate with old-regime data. Conversely, replaying old-regime episodes could preserve long-timescale context.
-    - But this is not needed for the first model. For MVP, say: “We ignore replay and treat all pathways as receiving the same observation stream; replay would modify the effective kernels and could provide an additional mechanism for selective evidence routing.”
-
-\input{chapter_change_point_detection/bayesian_notes_copied}
-
-\input{chapter_change_point_detection/bayesian_notes_coherent}
-
-\section{Chapter summary}
-
-This chapter showed that a hierarchy of parallel pathways from hippocampus to cortex in the PPT (chapter \ref{ch:ppt}) can approximate Bayes-optimal statistical learning in changing environments.
+%% LLM-generated review drafts requested on 2026-05-22.
+%% Version A uses only the current Bernoulli BOCPD simulation.
+%% Version B defines minimal additional simulations that would strengthen the chapter.
+%\input{chapter_change_point_detection/llm_generated_mvp_existing_sims}
+%\input{chapter_change_point_detection/llm_generated_extended_sim_plan}
+%
+%% Section names (all or some of these instead of results)
+%% - Context within thesis
+%% - Learning in changing environments
+%% - Bayesian change-point inference for Bernoulli observations
+%% - Multiple evidence windows as an approximation
+%% - Pathway-timescale interpretation
+%% - Discussion
+%
+%
+%\section{Context within thesis}
+%In the previous chapter, we introduced the parallel pathways theory (PPT) as a mechanistic basis for systems memory consolidation. The model suggests that during systems consolidation memories are transferred through a hierarchy of parallel synaptic pathways, and that the learning rate in each pathway could control the ratio of retained episodic detail in the stored memories vs.~extracted semantic generalizations. Following classical theories of systems consolidation, which suggest increasing learning rate from hippocampus to cortex \citep{McClelland1995,Roxin2013}, our model suggests that this would lead to spatial gradients of episodic detail and semantic generalizations, where the former increases with learning rate while the latter decreases. In the present chapter, we explore what such a gradient of semantic generalization could be useful for in the context of statistical learning. Specifically, we argue that the learning rate controls the number of observations that are taken into account when estimating statistics from the environment, and we hypothesise that a diversity of learning rates could build a basis to approximate Bayes-optimal learning in changing environments.
+%The content of this chapter is not published.
+%
+%\section{Introduction Denis}
+%
+%%- Intro generally for learning in changing environments, volatility, volatility types (expected/unexpected), change point detection generally, brain regions potentially involved etc. Doesn't have to be super long.
+%%- Fan in / out story:
+%
+%
+%% Learning and memory, where does that happen?, systems consolidation
+%Memories allow us to predict the future based on the past. This requires the integration of previous experiences into an internal model of the world. This is thought to occur during systems memory consolidation \citep{Squire}, where new experiences stored in the hippocampus are transferred into neocortex and thereby integrated into existing knowledge. This is especially true when learning the statistics of the world \citep{statistical learning, consolidaiton, Schapiro stuff}. However, the world and its statistics are not stationary, and when the world around us changes, it can be best to stop considering old experiences when predicting the future. For example, imagine your commute to work used to be reliably quick in the mornings. However, after roadworks started, the travel time has increased and become less predictable. Your memories of past commutes no longer tell you how long you will take to get to work tomorrow.%
+%%if our favourite restaurant changes ownership, our past experience of the food and service might no longer predicts what we will get on our next visit.
+%%For example, when our favourite café changes its opening hours, our memories of when it used to be open are no longer useful for predicting whether we will find it open tomorrow morning.
+%A principled way to predict such changes in the environment and to adjust our predictions accordingly are Bayesian change point detection algorithms \citep{Adams2007}. Whether the brain implements such Bayesian computations, however, remains unclear \citep{bayesian brain hypotehsis}, especially because computing the optimal predictive distributions in these algorithms is often computationally expensive. Some attempts have been made to reduce this computational complexity. E.g~by approximating the computations in the form of a delta-rule update with an adaptive learning rate \citep{Nassar2010}, or a finite set of delta-rule updates with different learning rates \citep{Wilson2013}. Different computations have been shown to correlate with activity in specific brain regions\ldots [Add all the brain region things we know, ACC, Meder, Behrens etc. McGuire whatever is there].
+%Nevertheless, it remains unclear if and how exactly the brain implements Bayesian change point detection, and whether systems memory consolidation and reconsolidation are a part of such an implementation.
+%In the previous chapter (Ch.~\ref{ch:ppt}), we introduced a circuit mechanism for systems memory consolidation, the parallel pathway theory (PPT), where parallel synaptic pathways learn with different learning rates, leading to different strengths of extracted semantic generalizations.
+%Here, we illustrate that this diversity of semantic generalization could be a neural mechanism for computing statistical predictions from different time windows into the past, building an approximation basis for Bayesian change point detection.
+%
+%%Wilson et al. show that a mixture of fixed learning-rate estimators can approximate Bayesian changepoint inference. This is important because PPT already proposes a hierarchy of pathways with different effective learning rates; therefore, the required approximation basis may already be present in the consolidation architecture.
+%
+%%-> statistical learning / generalization (where) -> world is dynamic, how can we / do we deal with that? (check what other neuroscience content exists there, all that volatility stuff) -> Optimal learning via Change Point Detection algorithms -> different types (hazard fixed/learned etc.) -> Approximations for the efficiency / brain (pruning, adaptive delta-rule, mix of fixed delta-rules) -> Locations of these computations in the brain -> PPT reference for systems consolidation, also MCClelland, Roxin with their normative reasons for learning rate distribution HPC to CTX -> Our hypothesis: Diversity of learning rates in a consolidation hierarchy could build a basis for approximating Bayes-optimal learning in changing environments via change point detection algorithms (new normative reason for learning rate distributions).
+%
+%\section{Introduction revised by GPT 5.5}
+%
+%Memories allow us to predict the future based on the past. This requires the integration of previous experiences into an internal model of the world. Such integration is thought to occur during systems memory consolidation \citep{Squire}, where new experiences stored in the hippocampus are gradually integrated into neocortical knowledge structures. This is especially relevant when learning the statistical regularities of the environment \citep{statistical learning, consolidation, Schapiro stuff}. However, the world and its statistics are not stationary. When the environment changes, old experiences can become misleading, and the predictions that were useful before may no longer be appropriate. For example, if a commute used to be reliably quick but then roadworks start, the previous distribution of travel times is no longer the right basis for predicting how long the commute will take tomorrow.
+%
+%A principled solution to this problem is provided by Bayesian change point detection algorithms \citep{Adams2007}. These algorithms infer whether a change point has occurred and adjust predictions by weighting evidence from different possible intervals since the last change. In other words, they do not simply average all past observations, but maintain predictions conditional on different possible run lengths. This allows an agent to combine two requirements that are in tension: integrating evidence over long periods when the world is stable, but rapidly discounting old evidence when the world changes.
+%
+%Whether and how the brain implements such computations remains unclear \citep{bayesian brain hypothesis}. Exact Bayesian change point detection requires maintaining a posterior over possible run lengths and predictive distributions for each of them, which is computationally expensive. Several approximations have therefore been proposed. One approach is to reduce Bayesian updating to a delta-rule update with an adaptive learning rate \citep{Nassar2010}. Another is to approximate the Bayesian solution by a mixture of fixed-learning-rate estimators \citep{Wilson2013}. This latter result is especially important here, because it shows that Bayesian change point inference can be approximated by a set of predictors that differ in how strongly they weight recent observations relative to older ones.
+%
+%This connects change point detection to a central feature of systems memory consolidation. In the previous chapter (Ch.~\ref{ch:ppt}), we introduced the parallel pathway theory (PPT), a circuit mechanism for systems consolidation in which parallel pathways learn with different effective learning rates. In that model, fast pathways extract relatively specific and recent regularities, whereas slower pathways integrate over longer timescales and extract more stable semantic structure. Such a diversity of learning rates was introduced as a mechanism for building semantic generalizations at different levels of abstraction. Here, we suggest that the same diversity could also serve a different normative function: it could provide the set of parallel predictive estimates required to approximate Bayesian learning in changing environments.
+%
+%The key idea is therefore simple. Bayesian change point detection requires predictions based on different possible time windows into the past. Approximate algorithms show that such predictions can be implemented by a mixture of fixed-learning-rate estimators. A consolidation hierarchy with multiple pathways learning at different rates may already provide such a mixture. This suggests that learning-rate diversity in systems consolidation could be useful not only for extracting semantic structure, but also for adapting predictions when the statistics of the world change.
+%
+%In this chapter, we develop this idea formally. We first describe Bayesian change point detection in a simple statistical setting and show how predictions can be represented as a mixture over possible run lengths. We then relate this representation to approximations based on multiple fixed learning rates. Finally, we discuss how the diversity of learning rates proposed by PPT could provide a neural basis for such approximations, and what this implies for the role of systems consolidation in volatile environments.
+%
+%
+%
+%
+%\section{Results}
+%
+%(I'm not sure how to structure this chapter section-wise. I feel like this more of an opinion chapter rather than something with novel results. So not sure what to call this. Maybe results is fine as this is the  ``results'' of this  chapter...?)
+%
+%- General formalism for change point detection, where shape of hazard is not yet defined.
+%- We will illustrate it for the case of Bernoulli data, but this generalized to estimating sufficient statistics of any exponential family distributions (cite CPD papers that do that).
+%- Derive optimal change point detection for Bernoulli/Beta, factorize such that we have Beta's over different run lengths. This should be the notes I already have. We might want to potentially update the notation to the typical notation used in the CPD papers (needs checking). Also need to check if my math is in any way different from the papers.
+%- Also add the exponential forgetting format? Would be closer to the delta-rule version? Double check. If too complicated, leave this out.
+%- Discuss different forms / shape of hazard rate, including specifically time-dependent hazard rates, e.g. k/t, or changing hazard rates via hierarchical models (Wilson 2010).
+%- Conclude with the fact all of these models require different posterior estimates for different run lengths. And that a diversity of learning rates in systems consolidation could provide exactly that, or phrased differently, that this could be another normative argument for having a diversity of learning rates.
+%
+%- (bonus) Is there anything to get out of the power-law hazard thingy? Could it be beneficial somehow? Somewhere? When humans don't know the statistics? Does it describe human behavior better? Would probably require simulations... for comparison. Could be some actual ``result'' if I need/want one.
+%
+%\section{Discussion}
+%
+%- Normative reasons for systems consolidation, this is a new one.
+%- Location of Bayesian change point detection computations in the brain and our suggested addition to it. Discuss how all models require theses estimates, and approximations show we don't need to track them all.
+%- Discuss assumptions on environment. Power-law style hazards, ``whats been stable for longer will be assumed to be stable for longer''
+%- Different window estimates required for all algorithms (maybe better in discussion than in results section)
+%- Normalization across pathways is an issue for bayes algorithm
+%- XXX: all of this assumes all pathways learn simultaneously. What about replay? What is the effect of that? Is there anything there thats useful to discus?
+%  - LLM: Useful points to discuss:
+%    - Replay can decouple learning rate from real time: A slow cortical pathway may not update much online, but replay can later train it on selected past samples. So its effective evidence window is shaped by replay policy, not just synaptic learning rate.
+%    - Replay can bias which observations survive: If recent, surprising, rewarded, or boundary-related episodes are preferentially replayed, then pathway estimates are not simple fixed windows. Replay becomes an active sampling / compression mechanism.
+%    - Replay could help approximate BOCPD better: After a suspected changepoint, replay might preferentially reinforce post-change observations and avoid contaminating the new estimate with old-regime data. Conversely, replaying old-regime episodes could preserve long-timescale context.
+%    - But this is not needed for the first model. For MVP, say: “We ignore replay and treat all pathways as receiving the same observation stream; replay would modify the effective kernels and could provide an additional mechanism for selective evidence routing.”
+%
+%\input{chapter_change_point_detection/bayesian_notes_copied}
+%
+%\input{chapter_change_point_detection/bayesian_notes_coherent}
+%
+%\section{Chapter summary}
+%
+%This chapter showed that a hierarchy of parallel pathways from hippocampus to cortex in the PPT (chapter \ref{ch:ppt}) can approximate Bayes-optimal statistical learning in changing environments.
 
 
 
