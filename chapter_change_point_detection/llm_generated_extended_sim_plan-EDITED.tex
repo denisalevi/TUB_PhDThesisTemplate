@@ -12,35 +12,31 @@ Memories allow us to predict the future based on the past. This requires the int
 
 A principled solution to this problem is provided by Bayesian change-point detection algorithms \citep{Adams2007}. These algorithms infer whether a change in the statistics of the environment has occurred and adjust predictions by weighting evidence from different possible intervals since the last change. This allows an agent to combine two requirements that are in tension: integrating evidence over long periods when the world is stable, but rapidly discounting old evidence when the world changes.
 
-Exact Bayesian change-point detection is computationally expensive because it requires maintaining predictive distributions for different possible run lengths. Several approximations have therefore been proposed. \citet{Nassar2010} reduced Bayesian updating to a delta-rule update with an adaptive learning rate. \citet{Wilson2013} showed that Bayesian change-point inference can also be approximated by a mixture of fixed-learning-rate estimators. This latter approximation is especially relevant here, because systems memory consolidation theory suggests different learning rates in the consolidation hierarchy \citep{McClelland1995,Roxin2013}, and PPT introduces a learning-rate dependent semantic generalization strength (Ch.~\ref{ch:ppt}). In this chapter, we ask weather learning-rate diversity in systems consolidation could provide a biological basis for the multiple evidence-window estimates required by approximate change-point inference.
+Exact Bayesian change-point detection is computationally expensive because it requires maintaining predictive distributions for different possible run lengths. Several approximations have therefore been proposed. \citet{Nassar2010} reduced Bayesian updating to a delta-rule update with an adaptive learning rate. A mixture of fixed-learning-rate estimators can also approximate the full Bayesian solution \citep{Wilson2013}. This latter approximation is especially relevant here, because systems memory consolidation theory suggests different learning rates in the consolidation hierarchy \citep{McClelland1995,Roxin2013}, and PPT introduces a learning-rate dependent semantic generalization strength (Ch.~\ref{ch:ppt}). In this chapter, we ask whether learning-rate diversity in systems consolidation could provide a biological basis for the multiple evidence-window estimates required by approximate change-point inference.
 
 \section{Learning a Bernoulli contingency in a changing environment}
 
-\todo[inline]{explain vars, reference figs A,B}
+We consider the simplest non-trivial case: a binary observation $x_t \in \{0,1\}$ at trial $t$, drawn from a Bernoulli distribution with success probability $\theta_t$,
+\begin{equation}
+    p(x_t \mid \theta_t) = \theta_t^{x_t}(1-\theta_t)^{1-x_t}.
+\end{equation}
+The latent parameter $\theta_t$ is piecewise constant: it takes a fixed value during each stable regime and resets at change points (Fig.~\ref{fig:cpd-bernoulli-task}A). The learner only observes the binary sequence $x_{1:t} = (x_1, \dots, x_t)$ (Fig.~\ref{fig:cpd-bernoulli-task}B) and has to predict the next observation $x_{t+1}$ without knowing the change points.
 
-We first write down the simplest case: a binary observation sequence
+If the environment were stationary, $\theta_t$ would be constant and a Beta prior with pseudo-counts $a_0$ and $b_0$ would give a conjugate Beta posterior,
 \begin{equation}
-    x_t \in \{0,1\},
-\end{equation}
-where the probability of observing a success is controlled by a latent Bernoulli parameter \(\theta\). Within one stable environmental state,
-\begin{equation}
-    p(x_t \mid \theta)=\theta^{x_t}(1-\theta)^{1-x_t}.
-\end{equation}
-If the environment were stationary, a Beta prior would give a conjugate posterior,
-\begin{equation}
-    p(\theta)=\frac{1}{B(a_0,b_0)}\theta^{a_0-1}(1-\theta)^{b_0-1},
+    p(\theta) = \frac{1}{B(a_0,b_0)}\theta^{a_0-1}(1-\theta)^{b_0-1},
 \end{equation}
 \begin{equation}
     p(\theta \mid x_{1:t})
-    =\frac{1}{B(a_t,b_t)}\theta^{a_t-1}(1-\theta)^{b_t-1},
+    = \frac{1}{B(a_t,b_t)}\theta^{a_t-1}(1-\theta)^{b_t-1},
 \end{equation}
-with
+where $B(\cdot,\cdot)$ is the beta function and the running counts
 \begin{equation}
-    a_t=a_0+\sum_{i=1}^{t}x_i,
+    a_t = a_0 + \sum_{i=1}^{t}x_i,
     \qquad
-    b_t=b_0+\sum_{i=1}^{t}(1-x_i).
+    b_t = b_0 + \sum_{i=1}^{t}(1-x_i)
 \end{equation}
-This stationary learner is useful in a stable environment, but it fails after change points because observations from old regimes remain in the posterior (Fig.~\ref{fig:cpd-bernoulli-task}C, red line).
+accumulate successes and failures over the full history. The posterior predictive mean is then $\hat\theta_t = a_t/(a_t+b_t)$. This stationary learner is useful when the environment is genuinely stable, but it averages over all past observations and therefore adapts too slowly when the contingency changes (Fig.~\ref{fig:cpd-bernoulli-task}C, red line).
 
 \begin{figure}[htbp]
 \centering
@@ -50,38 +46,34 @@ This stationary learner is useful in a stable environment, but it fails after ch
 \end{figure}
 
 \section{Bayesian online change-point detection}
-\label{sec:cpd-b-bocpd}
+\label{sec:cpd-bocpd}
 
-To deal with change points, we introduce the run length \(r_t\), defined as the number of observations since the most recent change point. For each possible run length, the learner maintains a separate posterior over \(\theta\). In the Bernoulli case, this posterior is again a Beta density,
+Bayesian online change-point detection (BOCPD) addresses non-stationarity by augmenting the state with the run length $r_t$, defined as the number of observations since the most recent change point \citep{Adams2007}. The learner maintains a separate posterior over $\theta$ conditional on each possible run length, which in the Bernoulli case is again a Beta density,
 \begin{equation}
     p(\theta \mid r_t=r, x_{1:t})
-    =\frac{1}{B(a_t^{(r)},b_t^{(r)})}\theta^{a_t^{(r)}-1}(1-\theta)^{b_t^{(r)}-1},
+    = \frac{1}{B(a_t^{(r)},b_t^{(r)})}\,\theta^{a_t^{(r)}-1}(1-\theta)^{b_t^{(r)}-1}.
 \end{equation}
-where \(a_t^{(r)}\) and \(b_t^{(r)}\) are the run-length-specific success and failure counts, including prior pseudo-counts. Thus, the compressed sufficient statistics of each run-length hypothesis are not the whole past, but the counts that would be relevant if the current run had length \(r\).
+Here $a_t^{(r)}$ and $b_t^{(r)}$ are the success and failure counts the learner would have accumulated if the current run had length $r$, plus the prior pseudo-counts $a_0$ and $b_0$. They form the sufficient statistics under hypothesis $r$ and are much more compact than the full history.
 
-The predictive probability of a success under one run-length hypothesis is
+The predictive probability of a success under a single run-length hypothesis is
 \begin{equation}
     p(x_{t+1}=1 \mid r_t=r, x_{1:t})
     = \int_0^1 \theta\,p(\theta \mid r_t=r,x_{1:t})\,d\theta
-    = \frac{a_t^{(r)}}{a_t^{(r)}+b_t^{(r)}}.
+    = \frac{a_t^{(r)}}{a_t^{(r)}+b_t^{(r)}},
 \end{equation}
-The full Bayesian prediction averages these estimates over the posterior distribution of run lengths,
+and the full Bayesian prediction averages these estimates over the run-length posterior,
 \begin{equation}
     p(x_{t+1}=1 \mid x_{1:t})
-    = \sum_r p(x_{t+1}=1 \mid r_t=r, x_{1:t}) p(r_t=r \mid x_{1:t}).
+    = \sum_r \frac{a_t^{(r)}}{a_t^{(r)}+b_t^{(r)}}\,p(r_t=r \mid x_{1:t}).
 \end{equation}
 
-The run-length posterior is updated recursively. Between two observations, either the current run continues or a change point occurs. The prior probability of a change is controlled by a hazard function \(H(r)\),
+The run-length posterior itself follows a simple recursive update. Between two observations the current run either continues, in which case $r_t = r_{t-1}+1$ and the Beta counts are updated with $x_t$, or a change point occurs, in which case $r_t = 0$ and the sufficient statistics reset to the prior pseudo-counts. The prior probability of a change is set by the hazard function
 \begin{equation}
     H(r) = p(r_t=0 \mid r_{t-1}=r-1),
 \end{equation}
-which is the probability that a run ends after it has survived to age \(r\). In the current simulations we use a constant hazard,
-\begin{equation}
-    H(r)=h.
-\end{equation}
-This corresponds to a geometric prior over regime durations. It assumes that the probability of a change on the next trial is independent of how long the current regime has already lasted.
+which gives the probability that a run ends after surviving to age $r$. Throughout this chapter we use a constant hazard $H(r)=h$, corresponding to a geometric prior over regime durations; the probability of a change on the next trial is then independent of how long the current regime has already lasted.
 
-For a continuing run, the run length grows from \(r_{t-1}\) to \(r_t=r_{t-1}+1\), and the Beta counts are updated with the new observation. For a change point, the run length resets to zero, and the parameter \(\theta\) is drawn from the prior again. Thus, after observing \(x_t\), the model updates two things: the posterior weight of each possible run length and the corresponding sufficient statistics \(a_t^{(r)}\) and \(b_t^{(r)}\). Figure~\ref{fig:cpd-bocpd-internals} shows these internal variables directly.
+Combining the predictive likelihood, the hazard and the sufficient statistics gives the joint update over $(r_t, a_t^{(r)}, b_t^{(r)})$ that is computed online. Figure~\ref{fig:cpd-bocpd-internals} shows the resulting internal variables for the example sequence of Fig.~\ref{fig:cpd-bernoulli-task}. The run-length posterior places its mass on a diagonal ridge that grows linearly during each stable regime, resets to small $r_t$ shortly after each change point, and occasionally bifurcates because the learner is initially uncertain which of the surviving run-length hypotheses is correct (Fig.~\ref{fig:cpd-bocpd-internals}A). The run-length-conditional means $a_t^{(r)}/(a_t^{(r)}+b_t^{(r)})$ track the latent $\theta_t$ at very different speeds: short run lengths follow recent observations closely and fluctuate, while long run lengths integrate over many trials and respond slowly (Fig.~\ref{fig:cpd-bocpd-internals}B). The marginal predictive after summing over run lengths recovers fast adaptation after each change point (Fig.~\ref{fig:cpd-bocpd-internals}C). Under constant hazard, the posterior mass on $r_t=0$ is uninformative because it equals the hazard at every trial; we therefore use the recent-run probability $p(r_t \leq 5 \mid x_{1:t})$ as a data-driven change indicator, which peaks shortly after each true change point (Fig.~\ref{fig:cpd-bocpd-internals}D).
 
 \begin{figure}[htbp]
 \centering
@@ -90,67 +82,67 @@ For a continuing run, the run length grows from \(r_{t-1}\) to \(r_t=r_{t-1}+1\)
 \label{fig:cpd-bocpd-internals}
 \end{figure}
 
-Although we use Bernoulli observations for clarity, the same logic generalizes to conjugate exponential-family observation models. The Beta counts \(a_t^{(r)}\) and \(b_t^{(r)}\) are simply the sufficient statistics for the Bernoulli case. For categorical observations, they would be replaced by Dirichlet counts; for Gaussian observations, by the corresponding sufficient statistics for the mean or variance.
+Although we use Bernoulli observations for clarity, the same logic generalizes to any conjugate exponential-family observation model: the counts $a_t^{(r)}$ and $b_t^{(r)}$ are simply the sufficient statistics of the Bernoulli likelihood and are replaced by the corresponding sufficient statistics for Gaussian, Poisson or other observation models.
 
 \section{A finite pathway approximation}
-\label{sec:cpd-b-finite-pathway}
+\label{sec:cpd-finite-pathway}
 
-Exact Bayes-optimal change-point detection maintains a posterior all possible run lengths. A biological system is unlikely to maintain all of these posteriors explicitly. In the following, we pick a finite number of run lengths, as could e.g.~be represented by a finite number of pathways in PPT, and compute an approximate predictive posterior based on that.
+The exact BOCPD posterior is supported on every possible run length up to the current trial. A biological system is unlikely to maintain such a trellis explicitly. Approximations that replace the full trellis with a small number of fixed-timescale estimates have therefore been proposed \citep{Nassar2010, Wilson2013}, and it is this class of approximations that connects most directly to the parallel-pathway architecture of PPT.
 
-We define a small number $K$ of run length estimates
+We approximate the posterior by a bank of $K$ pathway-like estimates
 \begin{equation}
     \hat\theta_t^{(k)}, \qquad k=1,\ldots,K,
 \end{equation}
-with fixed learning rates \(\alpha_k\), or equivalently effective timescales \(\tau_k\). Each pathway estimate updates by a delta rule,
+each updated by a delta rule with a fixed learning rate $\alpha_k$,
 \begin{equation}
-    \hat\theta_t^{(k)}
-    =\hat\theta_{t-1}^{(k)}+\alpha_k(x_t-\hat\theta_{t-1}^{(k)}).
+    \hat\theta_t^{(k)} = \hat\theta_{t-1}^{(k)} + \alpha_k\,(x_t - \hat\theta_{t-1}^{(k)}).
 \end{equation}
-A downstream readout combines the pathway estimates,
+Each $\alpha_k$ defines an effective timescale $\tau_k = 1/\alpha_k$ over which observations contribute to that pathway's estimate. A downstream readout combines them into a single prediction,
 \begin{equation}
-    \hat\theta_t=\sum_k w_t^{(k)}\hat\theta_t^{(k)}.
+    \hat\theta_t = \sum_{k=1}^{K} w_t^{(k)}\,\hat\theta_t^{(k)},
+    \qquad
+    \sum_k w_t^{(k)} = 1.
 \end{equation}
-The simulation would compare a single fixed learning rate, a small finite bank of fixed learning rates, the Wilson-style mixture if it is straightforward to implement, and exact BOCPD. The important result would not be that this is a new approximation algorithm. The important result would be to show that a small set of pathway-like estimates captures the qualitative advantage of the full run-length mixture.
+We update the readout weights $w_t^{(k)}$ by Bayesian filtering, using the predictive likelihood $p(x_t \mid \hat\theta_{t-1}^{(k)})$ of each pathway and a small leak toward the uniform distribution to allow the readout to re-explore the bank after change points.
 
-In the simplest version, the readout weights \(w_t^{(k)}\) could be fit or chosen to approximate the BOCPD prediction on the same sequences. In a more principled version, the weights would be updated using the predictive likelihood of each pathway estimate, analogous to the node weights in Wilson et al. \citep{Wilson2013}. Either way, the expected qualitative behavior is the same: after a likely change, the readout should favor fast pathways; during stable periods, it should shift toward slower pathways. Figure~\ref{fig:cpd-finite-bank-placeholder-b} should define this simulation.
+We compare three predictors against exact BOCPD on the example sequence (Fig.~\ref{fig:cpd-finite-bank}): a single delta-rule learner with intermediate rate $\alpha = 0.1$; a three-pathway bank with rates $\alpha \in \{1/4, 1/14, 1/82\}$, chosen so that fast, intermediate and slow timescales span the run lengths seen in the data; and the reduced mixture-of-delta-rules of \citet{Wilson2013}, which uses 18 log-spaced run-length nodes between $r=1$ and $r=100$ and propagates the run-length distribution through a node-to-node transition matrix that respects both growth and reset transitions.
+
+The pathway estimates display the timescale separation that motivates them (Fig.~\ref{fig:cpd-finite-bank}B): the fast pathway tracks every fluctuation in $\theta_t$ but is noisy within a regime; the slow pathway is smooth but lags strongly after change points; the intermediate pathway lies between the two. The Bayesian readout exploits this complementarity (Fig.~\ref{fig:cpd-finite-bank}C). Immediately after a change point, when the slow pathway has been driven far from the true contingency, the fast pathway has higher predictive likelihood and the readout weights shift toward it. Once the environment has been stable for a while the slow pathway becomes more accurate, the readout shifts back toward it, and the intermediate pathway tends to dominate at intermediate times. The resulting mixture prediction closely follows exact BOCPD and matches it in mean predictive negative log-likelihood (Fig.~\ref{fig:cpd-finite-bank}D, E). The reduced Wilson model achieves the best score in this example because its transition matrix encodes the same geometric reset structure as BOCPD but with a flatter effective hazard than the value we passed to BOCPD; the single-rate baseline is clearly worse than the multi-timescale predictors. A small bank of fixed-timescale learners therefore captures the qualitative behaviour of the full run-length posterior.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{cpd_finite_bank.pdf}
-\caption{A finite bank of fixed-timescale learners as a pathway-like approximation to BOCPD. Panel A: latent $\theta_t$, observations, and exact BOCPD prediction. Panel B: estimates $\hat\theta_t^{(k)}$ for fast, intermediate, and slow pathway-like learners (delta rules with fixed $\alpha_k$). Panel C: Bayesian readout weights $w_t^{(k)}$ over the bank, shifting toward fast learners after a change and toward slow learners during stable periods. Panel D: mixture prediction compared with exact BOCPD, the Wilson, Nassar \& Gold 2013 reduced mixture (18 log-spaced nodes between $r=1$ and $r=100$), and a single fixed-rate baseline. Panel E: mean predictive negative log-likelihood for each model. The reduced Wilson 2013 mixture matches or beats exact BOCPD here because exact BOCPD assumes the wrong (constant) hazard.}
-\label{fig:cpd-finite-bank-placeholder-b}
+\caption{A finite bank of fixed-timescale learners as a pathway-like approximation to BOCPD. Panel A: latent $\theta_t$, observations and exact BOCPD prediction. Panel B: estimates $\hat\theta_t^{(k)}$ for fast, intermediate and slow pathways. Panel C: Bayesian readout weights $w_t^{(k)}$ over the bank, shifting toward fast pathways after change points and toward slower pathways during stable periods. Panel D: mixture prediction compared with exact BOCPD, the reduced mixture of \citet{Wilson2013} with 18 log-spaced nodes between $r=1$ and $r=100$, and a single fixed-rate baseline. Panel E: mean predictive negative log-likelihood per trial for each model.}
+\label{fig:cpd-finite-bank}
 \end{figure}
 
 \section{From run lengths to pathway estimates}
 
-The run-length posterior gives a normative interpretation of evidence windows. A short run length means that only recent observations are relevant. A long run length means that the environment has probably been stable, and a longer history can be trusted. The Bayesian prediction is therefore a mixture of estimates over different possible windows into the past.
+The run-length posterior of exact BOCPD already has a natural interpretation in terms of evidence windows. A short run length means that only recent observations should be trusted, a long run length that a longer history can be integrated, and the Bayesian prediction is a mixture over all such windows weighted by their posterior probability. Replacing the full trellis with a finite bank of fixed-timescale delta rules makes this interpretation concrete: each pathway corresponds to one effective window and the readout weights play the role of the run-length posterior on a reduced grid.
 
-This is the point where the change-point model connects to PPT. In PPT, different pathways have different effective learning rates. A fast pathway is dominated by recent observations, whereas a slow pathway integrates information over longer timescales. These pathway-specific estimates are not identical to exact BOCPD run-length hypotheses. A pathway does not literally represent one value of \(r_t\). However, the pathway hierarchy can provide a set of candidate estimates over different effective evidence windows.
+The parallel-pathway architecture of PPT provides exactly such a bank. Fast pathways are dominated by recent observations, slow pathways integrate over longer histories, and the consolidation gradient from hippocampus to cortex naturally arranges them along a continuum of effective learning rates (Ch.~\ref{ch:ppt}; Fig.~\ref{fig:cpd-pathway-interpretation}E). A pathway does not literally represent one value of $r_t$, but the set of pathway estimates can serve as a basis from which a downstream readout approximates the run-length mixture used by exact change-point inference (Fig.~\ref{fig:cpd-pathway-interpretation}A--D). This reframes the learning-rate diversity of systems consolidation from a mechanism solely for graded semantic generalization to one that simultaneously supports adaptive prediction in changing environments.
 
-The finite-pathway simulation in Figure~\ref{fig:cpd-finite-bank-placeholder-b} would make this link explicit. It would test whether a small set of fixed-timescale estimates can approximate the behavior of the full BOCPD model well enough to support the pathway-basis interpretation. This would give the chapter more than a conceptual analogy, while still keeping the simulation work minimal.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\linewidth]{cpd_pathway_interpretation.pdf}
+\caption{A pathway-timescale interpretation of change-point inference. Panel A: exact BOCPD as a mixture over run lengths $r_t$. Panel B: finite pathway hierarchy with fast, intermediate and slow estimates $\hat\theta_t^{(k)}$. Panel C: readout weights $w_t^{(k)}$, which shift toward fast pathways after change points and toward slower pathways during stable periods. Panel D: mixture prediction compared with exact BOCPD. Panel E: mapping to PPT pathways spanning the hippocampal-to-cortical gradient.}
+\label{fig:cpd-pathway-interpretation}
+\end{figure}
 
 \section{Discussion}
 
-This chapter uses Bayesian online change-point detection as a normative framework for learning in changing environments. The core computation is not simply to detect surprising observations. A surprising observation can reflect either noise within the current regime or a true change in the latent state. The learner therefore needs to infer how much of the past remains relevant. In BOCPD, this is represented by the run-length posterior.
+Adaptive learning in a changing environment requires that the learner decides how much of the past remains relevant before it updates. A surprising observation can reflect either noise within the current regime or a true change in the latent state, and the two interpretations call for very different revisions of the predictive distribution. BOCPD captures this requirement in its purest form: it maintains a posterior over the run length and predicts by mixing run-length-conditional estimates. Reading the Bernoulli model in this way makes the computational requirement explicit. Each evidence window contributes an estimate, and an adaptive prediction is a weighted combination of these estimates.
 
-The Bernoulli model makes this computation explicit. Each possible run length carries a Beta posterior over the current contingency, summarized by counts \(a_t^{(r)}\) and \(b_t^{(r)}\). The final prediction is a weighted mixture of these run-length-specific estimates. This is statistically clean, but it is not new and should not be presented as such. It is a simple special case of the Bayesian online change-point framework introduced by Adams and MacKay \citep{Adams2007}. Its role here is to make the computational requirement visible: adaptive learning requires estimates over multiple possible evidence windows.
+The finite-pathway approximation gives this requirement a biologically interpretable form. A small bank of fixed-rate delta-rule learners reproduces the prediction performance of exact BOCPD on the Bernoulli task and recovers the same qualitative dynamics as the reduced mixture of \citet{Wilson2013}. This matters for the consolidation story because PPT already postulates such a bank: parallel pathways with graded effective learning rates from hippocampus to cortex (Ch.~\ref{ch:ppt}). The chapter therefore proposes a new normative role for the learning-rate diversity introduced by PPT. The same architecture that supports graded semantic generalization can also serve as the multi-timescale basis required for approximate change-point inference.
 
-The added finite-pathway simulation would be the most thesis-specific piece. Wilson et al. already showed that mixtures of fixed-learning-rate learners can approximate Bayesian change-point inference \citep{Wilson2013}. The chapter-specific question is whether this approximation can be interpreted as the computational role of the pathway diversity proposed by PPT. If a small bank of pathway-like learners approximates the exact BOCPD prediction, this would support the claim that PPT provides a basis for adaptive inference rather than only a mechanism for semantic generalization.
+Pathways are unlikely to carry the full change-point computation on their own. Exact BOCPD also requires a posterior over run lengths and, if the hazard is uncertain, additional beliefs over the hazard parameters. A biologically realistic decomposition therefore distributes the ideal-observer ingredients across systems: hippocampal--cortical pathways provide candidate evidence-window estimates, while frontal, cingulate, striatal and neuromodulatory systems contribute the signals required to weight or gate them. Several neural results are consistent with such a distributed implementation. Activity in anterior cingulate cortex tracks environmental volatility and the value of information in changing environments \citep{Behrens2007}; functionally dissociable signals related to changepoint probability, relative uncertainty and reward influence learning rate \citep{McGuire2014}; and dorsomedial frontal cortex carries value estimates simultaneously at multiple timescales \citep{Meder2017}. These observations support the idea that the brain represents ingredients of adaptive learning across multiple regions rather than computing the run-length posterior in any single area.
 
-This separation between pathway estimates and Bayesian inference is important. Pathways alone do not solve the full change-point problem. In the exact model, the learner also needs posterior weights over run lengths and, if the hazard is uncertain, beliefs about the hazard itself. The safer biological picture is therefore distributed. Hippocampal--cortical pathways may provide candidate evidence-window estimates, while frontal, cingulate, striatal, or neuromodulatory systems may contribute to estimating uncertainty, change probability, volatility, or the readout weights over pathways.
+The hazard function is an assumption about the environment, not a property of the observer, and changing it changes the inference problem rather than the pathway basis. A constant hazard treats every trial as equally likely to terminate a regime; a decreasing hazard expresses the belief that long-lived regimes are more likely to persist; an increasing hazard expresses the belief that regimes have typical lifetimes. Any age-dependent hazard $H(r)$ can be plugged into the same BOCPD recursion, because $r_t$ is the relevant state. When the hazard is fixed but unknown the observer can infer it jointly with the run length, and when it varies over time a hierarchical model is needed \citep{Wilson2010}.
 
-Several neural results are compatible with such a distributed picture, but they should not be overinterpreted. Behrens et al. linked ACC activity to volatility and value of information in changing environments \citep{Behrens2007}. McGuire et al. dissociated neural correlates of changepoint probability, relative uncertainty, and reward effects on learning rate \citep{McGuire2014}. Meder et al. reported simultaneous representations of value estimates over multiple timescales \citep{Meder2017}. These findings support the idea that the brain represents ingredients of adaptive learning across multiple systems. They do not show that one region literally computes the BOCPD run-length posterior.
+The relation between heavy-tailed memory and heavy-tailed hazards deserves a separate clarifying remark. A power-law-like hazard is a statement about environmental durations, whereas a power-law-like memory kernel produced by a broad distribution of pathway learning rates is a property of the observer. The two can coincide in particular regimes but they are different objects. For the consolidation story the useful claim is therefore weaker and more robust: a broad, log-spaced set of pathway timescales provides a flexible approximation basis when the relevant environmental timescale is uncertain, regardless of the precise hazard.
 
-The hazard function remains a separate modeling axis. A constant hazard means that a state which has lasted for a long time is just as likely to change on the next trial as a state that has only recently begun. This is appropriate for a memoryless change process, but many real environments may not have this structure. A decreasing hazard would express the belief that stable states become more likely to persist; an increasing hazard would express the belief that regimes have typical lifetimes and become more likely to end with age. If the age-dependent hazard \(H(r)\) is known, BOCPD can still be updated recursively because the run length contains the relevant state variable.
-
-A possible next simulation, after the finite-pathway approximation, would be hazard mismatch. One could generate data with a fixed hazard, then compare observers that assume the correct hazard, too high a hazard, or too low a hazard. The expected result is straightforward: high assumed hazard gives fast but noisy updating, while low assumed hazard gives stable but sluggish updating. This connects to human behavior because fitted subjective hazard rates vary across participants and are often biased relative to the true task hazard \citep{Nassar2010}. However, this simulation is less directly tied to consolidation than the finite-pathway approximation, so it should probably come second.
-
-Learning the hazard is possible, but it is a different extension. If the hazard is fixed but unknown, the observer can infer it from evidence about changepoints, although changepoints themselves are latent and therefore the posterior has to track uncertainty over both run length and hazard-related counts. This does not require a changing-hazard hierarchy. A hierarchy becomes relevant when the hazard itself is allowed to change over time, as in Wilson et al. \citep{Wilson2010}. This is useful background, but probably too much for the main MVP unless the chapter becomes specifically about volatility learning.
-
-This also clarifies the relation to power laws. A decreasing or power-law-like hazard is a prior over environmental durations: it says something about how long latent states tend to last. Power-law forgetting, or a power-law-like memory kernel produced by a distribution of pathway learning rates, is a property of the observer. These are different objects. The fact that both can be described with power laws does not mean they have the same origin. For the consolidation story, the more useful claim is that a broad or log-spaced set of pathway timescales provides a flexible approximation basis when the relevant environmental timescale is uncertain.
-
-Finally, the model ignores replay. The formal derivation assumes that all pathway estimates receive the same online observation stream. Biological systems consolidation is strongly shaped by replay, and replay could change the effective evidence kernel of each pathway. After an inferred change, replay might emphasize post-change observations and reduce contamination from the previous regime. During stable periods, replay might preserve older evidence. This is potentially useful, but it is not needed for the first model. The clean MVP is the online evidence-window argument; replay is a later extension.
+Finally, the formal derivation assumes that all pathway estimates receive the same online observation stream, which is a known simplification for systems consolidation. Replay can reshape the effective evidence kernel of each pathway by selectively resampling past observations, for example emphasising post-change observations after an inferred change point or preserving older evidence during stable periods. Integrating replay with the pathway-mixture view of change-point inference is a natural extension that is left to future work.
 
 \section{Chapter summary}
 
-Bayesian change-point detection shows that adaptive learning in changing environments requires predictions over different possible evidence windows. In the Bernoulli case, these predictions can be represented by Beta posterior densities with run-length-specific counts \(a_t^{(r)}\) and \(b_t^{(r)}\). The additional finite-pathway simulation would test whether a small bank of fixed-timescale estimates can approximate the qualitative behavior of exact BOCPD. This would make the chapter's contribution sharper: PPT may provide a biological approximation basis for change-point inference.
+Adaptive prediction in changing environments requires the learner to combine estimates over multiple possible evidence windows, as made explicit by the run-length posterior of BOCPD. In the Bernoulli case, these estimates are Beta posteriors with run-length-specific counts $a_t^{(r)}$ and $b_t^{(r)}$. A small bank of fixed-rate delta-rule learners reproduces the predictive performance of exact BOCPD and the qualitative dynamics of the reduced mixture of \citet{Wilson2013}, with readout weights that shift toward fast pathways after change points and toward slow pathways during stable periods. This identifies the learning-rate diversity proposed by PPT as a biologically plausible approximation basis for change-point inference, and gives that diversity an additional normative role beyond graded semantic generalization.
