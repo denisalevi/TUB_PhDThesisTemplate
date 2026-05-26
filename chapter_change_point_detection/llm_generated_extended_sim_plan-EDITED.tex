@@ -1,8 +1,10 @@
 %!TEX root = ../thesis.tex
 
+\todo[inline]{Overall, we have the story covered as a MVP. But there are quite a few changes needed. Figures keep repeating the same content, we could merge them all into maybe 2 instead of 4 figures? Also some sections are badly written. The mathematical derivations are incomplete, linking into methods\ldots its a bit of chaos. Its all there but needs some rewriting here!}
+
 \section{Context within thesis}
 
-The previous chapter introduced the parallel pathway theory (PPT) as a circuit mechanism for systems memory consolidation. In that model, parallel pathways learn with different effective learning rates, leading to different degrees of semantic generalization. The present chapter asks what such a diversity of learning rates could be useful for when the statistics of the environment change over time. The chapter uses Bayesian change-point detection as a normative framework for learning in changing environments, and suggests that a diversity in learning rates during systems consolidation could be part of a neural implementation thereof.
+The previous chapter introduced the parallel pathway theory (PPT) as a circuit mechanism for systems memory consolidation. In that model, parallel pathways learn with different effective learning rates, leading to different degrees of semantic generalization. The present chapter asks what such a diversity of learning rates could be useful for when the statistics of the environment change over time. The chapter uses Bayesian change-point detection as a normative framework for learning in changing environments, and suggests that a diversity in learning rates during systems consolidation could be part of a neural approximation thereof.
 
 \section{Introduction}
 
@@ -15,6 +17,8 @@ A principled solution to this problem is provided by Bayesian change-point detec
 Exact Bayesian change-point detection is computationally expensive because it requires maintaining predictive distributions for different possible run lengths. Several approximations have therefore been proposed. \citet{Nassar2010} reduced Bayesian updating to a delta-rule update with an adaptive learning rate. A mixture of fixed-learning-rate estimators can also approximate the full Bayesian solution \citep{Wilson2013}. This latter approximation is especially relevant here, because systems memory consolidation theory suggests different learning rates in the consolidation hierarchy \citep{McClelland1995,Roxin2013}, and PPT introduces a learning-rate dependent semantic generalization strength (Ch.~\ref{ch:ppt}). In this chapter, we ask whether learning-rate diversity in systems consolidation could provide a biological basis for the multiple evidence-window estimates required by approximate change-point inference.
 
 \section{Learning a Bernoulli contingency in a changing environment}
+
+\todo[inline]{Should we add a graphical model of the variables? Gives clarity I think!}
 
 We consider the simplest non-trivial case: a binary observation $x_t \in \{0,1\}$ at trial $t$, drawn from a Bernoulli distribution with success probability $\theta_t$,
 \begin{equation}
@@ -49,6 +53,7 @@ accumulate successes and failures over the full history. The posterior predictiv
 \label{sec:cpd-bocpd}
 
 Bayesian online change-point detection (BOCPD) addresses non-stationarity by augmenting the state with the run length $r_t$, defined as the number of observations since the most recent change point \citep{Adams2007}. The learner maintains a separate posterior over $\theta$ conditional on each possible run length, which in the Bernoulli case is again a Beta density,
+
 \begin{equation}
     p(\theta \mid r_t=r, x_{1:t})
     = \frac{1}{B(a_t^{(r)},b_t^{(r)})}\,\theta^{a_t^{(r)}-1}(1-\theta)^{b_t^{(r)}-1}.
@@ -56,6 +61,7 @@ Bayesian online change-point detection (BOCPD) addresses non-stationarity by aug
 Here $a_t^{(r)}$ and $b_t^{(r)}$ are the success and failure counts the learner would have accumulated if the current run had length $r$, plus the prior pseudo-counts $a_0$ and $b_0$. They form the sufficient statistics under hypothesis $r$ and are much more compact than the full history.
 
 The predictive probability of a success under a single run-length hypothesis is
+\todo[inline]{Here we have the equation for predictive prob., above we just show the result. The equation should be in above chapter, and here only referenced as the same, or shown again\ldots}
 \begin{equation}
     p(x_{t+1}=1 \mid r_t=r, x_{1:t})
     = \int_0^1 \theta\,p(\theta \mid r_t=r,x_{1:t})\,d\theta
@@ -133,15 +139,17 @@ The only ingredient this approximation requires from the underlying biology is a
 \section{Simulation methods}
 \label{sec:cpd-methods}
 
-All figures in this chapter were generated from the same synthetic Bernoulli sequence and the model implementations described below.\footnote{Code: \texttt{change\_point\_detection\_from\_distributed\_learning\_rates}, branch \texttt{thesis-cpd-figures}, \texttt{PrEMCE-behavior/simulations/thesis\_figures/}.}
+\todo[inline]{Needs exact reading again, and code checking, as is its pretty bad\ldots}
+
+All figures in this chapter were generated from the same synthetic Bernoulli sequence and the model implementations described below.
 
 \subsection{Bernoulli sequence}
 
-We generated a piecewise-constant Bernoulli sequence of length $T=300$, divided into five regimes of $60$ trials with true success probabilities $\theta \in \{0.85, 0.20, 0.50, 0.90, 0.30\}$, giving change points at trials $60, 120, 180, 240$. Observations $x_t$ were sampled independently from $\mathrm{Bernoulli}(\theta_t)$ within each regime. The same sequence (seed $7$) is used in all figures.
+We generated a piecewise-constant Bernoulli sequence of length $T=300$, divided into five regimes of $60$ trials with true success probabilities $\theta \in \{0.85, 0.20, 0.50, 0.90, 0.30\}$, giving change points at trials $60, 120, 180, 240$. Observations $x_t$ were sampled independently from $\mathrm{Bernoulli}(\theta_t)$ within each regime. The same sequence is used in all figures.
 
 \subsection{Bayesian online change-point detection}
 
-We ran the recursion of Sec.~\ref{sec:cpd-bocpd} on a run-length grid $r \in \{0, 1, \ldots, T\}$, with the Beta prior $\mathrm{Beta}(a_0=1, b_0=1)$, constant hazard $H(r) = h = 0.01$, and initial condition $p(r_0=0) = 1$. The joint update is implemented as the standard message-passing recursion of \citet{Adams2007}: predictive likelihoods $p(x_t \mid r_{t-1}=r, x_{1:t-1}) = a_{t-1}^{(r)}/(a_{t-1}^{(r)}+b_{t-1}^{(r)})$ for $x_t=1$, weighted by the hazard mass into the change-point bucket $r_t=0$ and by the survival mass into the growth bucket $r_t = r_{t-1}+1$, followed by renormalization and a Beta-counts update. Mass that would leave the grid at $r=T$ is absorbed at the boundary.
+We ran the recursion of Sec.~\ref{sec:cpd-bocpd} on a run-length grid $r \in \{0, 1, \ldots, T\}$, with the uniform Beta prior $\mathrm{Beta}(a_0=1, b_0=1)$, constant hazard $H(r) = h = 0.01$, and initial condition $p(r_0=0) = 1$. The joint update is implemented as the standard message-passing recursion of \citet{Adams2007}: predictive likelihoods $p(x_t \mid r_{t-1}=r, x_{1:t-1}) = a_{t-1}^{(r)}/(a_{t-1}^{(r)}+b_{t-1}^{(r)})$ for $x_t=1$, weighted by the hazard mass into the change-point bucket $r_t=0$ and by the survival mass into the growth bucket $r_t = r_{t-1}+1$, followed by renormalization and a Beta-counts update. Mass that would leave the grid at $r=T$ is absorbed at the boundary.
 
 \subsection{Bank of fixed learning rates}
 
@@ -183,6 +191,8 @@ The mean predictive negative log-likelihood reported in Fig.~\ref{fig:cpd-finite
 clipped to $[10^{-9}, 1-10^{-9}]$ for numerical stability.
 
 \section{Discussion}
+
+\todo[inline]{Terrible discussion\ldots it has the major points but need my own rewrite}
 
 Adaptive learning in a changing environment requires that the learner decides how much of the past remains relevant before it updates. A surprising observation can reflect either noise within the current regime or a true change in the latent state, and the two interpretations call for very different revisions of the predictive distribution. BOCPD captures this requirement in its purest form: it maintains a posterior over the run length and predicts by mixing run-length-conditional estimates. Reading the Bernoulli model in this way makes the computational requirement explicit. Each evidence window contributes an estimate, and an adaptive prediction is a weighted combination of these estimates.
 
