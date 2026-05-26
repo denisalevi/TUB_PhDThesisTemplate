@@ -639,7 +639,7 @@ supported!}
 % create the tikz every run
 %\tikzset{external/force remake}
 
-\tikzexternalize[shell escape=-shell-escape,  optimize=false]
+%\tikzexternalize[shell escape=-shell-escape,  optimize=false]
 % check and run only the changed ones
 %\tikzexternalize[shell escape=-enable-write18,  optimize=false,mode=list and make]
 
