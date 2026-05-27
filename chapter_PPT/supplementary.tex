@@ -1,0 +1,214 @@
+%%% SUPPLEMENTARY MATERIAL
+\label{sec:theoretical_analysis}
+
+In the following, we give a mathematical analysis of the parallel pathway theory. We first analyze STDP in a single cell with two input pathways (Section~\ref{ssec:theory_stdp}), then show that the resulting learning dynamics implement memory consolidation as a linear regression (Section~\ref{ssec:theory_dynamics}), and discuss the effects of temporal input statistics (Section~\ref{ssec:theory_timing}). Finally, we extend the analysis to the hierarchical case (Section~\ref{ssec:theory_hierarchy}).
+
+\subsection{Theory of spike timing-dependent plasticity (STDP) for parallel input pathways}
+\label{ssec:theory_stdp}
+
+In the following mathematical analysis, we consider a single cell  that receives inputs through two pathways, as in Fig~\ref{fig:PPT_mechanism}A.
+The cell could be located, for example, in CA1, as in Fig~\ref{fig:PPT_mechanism}B.
+We assume that memories, i.e., cue-response associations, are stored  in the synaptic weight vector~$\V$ of the indirect path, and that consolidation occurs by transferring this information into the weights~$\W$ of the direct path. In the simulation in Fig.~\ref{fig:PPT_mechanism}, the weight vector~$\V$ represents the SC pathway, and the vector~$\W$ the \ppca~pathway. For simplicity, we consider the case of a single rate-based neuron, which represents one of the output neurons in the simulated network.
+Very similar theoretical results can be obtained for the spiking case of linear Poisson neurons, apart from additional contributions from spike-spike correlations, which can be neglected for a large number of synapses \cite{Kempter1999}.
+
+The output $\y$ of the rate-based neuron is assumed to be given by a linear function of the input
+\begin{equation}
+\y(t) = \W^\mathsf{T} \x(t) + \V^\mathsf{T} \z(t-D)
+\label{eq:output}
+\end{equation}
+where the vectors~$\x$ and $\z$ denote the input arising from the direct and indirect pathways, respectively, and $\mathsf{T}$ denotes the transpose of a vector (or matrix). We assume that the inputs~$\x$ and $\z$ are both representations of the cue and therefore are related by some kind of (potentially nonlinear) statistical dependency. Moreover, we assume that~$\z$ arises from an indirect pathway and is therefore delayed by a time interval~$D>0$. The notation is chosen such that the case where the two inputs to the two pathways are the same (apart from the delay) reduces to the condition $\x(t)=\z(t)$, which is the case, e.g., in Fig~\ref{fig:PPT_mechanism}D.
+
+We now consider the learning dynamics of a simple additive  (STDP) rule that would result from a rate picture (neglecting spike-spike correlations; cf. \cite{Kempter1999}),
+\begin{align}
+\frac{\Delta \W}{T} & =
+\eta \int_{-\infty}^{\infty} \mathrm{d} \tau \, \frac{1}{T} \int_0^T \mathrm{d}t \, \LW(\tau)\, \x(t) \,\y(t+\tau)
+= \eta \int_{-\infty}^{\infty} \mathrm{d} \tau \, \LW(\tau) \, \left\langle \x(t) \y(t+\tau) \right\rangle_T \ ,
+\label{eq:rate_based_additive_STDP}
+\end{align}
+
+\noindent
+where~$\LW(\tau)$ is the learning window (example in Fig~\ref{sfig:theory_timing}), which determines how much a pair of pre- and postsynaptic activity pulses (i.e., spikes) with a time difference~$\tau$ changes the synaptic weight, and~$\eta$ is a learning rate that scales the size of these changes. We adopt the convention that the time difference~$\tau$ is positive when a presynaptic spike occurs before a postsynaptic spike.
+
+The notation $\langle\dotsi \rangle_T = \frac{1}{T} \int_0^T \dotsi \mathrm{d}t$ indicates averaging over an interval of length~$T$. We assume that the integration time $T$ can be chosen such that the weights do not change significantly during the integration time (i.e., a small learning rate $\eta$), but that the statistics of the input are sufficiently well sampled so that boundary effects in the temporal integration are negligible. We also assume that the statistics of the inputs $\x$ and $\z$ are stationary, i.e., they do not change over time. Under these assumptions, we can insert the output firing rate $\y$ from Eq~\eqref{eq:output} into the learning rule in Eq~\eqref{eq:rate_based_additive_STDP} and get
+\begin{align}
+\frac{\Delta \W}{T}
+ &
+= \eta \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau) \left\langle \x(t) \left[ \W^\mathsf{T} \x(t+\tau) + \V^\mathsf{T} \z(t+\tau-D) \right]\right\rangle_T  \label{eq:update STDP}
+\\ &
+\approx \quad
+\eta \left[ \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau)\, \langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t \right] \W \nonumber
+\\ &
+\quad
++ \eta \left[ \int_{-\infty}^{\infty} \mathrm{d} \tau\, \LW(\tau) \, \langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t \right] \V  \nonumber
+\end{align}
+
+\noindent
+where~$\langle \dotsi \rangle_t$ denotes the average over \emph{all} times. Equation~\eqref{eq:update STDP} describes the dynamics of the weights~$\W$ in the direct pathway, which are driven by an interplay of the correlation structures within  the direct pathway (through $\langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t$) and between the two pathways (through $\langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t$); the dynamics of $\W$ depends also on the shape of the learning window~$\LW$ and the weights $\V$ in the indirect pathway.
+
+It is important to emphasize that in this analysis of the learning dynamics we consider the input arising during consolidation, e.g., during sleep, and this input may be statistically different from the input during memory storage or recall. If the correlation structure between the two pathways is different during consolidation and during storage/recall, the consolidation process leads to a distortion of the memory in the sense that a different cue would be required to retrieve the memory. Here, we consider only the case where the correlation structure during consolidation is the same as during storage and recall.
+
+Let us now study under which conditions this weight update generates a consolidation of the input-output associations stored initially in the weights~$\V$ of the indirect pathway into the weights~$\W$ of the direct pathway.
+
+
+\subsection{Learning dynamics implement memory consolidation as a linear regression}
+\label{ssec:theory_dynamics}
+
+In general, the learning dynamics is hard to analyze if the covariance matrices $\langle  \x(t) \x(t+\tau)^\mathsf{T} \rangle_t$ and $\langle  \x(t) \z(t+\tau-D)^\mathsf{T} \rangle_t$ are arbitrary objects. A case that can be studied analytically is that of separable statistics in which each of the two correlation matrices can be written as a product of scalar functions $f$ and $g$ of the delay~$\tau$ and the covariance matrices for zero delay, $\Cxx$ and $\Cxz$:
+\begin{align}
+\langle  \x(t) \x(t+\tau )^\mathsf{T} \rangle_t & =:
+\Cxx \, f(\tau)
+\label{eq:definition_f}
+\\
+\langle  \x(t) \z(t+\tau-D )^\mathsf{T} \rangle_t &=:
+\Cxz \, g(\tau-D)
+\label{eq:definition_g}
+\end{align}
+
+\noindent
+For simplicity, we omitted the lower index $t$ in $\Cxx$ and $\Cxz$.
+Note that this separability assumption is consistent with all simulations shown, except the one in Fig~\ref{fig:spatial}; see there for details.
+
+For separable input statistics, the learning dynamics in Eq.~\eqref{eq:update STDP} can be simplified to
+\begin{align}
+\frac{1}{\eta} \frac{\Delta \W}{T} & =
+\underbrace{\left[\int_{-\infty}^{\infty} \mathrm {d} \tau\, \LW(\tau) f(\tau) \right]}_{=:A} \Cxx \W + \underbrace{\left[\int_{-\infty}^{\infty} \mathrm{d} \tau \,\LW(\tau) g(\tau-D)\right]}_{=:B}\Cxz \, \V \,. \label{eq:update STDP2}
+\end{align}
+
+\noindent
+If the scalar constant~$A$ is negative (see below for conditions when this is the case), the learning dynamics is stable and converges to a unique fixed point that is given by
+\begin{align}
+\W = - \frac{B}{A} \left[ \Cxx \right]^{-1} \Cxz \V \,. \label{eq:fixed point dynamics}
+\end{align}
+
+\noindent
+Note that apart from the factor $- \frac{B}{A} =: \beta$, this fixed point has the same structure as the closed-form solution of a linear regression. In fact, it is straightforward to show that the learning dynamics in~Eq~\eqref{eq:update STDP2} performs a gradient descent on the error function
+\begin{align}
+E(\W) := \left  \langle \left( \W^\mathsf{T} \x - \beta\, \V^\mathsf{T} \z \right)^2 \right \rangle_t \,. \label{eq:error function dynamics}
+\end{align}
+
+\noindent
+If $A$ is negative and $B$ is positive (and thus $\beta$ is positive), the learning dynamics in the direct path converges to a weight configuration for which the input~$\W^\mathsf{T} \x$ from the direct path is an optimal linear approximation of the input $\V^\mathsf{T} \z$ from the indirect path, in the sense of minimal mean squared error $E$.
+If $\beta>1$, the direct pathway would contribute more to a potential recall than the original memory trace in the indirect pathway.
+A sign reversal of $\beta$ (i.e. $\beta<0$) implies a sign reversal of $\V$.
+Then, however, a constraint on the sign change of weights (see below for details) would prohibit consolidation; memories in the indirect path could even be actively deleted from the direct path. In summary, memory consolidation in the PPT is supported by $A<0$ (stable dynamics) and $B>0$ (consolidation possible), which implies $\beta:= - \frac{B}{A} >0$.
+
+Note that we assumed storage of original memories only in the weight vector $V$ representing the SC pathway. But since learning in the direct pathway is driven by the input from the entire indirect pathway, these results also hold if original memories are stored in any other plastic synapses of the indirect pathway (e.g. EC to DG/CA3 in Fig.~\ref{fig:PPT_mechanism}B).
+
+Let us relate the theoretical results obtained so far to  the simulations shown in Fig~\ref{fig:PPT_mechanism}; although the simulations are performed for integrate-and-fire neurons, our theory on rate-based neurons accounts for the main findings: Because two inputs $\x$ and $\z$ are the same apart from the delay, the fixed point condition Eq~\eqref{eq:fixed point dynamics}  reduces to $\W = -\frac{B} {A} \V$, in line with the result that the weights are copied into the direct pathway. Because the learning window is dominated by depression we have $A<0$ while the delay in combination with the shorter autocorrelation time of the Poisson processes in the input ensures $B>0$. A consolidation from the direct to the indirect pathway is not possible because this inverts the delay and pushes the cross-correlation between the two pathways into the depression component of STDP. As a result, the factor~$B$ is negative and consolidation fails.
+
+In terms of systems memory consolidation in general, the weights~$\V$ of the indirect path change as new memories are acquired, so the fixed point in Eq~\eqref{eq:fixed point dynamics} for the weights~$\W$ of the direct path is usually never reached. If it were, the direct pathway would merely represent a copy of the memories that are currently stored in the indirect path rather than retaining older memories, as intended. The time scale of the learning dynamics of the direct path [determined by $\eta$ in Eq~\eqref{eq:update STDP2}] should therefore be longer than the memory retention time in the indirect path, which is determined, e.g., by the rate at which new memories are stored. In case of a small enough $\eta$, the transient dynamics of the system is more important for the consolidation process than the fixed point.
+
+Another important aspect to emphasize is that the consolidation is influenced by the correlation structure~$\Cxz$ between the two pathways that is encountered during the consolidation period. Intuitively and according to Eq~\eqref{eq:error function dynamics}, consolidation is achieved by matching the input~$\V^\mathsf{T} \z$ that is caused by ``cues" $\z$ in the indirect path with the input $\W^\mathsf{T} \x$ caused by the associated ``cues" $\x$ in the direct path. In order for the consolidated memories to be accessible during recall, the relation between the ``cues" in the two pathways (i.e., the correlation $\Cxz$ between the two pathways) should be the same during recall as during consolidation.
+% The following prediction was commented out in the published PLOS Comp Biol version; kept here in the same commented state:
+% In terms of the hippocampus, this generates the prediction that during hippocampal replay, activity in layer III of entorhinal cortex should replay the same locations replayed in hippocampus proper, but represented in terms of the spatial coding scheme in the entorhinal cortex (i.e., grid cells).
+
+The objective function argument in Eq~\eqref{eq:error function dynamics} only holds when the constant~$A$ is negative. For positive~$A$, the learning dynamics in Eq~\eqref{eq:fixed point dynamics} suffers from the common Hebbian instability and thus has to be complemented by a weight-limiting mechanism. The choice of this weight limitation (e.g., subtractive or divisive normalization, weight bounds) will then have an impact on the dynamics and the fixed point of the learning process \cite{Miller1994, Dayan2001}. For the simulations, the parameters were therefore always chosen such that the learning dynamics were stable ($A<0$). Although this suggests that no weight limiting mechanism was required in principle, upper and lower bounds for the weights were nevertheless used in simulations, with no qualitative impact on the results.
+
+
+\subsection{Effects of temporal input statistics on systems memory consolidation}
+\label{ssec:theory_timing}
+
+The constants~$A$ and $B$, which were defined in Eq~\eqref{eq:update STDP2} as
+$A := \int \mathrm {d} \tau\, \LW(\tau) f(\tau)$ and
+$B := \int \mathrm {d} \tau\, \LW(\tau) g(\tau-D)$, play an important role for the learning dynamics.
+As already elaborated, the sign of $A$ determines stability  while $B$ should be positive to obtain consolidation.
+Sign and magnitude depend on the interplay between the learning window~$\LW$ and the temporal input statistics, characterized by the correlation functions~$f$ and $g$
+defined in Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}, respectively. For the assumed separable statistics, $f$ is fully determined by the autocorrelation of the input in the direct path, and $f(\tau)$ is therefore symmetric in time~$\tau$.
+
+A first interesting observation is that for the special case of an antisymmetric learning window~$L$, we obtain $A=0$ for symmetry reasons. Mathematically, this implies that the first term of the learning dynamics in Eq~\eqref{eq:update STDP2}  --- the dependence of the change of the weights $\W$ in the direct path on their actual value --- vanishes.
+Intuitively, the balance of potentiation and depression in an antisymmetric learning window implies that the direct path, although able to drive the postsynaptic neuron, is causing equal amounts of potentiation and depression in all of its synapses. On average, synaptic changes are caused only by the indirect pathway with weights $\V$, which therefore acts as a supervisor for the learning dynamics of $\W$ in the direct path. A thorough analysis under which conditions STDP can be used for supervised learning has been provided elsewhere \cite{Legenstein2005, Pfister2006a}, and the results of this analysis are applicable in the present case. Functionally, the depressing part of an STDP learning window serves to neutralize the impact of the direct pathway on its own learning dynamics, effectively creating a supervised learning scenario.
+
+
+\begin{figure}[!htp]
+  \centering
+  \includegraphics[width=\textwidth]{fig2}
+  \caption{%
+    \textbf{Interaction of temporal correlations and the STDP learning window.}
+    The weight dynamics of the direct path [Eq~(\ref{eq:update STDP2})] is driven by inputs from the direct and indirect paths: weight changes are determined by the integrated products of the STDP learning window $\LW$ with the autocorrelation~$f$ [Eq~\eqref{eq:definition_f}] and the cross-correlation $g$  [Eq~\eqref{eq:definition_g}], respectively.
+    (A)~Examples of a learning window $\LW(\tau)$ and an autocorrelation $f(\tau)$, both plotted as a function of the ``relative timing'' $\tau$. For separable statistics, $f$  is symmetric. If the learning window $\LW$ has a stronger negative part for $\tau<0$ and a weaker positive part for $\tau>0$, the coefficient $A:= \int {\rm d}\tau\, \LW(\tau)f(\tau)$ is typically negative.
+    (B)--(D)~Learning window $\LW$ as in (A) and three example cross-correlations $g$.
+    (B)~The indirect path primarily induces potentiation in the direct path if $B:=\int {\rm d}\tau\, \LW(\tau)g(\tau-D)>0$. This is the case if (i) the delay $D$ between the paths is positive, (ii) the learning window is positive for positive delays, and (iii) the time scale of the decay of cross-correlations $g$ is shorter than the delay $D$ and the width of the learning window $\LW$. These three conditions favor consolidation.
+    (C)~If the cross-correlation $g$ decays on a time scale that is much longer than the width of the learning window and the delay $D$, the indirect path can drive both potentiation and depression, and consolidation is weaker (i.e., the coefficient~$B$ is smaller) than for shorter correlations.
+    (D)~If the delay $D$ between the direct and the indirect paths is longer than the width of the learning window~$\LW$, the indirect path cannot induce systematic changes in the weights of the direct path (coefficient~$B\approx 0$), and consolidation is ineffective.
+  }
+  \label{sfig:theory_timing}
+\end{figure}
+
+
+Another interesting observation relates to the magnitude of the terms~$A$ and $B$, which is determined by the time scale on which the inputs change (reflected, e.g., in the time constants of the decay of the correlation functions~$f$ and $g$). Let us assume that both correlation functions~$f(\tau)$ and $g(\tau)$ are maximal for $\tau=0$ and that they decay  to $0$ for large~$|\tau|$; such conditions are reasonable for most correlation structures. We also assume that the learning window has the typical structure of potentiation for causal timing, $\LW(\tau)>0$ for $\tau>0$, and depression for acausal timing, $\LW(\tau)<0$ for $\tau<0$ \cite{Bi1998, Markram1997, Sjostrom2008}.
+Then the delay~$D>0$ in the indirect path shifts the maximum of the cross-correlation $g(\tau -D)$ into the potentiating part of the learning window (Fig~\ref{sfig:theory_timing}B) while the maximum of $f(\tau)$ remains in the transition region of potentiation and depression (Fig~\ref{sfig:theory_timing}A). The following three observations can be made concerning the constant~$B$ as defined by the integral in~Eq~\eqref{eq:update STDP2}:
+
+\begin{itemize}
+\item [(1)]
+If the cross-correlation $g$ has a narrow enough peak (i.e., narrower than the time scale of the learning window and the delay~$D$), $B$ is positive, suggesting that consolidation can occur (Fig~\ref{sfig:theory_timing}B). The sharp localization of $g$ corresponds to rapidly changing input signals.
+
+\item [(2)]
+If the decay time constant of the cross-correlation $g$ is large compared to that of the learning window, the depressing component of the learning window has more impact and reduces the constant~$B$ and thus the efficiency of consolidation (Fig~\ref{sfig:theory_timing}C). In the case where the learning window is dominated by depression, $B$ can even get negative for large time constants of $g$, abolishing consolidation altogether.
+
+\item [(3)]
+If the delay $D$ along the indirect path is much longer than the decay time constant of the learning window, we obtain $B \approx 0$, meaning that consolidation is abolished (Fig~\ref{sfig:theory_timing}D). In other words, the delayed correlations between the two pathways are too large to be exploited by STDP. This will limit the ability to consolidate from too long indirect paths into shortcuts.
+\end{itemize}
+
+
+\subsection{Theoretical analysis of hierarchical consolidation}
+\label{ssec:theory_hierarchy}
+
+As outlined in the {\em Results} and illustrated in Fig.~\ref{fig:hierarchical}, the suggested consolidation mechanism can be hierarchically iterated and leads to power law forgetting when the learning rates in the various pathways are suitably chosen. To get a theoretical understanding of this behaviour, let us consider the architecture shown in the Fig.~\ref{sfig:power_law}A, which is a generalized version of Fig.~\ref{fig:hierarchical}A. The network consists of a hierarchy of~$N+1$ input layers and~$N+1$ output layers. For mathematical simplicity, the network is assumed to be linear (in  contrast to the model described in Fig.~\ref{fig:hierarchical}A, which was nonlinear due to biologically motivated weight constraints), and the representation in the input layers is assumed to be the same, i.e., the weight matrices between the input layers (indicated in black in Fig.~\ref{sfig:power_law}A) are all simply the identity matrix (in contrast to the model described in Fig.~\ref{fig:hierarchical}A where the identity matrices were also scaled). Similarly, we also assume that all weight matrices between the output layers are also the identity matrix. The mathematical derivations presented in the following can be generalized to arbitrary weight matrices both in the input and the output pathways, but we prefer to treat the simple case to avoid cluttered equations and to make the theoretical approach more accessible.
+
+We assume that due to newly acquired memories during the day, the weight matrix~$W_0(t)$ (earlier called $\V_{\rm HPC}$) that represents the memory trace in the hippocampus is varying in time, with an exponentially decaying autocorrelation function with time constant~$\tau_{\textrm{overwrite}}$: $\left\langle \mathrm{tr}\left(W_0(0)^\mathsf{T} W_0(t)\right)\right\rangle_t \propto \exp(-t/\tau_{\textrm{overwrite}})$, where $\mathrm{tr}$ denotes the trace of a square matrix.
+
+All other pathways that project from an input layer to an output layer are plastic according to STDP. To derive the learning dynamics for these pathways, we first have to calculate the activity $\vc{y}_i$ in the $i$-th output layer,
+\begin{equation}
+\vc{y}_i(t) = \sum_{j=0}^{i}c_{ij}  W_j^\mathsf{T} \vc{x}_j(t-D_{ij}) \,,
+\end{equation}
+where~$\x_j$ denotes the activity in input layer~$j$ and~$c_{ij}$ denote weighting factors that determine the impact of the~$j$th pathway, i.e. the indirect pathway via $W_j$, on output layer~$i$. These weighting factors are needed, because we would like to keep the weight matrices on a similar scale, but avoid that the activity increases from one output region to the next, because more synaptic pathways converge onto ``later" output layers. The symbol $D_{ij} = 2 D (i-j)$ (defined only for $i \ge j$) denotes the total additional delay that is accumulated on the connection from the~$i$-th input layer to the $i$-th output layer that traverses the $j$-th direct ``shortcut" pathway, relative to the direct shortcut from input layer $i$ to output layer $i$. For simplicity, we assumed that all connections have the same delay~$D$. In a very similar way as in Eq~\eqref{eq:update STDP}, the learning dynamics of the weight matrix~$W_i$ in the direct path can be written as
+\begin{equation}
+\frac{\mathrm{d} W_i}{\mathrm{d}t} \approx \frac{\Delta W_i}{T} \approx \eta_i \sum_{j=0}^i c_{ij} \left[\int \LW(\tau) \langle \x_i(t) \x_i^\mathsf{T}(t+\tau-D_{ij})\rangle_t \, \mathrm{d}\tau\right] W_j
+\end{equation}
+where~$\eta_i$ denotes the learning rate for the $i$-th pathway. For simplicity, we will assume that the different components of the input signal vector~$\x_i(t)$ are uncorrelated amongst each other, and have identical temporal autocorrelations that are also independent of the layer index: $\langle \x_i(t) \x_i^\mathsf{T}(t+\tau)\rangle_t = \mathbf{I} f(\tau)$, where~$\mathbf{I}$ is the identity matrix. The learning dynamics then simplify to
+\begin{equation}
+\frac{\mathrm{d} W_i}{\mathrm{d} t} \approx \eta_i \sum_{j=0}^i c_{ij} A(D_{ij}) W_j
+\end{equation}
+with~$A(D):=\int \LW(\tau) f(\tau-D)\, \mathrm{d}\tau$.
+
+To measure the degree to which a memory trace that is stored in the weight matrix~$W_0$ at time~$t=0$ is still present in the $j$-th shortcut pathway at a later time~$t$, we compare the weight matrix~$W_j(t)$ at time~$t$ to the weight matrix~$W_0(0)$ at time~$t=0$. We quantify the correlation of these two matrices by calculating the summed overlap of the column vectors:
+\begin{equation}
+O_i(t) =  \mathrm{tr} \left[ W_0(0)^\mathsf{T} W_i(t) \right] \, .
+\label{eq:overlap}
+\end{equation}
+Note that the overlaps~$O_i(t)$ are real numbers, and that their temporal dynamics for the shortcut connections (i.e., for all~$i>0$) are dictated by the dynamics of the weight matrices in the network:
+\begin{eqnarray}
+\frac{\mathrm{d}}{\mathrm{d}t} O_i(t)
+& = &
+\mathrm{tr} \left[  W_0(0)^\mathsf{T}\, \frac{\mathrm{d}W_i(t)}{\mathrm{d}t}\right]
+\\
+& \approx &
+\eta_i \sum_{j=0}^i c_{ij} A(D_{ij}) \, \mathrm{tr} \left[  W_0(0)^\mathsf{T} W_j(t) \right]
+\\& = &
+\eta_i \sum_{j=0}^i c_{ij} A(D_{ij})  O_j(t) \,.
+\end{eqnarray}
+
+To capture the exponential decay of the initially stored memories in the ``hippocampal" weight matrix~$W_0$ due to the storage of new memories, the set of dynamical equations is completed by
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}t} O_0(t) = - \frac{1}{\tau_{\textrm{overwrite}}} O_0(t) \,.
+\end{equation}
+Note that the dynamics of the overlaps~$O_i$ form a linear dynamical system.
+
+To show that this mathematical description shows a power-law behavior akin to the simulated system in Fig.~\ref{fig:hierarchical} of the main text, we simulated the equations with the following parameter choices. Consistent with the exponential decay of the learning rates in the simulations, we chose the learning rates as $\eta_i = 2^{-i}$. The weighting factors~$c_{ij}$ were chosen based on the assumption that output layer~$i$ (for $i>0$) receives a fraction~$\alpha$ of its input from the output layer~$i-1$ below, and a fraction~$1-\alpha$ via its direct shortcut connection (associated with the weight matrix~$W_i$). Taking into account that the signal reaching layer~$i$ through shortcut connection~$j$ traverses several of these weighting stages (Fig.~\ref{sfig:power_law}A), this choice yields
+$c_{ij}=\alpha^{i-j}$ for $j=0$ and
+$c_{ij}=\alpha^{i-j} (1-\alpha)$ for $j>0$.
+Note that~$\sum_{j=0}^i c_{ij} = 1$, so the activity level in different output layers should be similar. Finally, we assume that each synaptic transmission generates a fixed delay $D$ and that the autocorrelation function~$f(\tau)$ decays much more quickly than the STDP learning window. In this case, we can approximate $A(D_{ij}) = \exp\left( - 2 D \frac{(i-j)}{\tau_\textrm{STDP}}\right)$.
+
+For the simulations illustrated in Fig.~\ref{sfig:power_law}, we chose $\tau_\textrm{STDP}=40$~ms as the time constant of an exponentially decaying STDP learning window for positive delays $\tau>0$, and we set $A^+ =1$ in Eq~\eqref{eq:spiking_additive_STDP}. Furthermore, we used $D=2$~ms. As shown in the  Fig.~\ref{sfig:power_law}B, the maximum of the overlaps~$O_j$ indeed approximates a power law decay.
+
+
+\begin{figure}[!htp]
+  \centering
+  \includegraphics[width=\textwidth]{fig6}
+  \caption{%
+    \textbf{Mathematical analysis of the hierarchical consolidation network.}
+    {\bf(A)} The mathematical analysis is performed for a network consisting of $N+1$ input and $N+1$ output layers. All output layers (except output layer 0) weight the input from the previous layer with a factor~$\alpha$ and the input via the shortcut pathway with a factor~$1-\alpha$, to ensure that activity does not rise as increasingly many pathways converge onto the output layers. Input layer~$i$ is hence connected to output layer~$i$ through a shortcut connection with weight matrix~$(1-\alpha) W_i$ (except for the bottom-most layers~$i=0$, for which no factor~$1-\alpha$ is required). All connections between input layers are set to the identity matrix~$\mathbf{I}$, and all connections between output layers are set to $\alpha \mathbf{I}$, for notational simplicity in the derivations. The math can be generalized to arbitrary connection matrices, as long as the network is linear. Each connection introduces a synaptic delay of $D$. The multi-synaptic pathway from input layer~$i$ to output layer~$i$ via shortcut connection~$j\neq i$ has a total delay of $(2(i-j)+1) \cdot D$, so the difference in delays between the pathway through shortcut~$i$ and shortcut~$j$ is $D_{ij}=2 (i-j) \cdot D$.
+    {\bf(B)} The similarity~$O_i$ of the weight matrix~$W_0$ (in which memory traces are initially stored) and the shortcut connection~$W_i$ as a function of the time elapsed after storage (colored lines), and their maximum (black line). Simulations shown for~$D=2$ ms, $\alpha=0.8$, $\eta_i = 2^{-i}$ and STDP time constant~$\tau_\textrm{STDP}=40$ ms.
+  }
+  \label{sfig:power_law}
+\end{figure}
