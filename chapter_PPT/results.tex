@@ -31,13 +31,11 @@ The proposed mechanism can be exemplified in the hippocampal formation, by consi
 
 In addition, EC input is relayed to CA1 via the classical trisynaptic pathway via dentate gyrus (DG) and CA3, reaching CA1 through the Schaffer collaterals (SC; Fig~\ref{fig:PPT_mechanism}B, blue; \cite{Amaral1993}).
 
-
-
+\todo[inline]{Move next paragraph somewhere else, see latex comments \& chapter\_PPT\_diff/pdf}%
 As in earlier theories, we assume that the indirect pathway via CA3 is involved in the original storage of memories \cite{Marr1969, Treves1994}, an assumption that is supported by experiments, e.g. \cite{Brun2002, Nakazawa2003, Nakashiba2008}.
 We neglect, for simplicity, any encoding-related change in the direct pathway, even though in animals this pathway might also show some, putative much lower, plasticity during memory acquisition. This simplification does not affect our proposed mechanism on the consolidation-related transfer of memories.
 % HS: I'd rather discuss this later, too much detail here.
 % RK: I somehow agree, but could not find a good place where this can be mentioned. I think it is important to say right from the beginning. And it was mentioned by the reviewers. Therefore I would keep it here. To make it shorter, I deleted the names of the experimenters...
-
 
 We assume encoding in such a way that a memory can be recalled by a specific neural activity pattern in EC --- a cue --- that triggers spikes in a subset of CA1 cells through this indirect pathway via the SC, representing the associated response.
 The same cue reaches CA1 also through the  direct pathway via the \ppca.
@@ -45,52 +43,60 @@ We assume that this direct input from EC initially fails to trigger spikes becau
 However, \ppca~inputs that are activated by the cue precede the spikes in CA1 pyramidal cells that are triggered by the indirect pathway by 5--15~ms \cite{Yeckel1990} due to transmission delays. Presynaptic spikes preceding postsynaptic spikes with a short delay favor selective long-term potentiation by spike timing-dependent plasticity (STDP, Fig~\ref{fig:PPT_mechanism}C) \cite{Bi1998, Markram1997, Gerstner1996}.
 Consequently, cue-driven \ppca~synapses onto activated CA1 cells are strengthened until the memory that was initially stored in the indirect pathway can be recalled via the direct pathway alone. The indirect pathway thus acts as a teacher for the direct pathway.
 
-To illustrate this mechanism, we  used a simple integrate-and-fire neuron model (for details, see {\em Methods}) of a CA1 cell that receives inputs through the SC and the \ppca.
+To illustrate this mechanism, we used a simple integrate-and-fire neuron model (Methods Sec.~\ref{ssec:ppt_methods_LIF}) of a CA1 cell that receives inputs through the SC and the \ppca.
 We also considered the two pathways to contain the same number of synapses and transmit identical spike patterns apart from a 5-ms delay in the SC (Fig~\ref{fig:PPT_mechanism}D).
 Consolidation then corresponds to copying the synaptic weight pattern of the SC to the \ppca.
 In line with our hypothesis, such a consolidation was indeed achieved by STDP in the \ppca~synapses (Fig~\ref{fig:PPT_mechanism}E). A consolidation in the opposite direction, i.e., from the \ppca to the SC cannot be achieved by STDP because the temporal order of spiking activity is reversed and hence does not favour synaptic potentiation (Fig~\ref{fig:PPT_mechanism}F).
-Note that in this simple example, the EC-to-DG/CA3 synapses don't store any memory, but only introduce the transmission delay. In the following, we will show that all synapses of the indirect pathway can be involved in the original storage of memories.
 
+%Note that in this simple example, the EC-to-DG/CA3 synapses don't store any memory, but only introduce the transmission delay. In the following, we will show that all synapses of the indirect pathway can be involved in the original storage of memories. \todo[inline]{Could this replace the odd paragraph before first results?}
 
-To understand the conditions under which the suggested PPT can achieve a consolidation of associative memories, we performed a mathematical analysis (see Supplementary Section~\ref{sec:theoretical_analysis}), which shows that consolidation is robust to differences in the neural representation in the two pathways and illustrates its dependence on the temporal input statistics in the two pathways. In the following sections, we show in simulations that the mechanism is robust to neuronal complexities, that it accounts for lesion studies in rodents, and that it can be hierarchically iterated.
+%A mathematical analysis suggests that STDP in the direct pathwasy implements a linear regression that approximates the input-output mapping of the indirect pathways by that of the direct pathway (Sec.~\ref{ssec:theory_stdp} and \ref{ssec:theory_dynamics}).
+
+%To understand the conditions under which the suggested PPT can achieve a consolidation of associative memories, we performed a mathematical analysis of the mechanism. It suggests that STDP in the direct pathway implements a linear regression that approximates the input-output mapping of the indirect pathways by that of the direct pathway (Sec.~\ref{ssec:theory_stdp} and \ref{ssec:theory_dynamics}), which shows that consolidation is robust to differences in the neural representation in the two pathways. Our analysis also shows the dependence of the mechanism on the temporal input statistics in the two pathways (Section~\ref{ssec:theory_timing}).
+
+To understand the conditions under which the suggested PPT can achieve a consolidation of associative memories, we performed a mathematical analysis of the mechanism, which makes two key predictions: First, it suggests that STDP in the direct pathway achieves consolidation by performing a linear regression that approximates the input-output mapping of the indirect pathway by that of the direct pathway (Sec.~\ref{ssec:theory_stdp} and \ref{ssec:theory_dynamics}). Therefore, the proposed mechanism should generalize to situations in which the cue representations in the direct and indirect pathways differ. Second, we analyzed the dependens of the mechanism on the temporal input statistics in the two pathways (Sec.~\ref{ssec:theory_timing} and Fig~\ref{sfig:theory_timing}). The theory suggests that consolidation is most effective when the correlation time constants of the input during consolidation is matched to the coincidence time scale of STDP (Fig~\ref{sfig:theory_timing}B). In the following sections, we will show in simulations that those predictions hold, that the mechanism is robust to neuronal nonlinearities, that it accounts for lesion studies in rodents, and that it can be hierarchically iterated.
+
+%In the following sections, we show in simulations that the mechanism is robust to neuronal complexities, that it accounts for lesion studies in rodents, and that it can be hierarchically iterated.
+
+%To understand the conditions under which the suggested PPT can achieve a consolidation of associative memories, we performed a mathematical analysis, which shows that consolidation is robust to differences in the neural representation in the two pathways and illustrates its dependence on the temporal input statistics in the two pathways (Section~\ref{ssec:theory_timing}). In the following sections, we show in simulations that the mechanism is robust to neuronal complexities, that it accounts for lesion studies in rodents, and that it can be hierarchically iterated.
 
 \subsection{Consolidation of spatial representations}
 \label{sec:results_linear_track}
 
+%The mathematical analysis of the PPT makes two key predictions. First, it suggests that STDP in a parallel direct pathway achieves consolidation by performing a linear regression between inputs in the direct and the indirect pathways [Eqs~\eqref{eq:fixed point dynamics} and~\eqref{eq:error function dynamics}]. Therefore, the proposed mechanism should generalize to situations in which the cue representations in the direct and indirect pathways differ. Second, the theory suggests that consolidation is most effective when the correlation time constants of the input during consolidation is matched to the coincidence time scale of STDP (Fig~\ref{sfig:theory_timing}B). In the following, we will show in simulations that those predictions hold and, moreover, that the mechanism is robust to neuronal nonlinearities.
 
-
-The mathematical analysis of the PPT makes two key predictions. First, it suggests that STDP in a parallel direct pathway achieves consolidation by performing a linear regression between inputs in the direct and the indirect pathways [Eqs~\eqref{eq:fixed point dynamics} and~\eqref{eq:error function dynamics}]. Therefore, the proposed mechanism should generalize to situations in which the cue representations in the direct and indirect pathways differ. Second, the theory suggests that consolidation is most effective when the correlation time constants of the input during consolidation is matched to the coincidence time scale of STDP (Fig~\ref{sfig:theory_timing}B). In the following, we will show in simulations that those predictions hold and, moreover, that the mechanism is robust to neuronal nonlinearities.
-
+So far, we illustrated the PPT in a simple integrate-and-fire model, in which the neural representations in the two pathways were identical, leading to a very strong correlation between the inputs to CA1. We next show the robustness of the suggested mechanism in a more biologically plausible setting.
 
 
 To begin with, we show that the mechanism is robust to differing cue representations in the two pathways and to weaker correlations among them \cite{ONeill2017}. To this end, we used place cell representations \cite{OKeefe1971} for the SC input from CA3 and grid cell representations \cite{Hafting2005, Moser2008} for the \ppca input from EC (Fig~\ref{fig:spatial}A).
-Moreover, we show that the suggested mechanism is compatible with the biophysical properties of CA1 neurons, which receive inputs in different subcellular compartments. To this end, we simulated a multicompartmental CA1 pyramidal cell (Fig~\ref{fig:spatial}B) that was endowed with active ion channels supporting backpropagating action potentials and dendritic calcium spikes (Fig~\ref{fig:spatial}C, {\em Methods}).
+Moreover, we show that the suggested mechanism is compatible with the biophysical properties of CA1 neurons, which receive inputs in different subcellular compartments. To this end, we simulated a multicompartmental CA1 pyramidal cell (Fig~\ref{fig:spatial}B) that was endowed with active ion channels supporting backpropagating action potentials and dendritic calcium spikes (Fig~\ref{fig:spatial}C, Methods Sec.~\ref{ssec:ppt_methods_multicompartment}).
 
-% Original figure 2 (to change title/caption etc., change the macros defined at top of file)
-\makeStandardFigure[!htbp]
-  {\figureTwoFigureTitle}
-  {\figureTwoFigureLabel}
-  {\figureTwoFigureCaption}
-  {\figureTwoFigureFilename}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\textwidth]{\figureTwoFigureFilename}
+  \vspace{.4cm}
+  \caption{\textbf{\figureTwoFigureTitle.} \figureTwoFigureCaption}
+  \label{\figureTwoFigureLabel}
+\end{figure}
 
 The use of spatial representations in the input pathways allows us to consider simple forms of memories in a navigational context in which a given location on a linear track is associated with the activity of a given CA1 cell. Effectively, such an association generates a CA1 place cell. In line with the PPT, we assumed that the spatial selectivity of this CA1 place cell is initially determined solely by the indirect pathway via the SC, i.e., by place cell input from CA3. The goal of systems memory consolidation is then to transfer this spatial association to the direct input, which reaches the CA1 cell via the \ppca\ derived from grid cells in EC. In other words, place-cell input should supervise grid-cell input to develop a place-cell tuning.
 Note that we use the spatial setup primarily as an illustration of the theory. We do not make claims regarding the temporal development of CA1 place cells \emph{in vivo}, which is not fully understood \cite{Solstad2006, OKeefe2021, Tukker2022}.
 
-SC place field inputs were modelled by synapses that were active only in a small region of the track, whereas individual \ppca~grid cell inputs were active in multiple, evenly spaced regions along the track (Fig~\ref{fig:spatial}A). In terms of the theory, the cue representation in the two pathways is now different, but correlated, because the same location is encoded.
+SC place field inputs were modelled by synapses that were active only in a small region of the track, whereas individual \ppca~grid cell inputs were active in multiple, evenly spaced regions along the track (Fig~\ref{fig:spatial}A). The cue representation in the two pathways is now different, but correlated, because the same location is encoded. \todo[inline]{Double check that the correlation argument makes sense without theory, and potentially reference theory section here.}
 The SC and \ppca~inputs projected to proximal and distal dendrites, respectively (Fig~\ref{fig:spatial}B, \cite{Stuart2007}).
 Synapses were initialized such that the SC input conductances were spatially tuned and resulted in place field-like activity in the CA1 cell while the \ppca~input had no spatial tuning (Fig~\ref{fig:spatial}D).
 
 During consolidation, SC and \ppca~input to the CA1 cell consisted of replays of previously encountered sequences of locations \cite{Skaggs1996, Lee2002}, with a replay speed 20 times faster than physical motion \cite{Lee2002}.
 During replay, the SC input led to somatic spikes, which in turn triggered backpropagating action potentials that caused calcium spikes in the distal dendrites where the \ppca~synapses arrive (Fig~\ref{fig:spatial}C and~E, \cite{Larkum1999}).
 Through synaptic plasticity, \ppca~synapses active in the place field of the neuron were potentiated.
-Over time, the \ppca~input adopted the spatial tuning of the SC input (Fig~\ref{fig:spatial}F, left) and reproduced the original SC-induced place field output (Fig~\ref{fig:spatial}F, right) with high correlation (Fig~\ref{fig:spatial}G). The fact that the spatial tuning of two inputs is not perfectly matched does not contradict with theoretical results, which merely state that the direct input should attain the best possible linear approximation of the indirect pathway. In the present setting, this approximation is bounded by the finite range of frequencies of the entorhinal inputs (in analogy to reconstructing a high-frequency signal, e.g. a narrow peak, with a finite set of Fourier components), which causes the ringing next to the target peak in Fig~\ref{fig:spatial}F (left). In summary, the PPT mechanism therefore consolidated associations even though the spatial representations in the two pathways differed and although the two pathways targeted different neuronal compartments with different numbers of synapses in the CA1 neuron with complex morphology.
+Over time, the \ppca~input adopted the spatial tuning of the SC input (Fig~\ref{fig:spatial}F, left) and reproduced the original SC-induced place field output (Fig~\ref{fig:spatial}F, right) with high correlation (Fig~\ref{fig:spatial}G). This result is in line with our theoretical prediction that the direct pathway should attain the best possible linear approximation of the indirect pathway (Sec.~\ref{ssec:theory_stdp}). The spatial tuning of the the inputs is not perfectly matched because the approximation is bounded by the finite range of frequencies of the entorhinal inputs (in analogy to reconstructing a high-frequency signal, e.g. a narrow peak, with a finite set of Fourier components), which causes the ringing next to the target peak in Fig~\ref{fig:spatial}F (left). In summary, the PPT mechanism therefore consolidated associations even though the spatial representations in the two pathways differed and although the two pathways targeted different neuronal compartments with different numbers of synapses in the CA1 neuron with complex morphology.
 
-The theory also predicts that consolidation is most effective when the correlation time in the input is matched to the time scale of STDP (Fig~\ref{sfig:theory_timing}B). In line with this prediction, consolidation failed when replay speed was reduced to that of physical motion (Fig~\ref{fig:spatial}G) because the time scale of rate changes in place and grid cell activity is then much longer than the delay between the two pathways and the time scale of STDP (Fig~\ref{sfig:theory_timing}C). Accelerated replay during sleep \cite{Lee2002} hence supports systems memory consolidation within the PPT by aligning the time scales of neural activity and synaptic plasticity \cite{DAlbis2015}, and this alignment is similar to the effect of phase precession during memory acquisition \cite{Reifenstein2021}.
+The theory also predicts that consolidation is most effective when the correlation time in the input is matched to the time scale of STDP (Sec.~\ref{ssec:theory_timing} and Fig~\ref{sfig:theory_timing}B). In line with this prediction, consolidation failed when replay speed was reduced to that of physical motion (Fig~\ref{fig:spatial}G) because the time scale of rate changes in place and grid cell activity is then much longer than the delay between the two pathways and the time scale of STDP (Fig~\ref{sfig:theory_timing}C). Accelerated replay during sleep \cite{Lee2002} hence supports systems memory consolidation within the PPT by aligning the time scales of neural activity and synaptic plasticity \cite{DAlbis2015}.
+% XXX: Was in published version, sentence sound bad with it and I don't care...
+%, and this alignment is similar to the effect of phase precession during memory acquisition \cite{Reifenstein2021}.
 
-
-
-Finally, we note that the theoretical analysis relied on a separability assumption for the statistics in the two pathways; cf.~Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}. This condition
-is not fulfilled for sequence replay during consolidation because the time-delayed covariance of different place cells depends on the relative spatial location of their place fields; such correlations are non-separable even for slower replay or during memory acquisition with real-time physical motion. The observation that consolidation was successful nevertheless illustrates that the separability assumption does not need to be fulfilled for the PPT to achieve a successful consolidation.
+% XXX: Was part of published version, removed and moved that discussion to supps.
+%Finally, we note that the theoretical analysis relied on a separability assumption for the statistics in the two pathways; cf.~Eqs~\eqref{eq:definition_f} and~\eqref{eq:definition_g}. This condition is not fulfilled for sequence replay during consolidation because the time-delayed covariance of different place cells depends on the relative spatial location of their place fields; such correlations are non-separable even for slower replay or during memory acquisition with real-time physical motion. The observation that consolidation was successful nevertheless illustrates that the separability assumption does not need to be fulfilled for the PPT to achieve a successful consolidation.
 
 
 \subsection{Consolidation of place-object associations in multiple hippocampal stages}
@@ -105,17 +111,17 @@ In the water maze, the rodent needs to find a submerged platform (object), i.e.,
 Thus this paradigm requires neural representations of objects (such as the submerged platform) and places.
 We hence constructed a model in which subregions of the hippocampal formation included neurons that encode places and neurons that encoded the identity of objects (Fig~\ref{fig:lesion}A, right).
 
-%\makeWideFigure
-\makeStandardFigure[htp]
-%\figureCaptionOnly
-  {\figureThreeFigureTitle}
-  {\figureThreeFigureLabel}
-  {\figureThreeFigureCaption}
-  {\figureThreeFigureFilename}
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=\textwidth]{\figureThreeFigureFilename}
+  \vspace{.4cm}
+  \caption{\textbf{\figureThreeFigureTitle.} \figureThreeFigureCaption}
+  \label{\figureThreeFigureLabel}
+\end{figure}
 
-For simplicity and computational efficiency we switched to a rate-based neuron model ({\em{Methods}}). An object was chosen from a set of 128 different objects and placed in a circular open field environment (Fig~\ref{fig:lesion}B, top).
+For simplicity and computational efficiency we switched to a rate-based neuron model (Methods Sec.~\ref{ssec:ppt_methods_lesion}). An object was chosen from a set of 128 different objects and placed in a circular open field environment (Fig~\ref{fig:lesion}B, top).
 As motivated by experiments \cite{Brun2002, Nakazawa2003, Nakashiba2008}, we implemented object-to-place associations in our model by enhancing, as before, synaptic connections in the SC, but now between object-encoding neurons in CA3 and place-specific neurons in CA1 (Fig~\ref{fig:lesion}A, right). Here, we did not consider place-to-object associations. These are less relevant for the water maze task, where the task is to recall the location of a given object --- the platform --- rather than to recall which object was encountered at a given location. We tested object-to-place associations stored in the SC by activating the object representation in EC --- as a memory cue --- and determining the activities in CA1, triggered by the SC alone.
-From these activities we inferred a spatial probability map of the recalled object location (Fig~\ref{fig:lesion}B; {\em Methods}).
+From these activities we inferred a spatial probability map of the recalled object location (Fig~\ref{fig:lesion}B).
 
 We first stored a single object-place association in the SC. During a subsequent consolidation  cycle --- representing one night --- place and object representations in EC were then randomly and independently activated.
 Consistent with our previous results, the object-place association was gradually consolidated from the SC to the \ppca: after one night of consolidation, the correct spatial probability map of an object location was inferrable from CA1 activity triggered by the \ppca~alone (Fig~\ref{fig:lesion}B).
@@ -127,7 +133,7 @@ As a result, object-place associations were maintained in the \ppca~for longer p
 Eventually, a  given \ppca~memory trace would also degrade as new interfering memories from the SC are consolidated.
 However, as noted above, the \ppca~itself is part of an indirect pathway from EC to the SUB, for which there is in turn a parallel, direct perforant pathway \ppsub.
 The association in the \ppca~(and SC) could therefore, in turn, be partially consolidated into the \ppsub, further extending memory lifetime (Fig~\ref{fig:lesion}C).
-Note that the extension of memory lifetime is supported in the model by a reduced plasticity (i.e. halved learning rate in Eq~\eqref{eq:STDPrule}) in \ppsub\ compared to \ppca.
+Note that the extension of memory lifetime is supported in the model by a reduced plasticity in \ppsub\ compared to \ppca.
 
 The model suggests that the \ppca~serves as a transient memory buffer that mediates a further consolidation into additional shortcut pathways downstream.
 This hypothesis is supported by navigation studies in rats.
@@ -143,22 +149,21 @@ Similar to lesioning the \ppca, we predict that lesioning  \ppsub\ also has an i
 
 \subsection{Consolidation from hippocampus into neocortex by a hierarchical nesting of consolidation circuits}
 Given that shortcut connections are widespread throughout the brain \cite{VanEssen1992, Morgenstern2016, Constantinople2013}, we next hypothesized that a reiteration of the PPT can also achieve systems consolidation from hippocampus into neocortex.
-To test this hypothesis, we studied a network model (Fig~\ref{fig:hierarchical}A), in which the hippocampus (now simplified to a single area) receives input from a hierarchy of cortical areas, representing, e.g., a sensory system. It provides output to a different hierarchy of areas, representing, e.g., the motor system or another sensory system.
+To test this hypothesis, we studied a network model (Fig~\ref{fig:hierarchical}A, Methods Sec.~\ref{ssec:ppt_methods_hierarchy}), in which the hippocampus (now simplified to a single area) receives input from a hierarchy of cortical areas, representing, e.g., a sensory system. It provides output to a different hierarchy of areas, representing, e.g., the motor system or another sensory system.
 
-%\makeWideFigure
-\makeStandardFigure[!htb]
-%\figureCaptionOnly
-  {\figureFourFigureTitle}
-  {\figureFourFigureLabel}
-  {\figureFourFigureCaption}
-  {\figureFourFigureFilename}
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=\textwidth]{\figureFourFigureFilename}
+  \vspace{.4cm}
+  \caption{\textbf{\figureFourFigureTitle.} \figureFourFigureCaption}
+  \label{\figureFourFigureLabel}
+\end{figure}
 
 The network also contained shortcut connections that bypassed the hippocampus.
 As in the previous section, new memories were stored in the hippocampus but not in any other indirect connection in the hierarchy.
-The repeated storage of new memories
-every day leads to a decay of previously stored hippocampal memories. But memories are also consolidated by Hebbian plasticity in parallel pathways; for details, see {\em Methods}.
+The repeated storage of new memories every day leads to a decay of previously stored hippocampal memories. But memories are also consolidated by Hebbian plasticity in parallel pathways.
 
-Tracing a specific memory over time revealed a gradual consolidation into the cortical shortcut connections, forming a ``memory wave'' \cite{Roxin2013} that travels from hippocampus into neocortex (Fig~\ref{fig:hierarchical}B).
+Tracing a specific memory over time revealed a gradual consolidation into the cortical shortcut connections, forming a ``memory wave'' \cite{Roxin2013} that travels from hippocampus into neocortex (Fig~\ref{fig:hierarchical}B, Theory Sec.~\ref{ssec:theory_hierarchy}).
 By exponentially decreasing the shortcut learning rate with distance from the hippocampus, a power-law decay of memories can be observed in the union of all shortcuts, e.g., by reading out the shortcut with the strongest memory trace at any moment in time (Fig~\ref{fig:hierarchical}B). This observation is in line with a rich history of psychological studies on the mathematical shape of forgetting curves \cite{Wixted2004}. Note that for the readout we tried to make as few assumptions as possible by letting all pathways contribute on an equal footing. Taking the maximum over the pathways (as well as the mean) generates a power law.
 Notably, we achieved memory retention times of years through only a small number ($\sim$5) of iterations of the PPT.
 Finally, we found that memory retrieval accelerates during consolidation (Fig~\ref{fig:hierarchical}C), in line with consolidation studies for motor skills \cite{Walker2002}. In our consolidation model, the time to recall decreases because the path from peripheral input to output becomes shorter through the use of more direct (peripheral) shortcut connections (Fig~\ref{fig:hierarchical}A and B).

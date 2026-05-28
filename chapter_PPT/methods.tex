@@ -1,6 +1,7 @@
 %%% METHODS
 
 \subsection{Consolidation in a single integrate-and-fire neuron}%
+\label{ssec:ppt_methods_LIF}
 %\label{sec:3.1}
 %\addcontentsline{toc}{section}{\nameref{sec:3.1}}
 For the results shown in Fig~\ref{fig:PPT_mechanism}E and  Fig~\ref{fig:PPT_mechanism}F we used a single integrate-and-fire  model neuron that received excitatory synaptic input. The membrane potential $V(t)$ %(in millivolts)
@@ -42,6 +43,7 @@ The dynamics were integrated numerically using the forward Euler method, with an
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Consolidation of spatial representations in a multi-compartment neuron model}%
+\label{ssec:ppt_methods_multicompartment}
 %\label{ssec:methods_multicompartment}
 %\addcontentsline{toc}{section}{\nameref{ssec:methods_multicompartment}}
 The results presented in Fig~\ref{fig:spatial}C-G relied on numerical simulations of a conductance-based compartmental model of a reconstructed CA1 pyramidal cell (cell n128 from \cite{Cannon1998}). Passive cell properties were defined by the membrane resistance $R_\textrm{m}=30$~kOhm\,cm$^2$ with reversal potential $E_\textrm{L}=-70$~mV, intracellular resistivity $R_\textrm{i} = 150$ $\Omega\,$cm, and membrane capacitance $C_\textrm{m} = 0.75\,\mu$F/cm$^2$. Dendrites were discretized into compartments with length smaller than 0.1 times the frequency-dependent passive space constant at 100 Hz. Three types of voltage-dependent currents and one calcium-dependent current, all from \cite{Mainen1996}, were distributed over the soma and dendrites. Gating dynamics of the currents evolved according to standard first-order ordinary differential equations. The steady state (in)activation functions $x_\infty$ and voltage-dependent time constants $\tau_\infty$ for each gating variable (i.e., $x=m,h,n$; see below) were calculated from a first-order reaction scheme with forward rate $\alpha_x$ and backward rate $\beta_x$ according to $x_\infty(V)=\alpha_x(V)/(\alpha_x(V)+\beta_x(V))$ and $\tau_{\rm x}(V)=1/(\alpha_x(V)+\beta_x(V))$ where $V$ was the membrane potential. All used current densities and time constants were selected for a temperature of $37\,^{\circ}{\rm C}$ (see \cite{Mainen1996}).
@@ -123,6 +125,7 @@ The reference tuning curve shown in Fig~\ref{fig:spatial}F (\ppca~inputs theory)
 Simulations were carried out with a fixed time step of 25~$\mu$s using the NEURON simulation software \cite{Hines1997}.
 
 \subsection{Consolidation of place-object associations in multiple hippocampal stages}%
+\label{ssec:ppt_methods_lesion}
 %\label{sec:Remondes}
 %\addcontentsline{toc}{section}{\nameref{sec:Remondes}}
 The results related to Fig~\ref{fig:lesion} show the acquisition and consolidation of place-object associations in a hippocampal network model. Every day a virtual animal learns the position of one of many possible objects in a circular open field environment. The simulations show that during a subsequent sleep phase, replay of the hippocampal activity that is associated with runs through this environment allows for the consolidation of the place-object association. We call the imprinting of a new memory and the subsequent memory consolidation phase a consolidation cycle. In the simulations, a place-object association learned at time $t=0$ is tracked for $N_{\rm cycle}$ consolidation cycles, i.e., nights after memory acquisition. Between consolidation cycles, the memory in the system is assessed as described below.
@@ -140,7 +143,7 @@ Activities of neurons in each layer were described as firing rates and were dete
 \vc{y}_{\rm SUB}(t) &= \vc{W}^\mathsf{T}_{\ppsubeq} (t)\, \x_{\rm EC}(t) + \vc{V}^\mathsf{T}_{\casubeq} \, \vc{y}_{\rm CA1}(t-D), \label{eq:SUBresponse}
 \end{align}
 where $\vc{x}_{\rm EC}(t)$ and $\vc{x}_{\rm CA3}(t)$ are the activities in the input layers EC and DG-CA3, respectively, and $\vc{y}_{\rm CA1}(t)$ and $\vc{y}_{\rm SUB}(t)$ represent the activities in the output layers  CA1 and SUB, respectively. Time is denoted by $t$. The symbols $\vc{W}_{\ppcaeq}$ and $\vc{W}_{\ppsubeq}$ denote the weight matrices of the pathways from EC to CA1 and from EC to SUB, respectively. The matrices $\vc{V}_{\rm SC}$ and $\vc{V}_{\casubeq}$ summarise the weights from DG-CA3 to CA1 and from CA1 to SUB, respectively, which mediate the transmission delay $D$.
-Equations~\eqref{eq:CA1response} and \eqref{eq:SUBresponse} are identical in structure to Eq~\eqref{eq:output} except that now the output is a vector (and not a scalar) and the synaptic weights are a matrix (and not a vector).
+\todo[inline]{Consider moving this comment into supps and reversing it. Such that in the theory appensix is says the methods theory is a scalar version of the methods equation}Equations~\eqref{eq:CA1response} and \eqref{eq:SUBresponse} are identical in structure to Eq~\eqref{eq:output} in our theoretical analysis (Sec.~\ref{ssec:theory_dynamics}) except that here the output is a vector (and not a scalar) and the synaptic weights are a matrix (and not a vector).
 
 As already mentioned above, each neuron in a layer is assumed to primarily encode either place or object information (see Fig~\ref{fig:lesion}A). To simplify the mathematical analysis, we turn to a notation where we write a layer's activity vector $\vc{z}$ (where $\vc{z}=\vc{x}_{\rm EC},\;\vc{x}_{\rm CA3},\;\vc{y}_{\rm CA1}$, or $\vc{y}_{\rm SUB}$) as a concatenation of place and object vectors:
 \begin{align}
@@ -214,8 +217,7 @@ The plastic weight matrices $\W_{\ppcaeq}$ and $\W_{\ppsubeq}$ changed according
 \end{align}
 where $\vc{W}$ is either $\W_{\ppcaeq}$ or $\W_{\ppsubeq}$, and $\vc{y}$ correspondingly $\vc{y}_{\mathrm{CA1}}$ or $\vc{y}_{\mathrm{SUB}}$. The learning window $L(\tau)$ defined in Eq~\eqref{eq:spiking_additive_STDP} determines the learning dynamics.
 
-Equation~\eqref{eq:rate_based_additive_STDP_remondes} differs from the corresponding Eq~\eqref{eq:rate_based_additive_STDP}
-in several ways. First, on the left-hand side there is now a derivative, in contrast to the earlier version with a differential quotient; and on the right-hand side we omit the angular brackets that indicated a temporal average. Therefore, Eq~\eqref{eq:rate_based_additive_STDP_remondes} represents the instantaneous change of weights for a particular input, which is numerically more straightforward to implement in an online-learning paradigm. The resulting weight change for long times and many inputs approximates well Eq~\eqref{eq:rate_based_additive_STDP} if consolidation is slow enough. Second, we now omit the learning rate parameter $\eta$, which is absorbed in the definition of the parameters $A^+$ and $A^-$ of the learning window $L$. Third, there are now two addends in the integral and the integration limits are  from $0$ to $\infty$. This is equivalent to the earlier definition, but more convenient for a numerical implementation. All this allows to simplify the description of the learning dynamics, as will be outlined in what follows.
+Equation~\eqref{eq:rate_based_additive_STDP_remondes} is based on our theoretical analysis (Sec.~\ref{ssec:theory_stdp}) but differs from the corresponding Eq~\eqref{eq:rate_based_additive_STDP} in several ways. First, on the left-hand side there is a derivative, in contrast a differential quotient in the theoretical derivation; and on the right-hand side we omit the angular brackets that indicate a temporal average in the theoretical derivation. Therefore, Eq~\eqref{eq:rate_based_additive_STDP_remondes} represents the instantaneous change of weights for a particular input, which is numerically more straightforward to implement in an online-learning paradigm. The resulting weight change for long times and many inputs approximates well Eq~\eqref{eq:rate_based_additive_STDP} if consolidation is slow enough. Second, we omit here the learning rate parameter $\eta$, which is absorbed in the definition of the parameters $A^+$ and $A^-$ of the learning window $L$. Third, there are two addends here in the integral and the integration limits are  from $0$ to $\infty$. This is equivalent to the definition in the theoretical derivation, but more convenient for a numerical implementation. All this allows to simplify the description of the learning dynamics, as will be outlined in what follows.
 
 
 We integrated the learning dynamics using the Euler method, with time steps~$\Delta T$ equal to the inverse pattern presentation rate. In practice, we used the standard method of calculating pre- and postsynaptic traces $\hat\x$ and $\hat{\vc{y}}$ to integrate the equation
@@ -284,10 +286,9 @@ In our simulations we implemented a lesion by setting all \ppca~weights to $0$ (
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[!ht]
-\begin{adjustwidth}{-2.25in}{0in}
-\begin{center}
-{\tabulinesep=1.1mm
-    \begin{tabu}{ | l | l | p{8cm} |}
+\centering
+\renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{| l | l | X |}
       \hline
       $N_{\rm cycle}$ & 31 & number of consolidation cycles \\ \hline
       $T_c$ & $150$~s & consolidation time per sleep cycle \\ \hline
@@ -310,9 +311,7 @@ In our simulations we implemented a lesion by setting all \ppca~weights to $0$ (
       $\tau_{\rm STDP}$ & $20$~ms & time constants of learning window \\ \hline
       $N_{\rm equi}$ & $10$ & equilibration sleep phases run before the simulation starts \\ \hline
       $\sigma_{\rm noise}$ & $4.8$ & noise level assumed for place inference \\ \hline
-    \end{tabu}}
-\end{center}
-\end{adjustwidth}
+    \end{tabularx}
 \caption{Parameters for simulations shown in Fig.\protect{\ref{fig:lesion}}}
 \label{tab:remondes}
 \end{table}
@@ -322,6 +321,7 @@ In our simulations we implemented a lesion by setting all \ppca~weights to $0$ (
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Consolidation in a hierarchical rate-based network}
+\label{ssec:ppt_methods_hierarchy}
 %\label{ssec:methods_hierarchy}
 %\addcontentsline{toc}{section}{\nameref{ssec:methods_hierarchy}}
 
@@ -365,8 +365,7 @@ Using Eq~\eqref{eq:yHPC}, we obtain
 
 
 \noindent
-Note that Eq~\eqref{eq:yHPC2} is slightly different from  Eq~\eqref{eq:output} because we have included the delay $D$ now also in the direct pathway, for consistency; this does not influence the learning dynamics or the applicability of the theoretical analyses because the same delay is included in the learning rule in Eq.~\eqref{eq:STDPrule-hierarchy}.
-Subsequent activities $\vec{y}_i$ of populations projecting away from HPC are calculated  as
+Note that Eq~\eqref{eq:yHPC2} is slightly different from  Eq~\eqref{eq:output} in our theoretical derivation because we have included here the delay $D$ also in the direct pathway, for consistency; this does not influence the learning dynamics or the applicability of the theoretical analyses because the same delay is included in the learning rule in Eq.~\eqref{eq:STDPrule-hierarchy} below. Subsequent activities $\vec{y}_i$ of populations projecting away from HPC are calculated  as
 
 \begin{align}
 \vec{y}_{i}(t) &= \tfrac{1}{2} \W_{i}^\mathsf{T} \vec{x}_{i}(t-D) + \tfrac{1}{2} \vec{y}_{i-1}(t-D), \;\; \forall i \in \{2,..,L\},
@@ -386,7 +385,6 @@ All shortcut connections $\W_{i}$ showed plasticity similar to Eqs~\eqref{eq:STD
 , i.e.
 \begin{align}
 \frac{\mathrm{d} \vc{W}_i }{\mathrm{d} t} &=
-
 A^+_i  \; \hat\x_i(t-D) \; \vc{y}^\mathsf{T}_i(t) + A^-_i \; \x_i(t-D)\; \hat {\vc{y}}^\mathsf{T}_i(t)
 \label{eq:STDPrule-hierarchy}
 \end{align}
@@ -411,9 +409,9 @@ In analogy to the {\em Methods} on Fig~\ref{fig:lesion}, the maximum correlation
 The noise level indicated in Fig~\ref{fig:hierarchical}B is the standard deviation of the correlation between  two random matrices  drawn from a binomial distribution $\vc{B}(1, 0.5)$ and then row-normalized, both having sample size $N^2$. Considering the central limit theorem, the noise level will be approximately $1/N$.
 
 \begin{table}[!ht]
-\begin{center}
-{\tabulinesep=1.1mm
-    \begin{tabu}{ | l | l | p{8cm} |}
+\centering
+\renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{| l | l | X |}
       \hline
       $N_{\rm cycle}$ & 1000 & number of consolidation cycles \\ \hline
       $T_c$ & $150$~s & consolidation time per sleep cycle \\ \hline
@@ -429,9 +427,7 @@ The noise level indicated in Fig~\ref{fig:hierarchical}B is the standard deviati
       $q$ & 0.5 & learning rate decrease factor \\ \hline
       $\tau_{\rm STDP}$ & $20$~ms & time constants of learning window (see eq~\ref{eq:STDPtraces}) \\ \hline
       $N_{\rm equi}$ & $1000$ & equilibration consolidation cycles run before the simulation starts \\ \hline
-    \end{tabu}}
-\end{center}
+    \end{tabularx}
 \caption{Parameters for simulations in Fig~\protect{\ref{fig:hierarchical}}.}
 \label{tab:hierarchy}
 \end{table}
-

@@ -46,40 +46,6 @@
 %%% FIGURE MACROS %%%
 % The variables here are names after the original figure 1-4
 
-%% Figure 1 %%
-% Figure 1 title
-\newcommand{\figureOneFigureTitle}{%
-  A mechanistic basis for systems memory consolidation%
-}
-
-% Figure 1 label
-\newcommand{\figureOneFigureLabel}{fig:PPT_mechanism}
-
-% Figure 1 caption
-\newcommand{\figureOneFigureCaption}{%
-  (A) Circuit motif for the parallel pathway theory.
-  Cue-response associations are initially stored in an indirect synaptic pathway (blue)
-  and consolidated into a parallel direct pathway (red).
-  (B) Hippocampal connectivity.
-  The entorhinal cortex projects to CA1 through an indirect pathway via DG-CA3 and the Schaffer collaterals (SC, blue arrow), and through the direct perforant path (\ppca, red arrow).
-  (C) Model of consolidation through STDP.
-  Left: before consolidation, a strong SC input (middle, blue vertical bar) causes a large EPSP and triggers a spike in CA1 (bottom, black vertical bar).
-  A weak \ppca~input (top, red) that precedes the SC input is potentiated by STDP.
-  Right: after consolidation through STDP, the \ppca~input (top) can trigger a spike in CA1 by itself (bottom).
-  (D-E) Consolidation in a single integrate-and-fire CA1 cell receiving 1000 \ppca~and 1000 SC excitatory inputs.
-  (D) \ppca~activity consists of independent poisson spike trains; the SC activity is an exact copy of the \ppca~activity, delayed by 5 ms.
-  (E) Consolidation of a synaptic weight pattern from non-plastic SC synapses to plastic \ppca~synapses.
-  Left and middle: normalized synaptic weights before and after consolidation.
-  Right: time course of correlation between SC and \ppca~weight vectors during consolidation (mean $\pm$ SEM for 10 trials).
-  \added{(F) 
-  Failure of consolidation of a synaptic weight pattern from non-plastic PP$_\mathrm{CA1}$ to plastic SC synapses; panels as in E. 
-}}
-
-% Figure 1 filename
-%\newcommand{\figureOneFigureFilename}{Fig_1_with_motif.pdf}
-\newcommand{\figureOneFigureFilename}{fig1}
-
-
 % Figure 2 title
 \newcommand{\figureTwoFigureTitle}{%
   Consolidation of spatial representations%
@@ -182,46 +148,4 @@
 \newcommand{\figureFourFigureFilename}{fig5}
 
 
-% This is copied from the PLOS Latex template: Includes just the caption, not the figure
-\newcommand{\figureCaptionOnly}[5][!ht]{%
-    % Place figure captions after the first paragraph in which they are cited.
-    \begin{figure}[#1]
-    \caption{{\bf #2.} #4}
-    \label{#3}
-    \end{figure}
-}
-
-\newcommand{\makeWideFigure}[5][!htbp]{%
-  % turn off line numbers in captions
-
-  \begin{figure}[#1]
-  \begin{adjustwidth}{-2.25in}{0in}
-  \includegraphics[width=\linewidth]{#5}
-
-  % wide figure with multi-page caption
-  \vspace{.4cm} % set vertical space between text and figure
-  \end{adjustwidth}
-  \caption{\textbf{#2.} #4}
-  \label{#3}
-  \end{figure}
-}
-
-\newcommand{\makeStandardFigure}[5][H]{%
-  % standard floating figure
-
-  \begin{figure}[#1]
-    % use to correct figure counter if necessary
-    %\renewcommand{\thefigure}{2}
-    \centering
-
-    \includegraphics[width=\textwidth]{#5}
-
-    \vspace{.4cm}
-
-    \caption{\textbf{#2.} #4}
-
-    \label{#3} % \label works only AFTER \caption within figure environment
-
-  \end{figure}
-}
 %% END MACROS SECTION

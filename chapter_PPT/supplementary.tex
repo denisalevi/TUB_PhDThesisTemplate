@@ -66,7 +66,10 @@ In general, the learning dynamics is hard to analyze if the covariance matrices 
 
 \noindent
 For simplicity, we omitted the lower index $t$ in $\Cxx$ and $\Cxz$.
-Note that this separability assumption is consistent with all simulations shown, except the one in Fig~\ref{fig:spatial}; see there for details.
+Note that this separability assumption is consistent with all simulations shown in this chapter, except the one in Fig~\ref{fig:spatial}. There, we simulted sequence replay during consolidation, which violates the separability assumption because the time-delayed covariance of different place cells depends on on the relative spatial location of their place fields Nevertheless, consolidation in that simulation succeeded, illustrating that consolidation can be successful even when the separability assumption is violated. In the following, we will consider the separable case for its analytical tractability, and because it is an instructive scenario that provides insights into the dynamics of the consolidation process.
+\todo[inline]{Its a bit odd to discuss separability assumption and consolidaiton success before deriving the linear regression result. This comes from moving the section between supps and main text... Consider moving the discussion into a paragraph after the linear regression derivation and maybe only mentioning it here in a single sentence.}
+% XXX: This sentence was part of main text in published version with theory in main text
+%Such correlations are non-separable even for slower replay or during memory acquisition with real-time physical motion. Nevertheless, consolidation in those simulations was still successful, illustrating that
 
 For separable input statistics, the learning dynamics in Eq.~\eqref{eq:update STDP} can be simplified to
 \begin{align}
