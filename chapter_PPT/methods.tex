@@ -408,6 +408,140 @@ To assess the decay of memory in the system, a reference memory $\V_{\rm ref}$, 
 In analogy to the {\em Methods} on Fig~\ref{fig:lesion}, the maximum correlation (across layers) was taken as the overall memory signal of the system. This yields the power law in Fig~\ref{fig:hierarchical}B.
 The noise level indicated in Fig~\ref{fig:hierarchical}B is the standard deviation of the correlation between  two random matrices  drawn from a binomial distribution $\vc{B}(1, 0.5)$ and then row-normalized, both having sample size $N^2$. Considering the central limit theorem, the noise level will be approximately $1/N$.
 
+\subsection{Semantisation through consolidation in a denoising autoencoder}
+\label{ssec:ppt_methods_semantization}
+
+The results in Fig~\ref{fig:semantization} were obtained from a feedforward
+network model in which the parallel pathway motif is realised as the encoder
+of a denoising autoencoder \cite{Vincent2010}: the indirect pathway has a
+hidden layer, the direct (shortcut) pathway is a linear projection (Fig
+\ref{fig:semantization}C). The network is trained to reconstruct an episodic
+memory from a corrupted version of it, separately through each of the two
+pathways.
+
+\paragraph{Episodic memories.}
+Each episodic memory is a tuple of categorical variables: a person
+$v_{\rm person} \in \{1,\dots,C_{\rm person}\}$, a set of $N_{\rm context}$
+equivalent context variables $v_{{\rm context},i} \in
+\{1,\dots,C_{\rm context}\}$, and an animal breed
+$v_{\rm breed} \in \{1,\dots,C_{\rm breed}\}$, giving an
+$N = N_{\rm context}+2$-dimensional memory. The dataset is endowed with a
+single linear rule: each person is associated with a fixed animal
+\emph{species}, and $C_{\rm breed}$ is a multiple of
+$C_{\rm species}=C_{\rm person}$ so that every species has the same number
+$C_{\rm breed}/C_{\rm species}$ of breeds. Persons and contexts are sampled
+uniformly; given the person, the breed is sampled uniformly over the breeds
+of the corresponding species. Duplicate memories within a dataset are
+resampled. We refer to such a dataset as a \emph{person-animal} dataset and
+use the ratio $C_{\rm breed}/C_{\rm species}$ as the \emph{rule complexity}.
+
+Each categorical variable is one-hot encoded; the encoded vectors of all
+$N$ variables are concatenated, giving a binary input vector of dimension
+$M = C_{\rm person} + N_{\rm context}\,C_{\rm context} + C_{\rm breed}$.
+
+\paragraph{Network architecture and reconstruction loss.}
+Both pathways take the same input layer $\bd{x}\in\{0,1\}^M$ and produce an
+output of the same dimensionality $\bd{y}\in\mathbb{R}^M$. The
+\emph{indirect} pathway applies a single sigmoid hidden layer of size $M_h$
+to $\bd{x}$, followed by a linear output map. The \emph{shortcut} pathway
+projects $\bd{x}$ linearly to $\bd{y}$. Weights are initialised with He's
+adaptation of the Xavier scheme \cite{He2015}. Softmax is applied
+separately to the output units corresponding to each variable $v_j$,
+producing reconstructed categorical distributions
+$\widehat{p}_i^{\,j}$. The training input $\bd{x}$ is a corrupted version
+of the memory in which all units encoding a single chosen variable have
+been zeroed; the network is trained to recover the full one-hot encoding
+$\bd{p}_{\rm true}^{\,j}$ of every variable by minimising the
+cross-entropy
+\begin{align}
+  \mathcal{L}_{\rm DAE} = \sum_{j=1}^{N}
+  H\!\left(\bd{p}_{\rm true}^{\,j},\,\widehat{\bd{p}}^{\,j}\right),
+  \label{eq:dae_loss}
+\end{align}
+summed over the $N$ episodic variables and averaged over the batch (for
+each memory, $N$ corrupted copies are generated, one per missing variable).
+This loss is used to train the indirect pathway during the day. To train
+the shortcut at night, we replace the one-hot targets with the categorical
+distributions produced by the indirect pathway on the same input, so that
+the indirect pathway acts as a teacher \cite{Remme2021}.
+
+\paragraph{Day/night consolidation cycle.}
+We simulate $n_{\rm cycle}$ alternating day/night cycles (Fig
+\ref{fig:semantization}B). Each day, a fresh dataset of $n_{\rm day}$
+person-animal memories is sampled, and the indirect pathway is trained on
+it for $T_{\rm day}$ epochs with the Adam optimiser \cite{Kingma2014} at
+learning rate $\eta_{\rm day}$. We use Adam during the day because we treat
+hippocampal acquisition as effectively one-shot \cite{Lee2015}: the role of
+the day phase is only to overfit the indirect pathway on the day's
+memories, not to model the dynamics of hippocampal acquisition itself.
+
+At night, the shortcut is trained for $T_{\rm night}$ epochs with vanilla
+gradient descent at learning rate $\eta_{\rm night}$. In the \emph{replay}
+condition, the inputs at night are the same $n_{\rm day}$ episodes the
+indirect pathway saw during the day. In the \emph{random} condition, $n_{\rm
+night}$ activations of the input population are uniformly sampled across all
+categorical variables, without the rule. In both conditions, the indirect
+pathway's softmax outputs are used as targets for the shortcut, with the
+indirect weights frozen \cite{Hasselmo1999a}. Gradient descent is used at
+night rather than Adam to retain explicit control over the effective
+learning rate, in keeping with the analytical result of \cite{Remme2021}
+that STDP in the shortcut implements gradient descent on the mean squared
+error between the two pathways' outputs.
+
+\paragraph{Evaluation.}
+After each cycle, we evaluate the reconstruction accuracy of each pathway
+on (a) the most recent day's training memories and (b) an independently
+sampled \emph{test} dataset with the same statistics that the network
+never sees during training. For each variable $v_j$ in each evaluation
+memory, the variable's units are zeroed at the input and the network's
+$\arg\max$ reconstruction is compared to the ground truth. The accuracy
+reported in Fig~\ref{fig:semantization}F-I is the fraction of correctly
+reconstructed values of the response variable (animal species) on the test
+set, averaged over the dataset, and smoothed by a centred 10-cycle rolling
+mean. Fig~\ref{fig:semantization}I reports the final accuracy averaged
+over the last 100 cycles per condition.
+
+For memory-lifetime evaluation (Fig~\ref{fig:semantization}E), we track 20
+day memories during the cycles 281--300 and re-evaluate reconstruction of
+their context variable in both pathways at every subsequent cycle until
+cycle 2000, plotting accuracy as a function of memory age and reporting
+the SD across tracked memories as shaded bands.
+
+\paragraph{Parameter table.}
+Unless stated otherwise, simulations used the parameters listed in
+Table~\ref{tab:semantization}. Panels F (simple rule),
+G (intermediate rule), and H (complex rule) differ only in
+$C_{\rm person}$ and $C_{\rm breed}$ as indicated in the figure caption.
+Panel I sweeps $C_{\rm breed}/C_{\rm species}\in\{1,2,4,8,16,32,64,128,256\}$
+at $C_{\rm person}=32$ with the same remaining parameters as panels G and H.
+
+\begin{table}[!ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{| l | l | X |}
+      \hline
+      $C_{\rm person}$ & 2 (F) / 32 (G,H,I) & number of persons \\ \hline
+      $C_{\rm breed}/C_{\rm species}$ & 2 (F) / 8 (G) / 64 (H) & breeds per species (rule complexity) \\ \hline
+      $N_{\rm context}$ & 4 & number of context variables \\ \hline
+      $C_{\rm context}$ & 8 & categories per context variable \\ \hline
+      $M_h$ & 100 & hidden units in the indirect pathway \\ \hline
+      $n_{\rm cycle}$ & 1000 (F) / 2000 (G,H,I) & day/night cycles \\ \hline
+      $n_{\rm day}$ & 10 & new memories acquired per day \\ \hline
+      $T_{\rm day}$ & 200 & day-phase training epochs per cycle \\ \hline
+      $\eta_{\rm day}$ & 0.01 & day-phase learning rate (Adam) \\ \hline
+      $n_{\rm night}$ & 10 & reactivations per night (random condition) \\ \hline
+      $T_{\rm night}$ & 10 & night-phase training epochs per cycle \\ \hline
+      $\eta_{\rm night}$ & 0.01 & night-phase learning rate (SGD) \\ \hline
+      $|D^{\rm test}|$ & 500 & held-out test memories \\ \hline
+      tracked memories & 20 & memories tracked for the lifetime panel (Fig~\ref{fig:semantization}E) \\ \hline
+    \end{tabularx}
+\caption{Parameters for the consolidation-and-semantisation simulations in
+Fig~\protect{\ref{fig:semantization}}. Where two values are given, the
+first applies to the simple-rule panel (F), the second to the
+complex-rule panels (G,H,I); cf.\ figure caption.}
+\label{tab:semantization}
+\end{table}
+
 \begin{table}[!ht]
 \centering
 \renewcommand{\arraystretch}{1.2}
