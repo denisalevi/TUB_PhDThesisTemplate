@@ -112,9 +112,52 @@ with logarithmically spaced timescales, i.e. exactly a bank of diverse
 fixed learning rates -- the same object as the consolidation
 learning-rate gradient developed earlier in the chapter. So the rate
 diversity is not only an approximation basis for change-point inference,
-it is what is needed to realise power-law forgetting. We leave the
-explicit kernel-decomposition simulation (and the link to empirical
-power-law forgetting curves) as the next step.
+it is what is needed to realise power-law forgetting.
+
+\paragraph{A bank of diverse learning rates realises the power-law kernel.}
+A single fixed-rate delta rule has an exponential memory kernel
+$\kappa_\alpha(\tau) = \alpha(1-\alpha)^\tau$ with timescale $1/\alpha$.
+A weighted bank has the aggregate kernel
+$K(\tau) = \sum_k w_k\,\alpha_k(1-\alpha_k)^\tau$, a sum of exponentials.
+Over a log-spaced bank this superposition is a power law
+(Fig.~\ref{fig:cpd-kernel-decomposition}A): each exponential dominates
+near its own timescale, and their envelope is straight on log-log axes.
+Two design choices control the kernel. The \emph{range} of learning
+rates sets the band over which the power law holds; spanning more decades
+of $\alpha$ widens it, and outside the band the kernel reverts to the
+exponential of the fastest or slowest rate
+(Fig.~\ref{fig:cpd-kernel-decomposition}B). The \emph{weighting} across
+rates sets the exponent: weighting node $k$ by
+$w_k \propto \alpha_k^{\beta-1}$ yields $K(\tau)\sim\tau^{-\beta}$
+(Fig.~\ref{fig:cpd-kernel-decomposition}C). With a log-spaced bank of
+this form, the finite bank reproduces the power-law forgetting kernel of
+the exact decreasing-hazard observer, whereas a single rate cannot
+(Fig.~\ref{fig:cpd-kernel-decomposition}D). The same mixture-of-
+exponentials structure appears on the world side: a Lomax
+(power-law-duration) world is itself an exponential-duration process
+mixed over a distribution of reset rates. The two power laws therefore
+meet through one object -- a distribution of timescales -- which on the
+memory side is the diversity of learning rates in the consolidation
+hierarchy.
+
+The remaining open step is the link to empirical power-law forgetting
+curves.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\linewidth]{cpd_kernel_decomposition.pdf}
+\caption{\textbf{[Exploration]} A bank of diverse learning rates as a
+power-law memory kernel. A: individual exponential kernels of a
+log-spaced bank (grey) and their weighted sum (blue), which is a power
+law (slope $-1$ guide), with a single rate (red) shown for contrast. B:
+spanning more decades of learning rate widens the power-law band before
+the exponential cutoff. C: weighting nodes by $\alpha_k^{\beta-1}$ sets
+the power-law exponent (fitted slopes annotated). D: the log-spaced bank
+reproduces the power-law forgetting kernel of exact BOCPD with a
+decreasing (Lomax) hazard, while a single rate decays exponentially
+(curves normalized at $\tau=1$).}
+\label{fig:cpd-kernel-decomposition}
+\end{figure}
 
 \begin{figure}[htbp]
 \centering
