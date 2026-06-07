@@ -1,0 +1,147 @@
+%!TEX root = ../thesis.tex
+%
+% EXPLORATORY DRAFT (2026-05-26). Not thesis-ready prose. Included at the
+% end of the chapter as a comparison / scratch version of a possible new
+% angle: connecting power-law world volatility to power-law forgetting.
+% Refine later.
+
+\section*{[Exploration] Connecting two power laws: volatile worlds and forgetting}
+\addcontentsline{toc}{section}{[Exploration] Two power laws}
+
+\paragraph{Idea.}
+The chapter so far treats the hazard as an assumption about the
+environment and stops there. This exploration asks what a particular,
+biologically motivated hazard implies for the lifetime of an individual
+memory. Suppose the world is volatile but with a wide range of
+stabilities, so that the distribution of stable-period (regime)
+durations is heavy-tailed. An observer adapted to such a world should
+not assume a fixed hazard. Instead it should assume that the longer
+something has already been stable, the less likely it is to change next
+-- a \emph{decreasing}, run-length-dependent hazard. We show that such an
+observer forgets an individual observation as a \emph{power law} of time,
+whereas a constant-hazard observer forgets \emph{exponentially}. This
+links two power laws that are usually discussed separately: the
+power-law statistics of the world, and the power-law forgetting of
+memory \citep{AndersonSchooler1991, Wixted2004}.
+
+\paragraph{A power-law-volatile world means a decreasing hazard.}
+Let $H(r)$ be the hazard, the probability that the current regime ends
+after surviving to run length $r$. The implied prior survival of regime
+durations is $S(g) = \prod_{r=0}^{g-1}(1-H(r))$. A constant hazard
+$H(r)=h$ gives $S(g)=(1-h)^g$, an exponential (geometric) duration
+distribution. To obtain a power-law tail $S(g)\propto g^{-\alpha}$
+instead, we use a Lomax-type survival $S(g)=(r_0/(r_0+g))^{\alpha}$,
+which corresponds to
+\begin{equation}
+    H(r) = 1 - \left(\frac{r_0+r}{r_0+r+1}\right)^{\alpha}
+    \;\approx\; \frac{\alpha}{r_0+r}.
+\end{equation}
+This is the formal version of ``what has been stable for longer is
+assumed to stay stable longer'' (Fig.~\ref{fig:cpd-two-power-laws}A,B).
+
+\paragraph{Forgetting of a single observation.}
+We generate a \emph{stable} Bernoulli stream (no real change point after
+the first observation $x_0$) and ask how much $x_0$ still matters to the
+observer after $t$ further observations. We use three measures:
+\begin{itemize}
+    \item \textbf{Kernel weight} $m(t)$: the influence of $x_0$ on the
+    current one-step prediction, measured by the finite difference of
+    the predictive mean between $x_0{=}1$ and $x_0{=}0$ on the same
+    continuation, $m(t) = \hat\theta_t[x_0{=}1] - \hat\theta_t[x_0{=}0]$.
+    This is the most direct ``how much of $x_0$ is left in today's
+    belief''.
+    \item \textbf{Run-survival} $p(r_t \ge t \mid x_{1:t})$: the
+    posterior probability that the current run still reaches back to
+    $x_0$, i.e. that $x_0$ is still considered part of the present
+    regime.
+    \item \textbf{Retrodiction} $p(x_0{=}1 \mid x_{1:t})$: the
+    recoverability of $x_0$ from the future, obtained from the ratio of
+    BOCPD marginal likelihoods of the sequence with $x_0$ forced to $1$
+    versus $0$,
+    \begin{equation}
+        p(x_0{=}1 \mid x_{1:t})
+        = \frac{\mathcal L(1, x_{1:t})}{\mathcal L(1,x_{1:t}) + \mathcal L(0,x_{1:t})},
+        \qquad
+        \mathcal L(x_{0:t}) = \prod_{s=0}^{t} p(x_s \mid x_{0:s-1}).
+    \end{equation}
+\end{itemize}
+
+\paragraph{Result.}
+The kernel weight $m(t)$ decays \emph{exponentially} for the
+constant-hazard observer (straight on log-linear axes, fitted rate
+$\approx 0.012$, Fig.~\ref{fig:cpd-two-power-laws}D) and as a
+\emph{power law} for the decreasing-hazard observer (straight on log-log
+axes, fitted slope $\approx -0.89$ for $\alpha = 1$,
+Fig.~\ref{fig:cpd-two-power-laws}C). Thus a single, biologically
+motivated assumption -- that the world is power-law-volatile, encoded as
+a decreasing hazard -- turns exponential forgetting into power-law
+forgetting. The run-survival measure preserves the same ordering: the
+decreasing-hazard observer keeps $x_0$ in the current regime far longer,
+although it plateaus rather than following a clean power law
+(Fig.~\ref{fig:cpd-two-power-laws}E).
+
+The fitted power-law exponent does depend on the assumed world exponent
+$\alpha$ (Fig.~\ref{fig:cpd-forgetting-exponents}). Over the tested range
+it lies near $1$ for small $\alpha$ -- approaching the $1/t$ dilution
+limit of an observer that essentially never resets -- and decreases as
+$\alpha$ grows and the forgetting kernel becomes progressively more
+exponential. The precise mapping between the world exponent and the
+forgetting exponent is sensitive to the fit window and to finite-$T$
+effects and is left for a more careful analysis; the robust claim here
+is the qualitative dichotomy (exponential vs power-law forgetting), not a
+specific exponent identity.
+
+\paragraph{An important caveat (retrodiction does not forget).}
+The retrodiction $p(x_0 \mid x_{1:t})$ does \emph{not} decay; it
+converges to a constant (Fig.~\ref{fig:cpd-two-power-laws}F). This is
+expected: ideal Bayesian smoothing that retains the full marginal
+likelihood never forgets, because the evidence about $x_0$ accumulated
+in the first few steps is locked into the likelihood and later
+observations are simply uninformative about $x_0$. Forgetting is
+therefore a property of the \emph{bounded, online predictive state}
+(the run-length posterior and the predictive mean), not of ideal
+inference with unbounded memory. This is itself a useful framing point:
+power-law forgetting is what a resource-limited observer with a
+power-law-volatile world model exhibits, not a failure of optimality.
+
+\paragraph{Why this matters for the chapter.}
+This gives the chapter a sharper spine. (i) The decreasing hazard is the
+ideal-observer model for a heavy-tailed world. (ii) Its forgetting
+kernel is a power law. (iii) A power-law kernel is a sum of exponentials
+with logarithmically spaced timescales, i.e. exactly a bank of diverse
+fixed learning rates -- the same object as the consolidation
+learning-rate gradient developed earlier in the chapter. So the rate
+diversity is not only an approximation basis for change-point inference,
+it is what is needed to realise power-law forgetting. We leave the
+explicit kernel-decomposition simulation (and the link to empirical
+power-law forgetting curves) as the next step.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\linewidth]{cpd_two_power_laws.pdf}
+\caption{\textbf{[Exploration]} Two power laws connected by a
+decreasing hazard. A: assumed hazard $H(r)$, constant vs decreasing
+(power-law) hazard. B: implied regime-duration survival $S(g)$ on
+log-log axes; the constant hazard is exponential (curved), the
+decreasing hazard is a power law (straight). C: forgetting kernel
+$m(t)$ on log-log axes; the decreasing-hazard observer forgets as a
+power law (straight). D: the same kernel on log-linear axes; the
+constant-hazard observer forgets exponentially (straight). E:
+run-survival $p(r_t \ge t \mid x_{1:t})$, log-log. F: retrodiction
+$p(x_0{=}1\mid x_{1:t}) - 0.5$ on linear axes, which converges rather
+than decaying -- ideal smoothing does not forget. Stable Bernoulli
+stream, $\theta=0.8$; curves averaged over sampled continuations.}
+\label{fig:cpd-two-power-laws}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\linewidth]{cpd_forgetting_exponents.pdf}
+\caption{\textbf{[Exploration]} The fitted forgetting exponent (log-log
+slope magnitude of the kernel $m(t)$) as a function of the assumed world
+exponent $\alpha$ of the decreasing hazard. It is near $1$ for small
+$\alpha$ (heavy-tailed world, approaching the $1/t$ dilution limit) and
+decreases as $\alpha$ grows and the kernel becomes more exponential. The
+exact mapping is preliminary (sensitive to fit window and finite $T$).}
+\label{fig:cpd-forgetting-exponents}
+\end{figure}
