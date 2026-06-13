@@ -30,6 +30,8 @@ git pull --ff-only
 git push
 ```
 
+GitHub `origin/master` is the default branch; the old GitHub `main` branch is intentionally not used. A multi-URL `git push` is not atomic: if GitHub succeeds and Overleaf fails (or the reverse), fix the reported problem and run `git push` again until both remotes are at the same commit.
+
 This keeps GitHub as the branch/worktree/PR review surface and Overleaf as the convenient compiled-PDF review surface for the accepted `master` state. Overleaf's Git integration is not a full Git host: official Overleaf docs say each project supports one linear history, limits branches to one, and that branch is hard-coded as `master` (`https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration/advanced-git-operations.md`). Do not expect one Overleaf project to compile arbitrary feature branches. For branch previews, use GitHub Actions artifacts or a separate disposable Overleaf preview project pushed with `feature-branch:master`.
 
 The `github-template` remote is only for the public thesis template. Its local branch is `template`, tracking `github-template/master`. Do not push thesis `master` to `github-template`.

@@ -159,3 +159,8 @@ TSWLatexianTemp*
 
 # Ignore everything in output directory
 output
+
+# GitHub Actions/local CI artifacts
+ci_artifacts/
+thesis-latexdiff.tex
+thesis-latexdiff.pdf

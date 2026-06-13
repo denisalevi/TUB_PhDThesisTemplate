@@ -1,0 +1,71 @@
+name: Build thesis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Compile thesis and latexdiff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Compute latexdiff base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin master:refs/remotes/origin/master
+          base_sha="$(git merge-base origin/master HEAD)"
+          echo "BASE_SHA=${base_sha}" >> "${GITHUB_ENV}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)" >> "${GITHUB_ENV}"
+          echo "Latexdiff base: ${base_sha}"
+          echo "PR/head commit: $(git rev-parse HEAD)"
+
+      - name: Compile PDFs
+        uses: xu-cheng/texlive-action@v3
+        with:
+          os: debian
+          scheme: full
+          run: |
+            set -euo pipefail
+            git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+            chmod +x compile.sh scripts/generate_latexdiff.py
+            mkdir -p ci_artifacts
+
+            rm -rf output thesis.pdf
+            ./compile.sh
+            cp thesis.pdf ci_artifacts/thesis.pdf
+            cp output/output.log ci_artifacts/thesis.log
+
+            python3 scripts/generate_latexdiff.py \
+              --base-ref "${BASE_SHA}" \
+              --head-ref "${HEAD_SHA}" \
+              --output thesis-latexdiff.tex
+            rm -rf output thesis-latexdiff.pdf
+            ./compile.sh thesis-latexdiff.tex
+            cp thesis-latexdiff.pdf ci_artifacts/thesis-latexdiff.pdf
+            cp output/output.log ci_artifacts/thesis-latexdiff.log
+            cp thesis-latexdiff.tex ci_artifacts/thesis-latexdiff.tex
+
+      - name: Upload PDFs and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: thesis-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ci_artifacts/thesis.pdf
+            ci_artifacts/thesis.log
+            ci_artifacts/thesis-latexdiff.pdf
+            ci_artifacts/thesis-latexdiff.log
+            ci_artifacts/thesis-latexdiff.tex
+          if-no-files-found: warn
+          retention-days: 14
