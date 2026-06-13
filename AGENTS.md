@@ -6,6 +6,34 @@ This file provides guidance to any agents when working with code in this reposit
 
 This is Denis Alevi's PhD thesis (TU Berlin), built on the `TUB_PhDThesisTemplate` LaTeX template. The primary output is `thesis.pdf`. The template has been adapted to use `latexmk` so the same tree compiles locally and on Overleaf without changes.
 
+## Git remotes and branch workflow
+
+The intended source of truth for Git history is the private GitHub thesis repository:
+
+```bash
+origin            git@github.com:denisalevi/phd-thesis.git
+overleaf          https://git@git.overleaf.com/696cbdc684249cbe9dd39df1
+github-template   git@github.com:denisalevi/TUB_PhDThesisTemplate.git
+```
+
+Local `master` should track `origin/master`. Configure `origin` with two push URLs so a normal `git push` sends the accepted thesis state to both GitHub and Overleaf:
+
+```bash
+git remote set-url --push origin git@github.com:denisalevi/phd-thesis.git
+git remote set-url --add --push origin https://git@git.overleaf.com/696cbdc684249cbe9dd39df1
+```
+
+Then the routine workflow is:
+
+```bash
+git pull --ff-only
+git push
+```
+
+This keeps GitHub as the branch/worktree/PR review surface and Overleaf as the convenient compiled-PDF review surface for the accepted `master` state. Overleaf's Git integration is not a full Git host: official Overleaf docs say each project supports one linear history, limits branches to one, and that branch is hard-coded as `master` (`https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration/advanced-git-operations.md`). Do not expect one Overleaf project to compile arbitrary feature branches. For branch previews, use GitHub Actions artifacts or a separate disposable Overleaf preview project pushed with `feature-branch:master`.
+
+The `github-template` remote is only for the public thesis template. Its local branch is `template`, tracking `github-template/master`. Do not push thesis `master` to `github-template`.
+
 ## Build commands
 
 Use `compile.sh`. It is the primary (and only) build path to use unless there is a specific reason to reach for something else.
