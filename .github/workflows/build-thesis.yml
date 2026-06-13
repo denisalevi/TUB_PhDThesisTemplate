@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   build:
@@ -25,10 +26,13 @@ jobs:
           set -euo pipefail
           git fetch origin master:refs/remotes/origin/master
           base_sha="$(git merge-base origin/master HEAD)"
+          head_sha="$(git rev-parse HEAD)"
           echo "BASE_SHA=${base_sha}" >> "${GITHUB_ENV}"
-          echo "HEAD_SHA=$(git rev-parse HEAD)" >> "${GITHUB_ENV}"
+          echo "HEAD_SHA=${head_sha}" >> "${GITHUB_ENV}"
+          printf '%s\n' "${base_sha}" > .latexdiff-base-sha
+          printf '%s\n' "${head_sha}" > .latexdiff-head-sha
           echo "Latexdiff base: ${base_sha}"
-          echo "PR/head commit: $(git rev-parse HEAD)"
+          echo "PR/head commit: ${head_sha}"
 
       - name: Compile PDFs
         uses: xu-cheng/texlive-action@v3
@@ -46,6 +50,8 @@ jobs:
             cp thesis.pdf ci_artifacts/thesis.pdf
             cp output/output.log ci_artifacts/thesis.log
 
+            BASE_SHA="$(cat .latexdiff-base-sha)"
+            HEAD_SHA="$(cat .latexdiff-head-sha)"
             python3 scripts/generate_latexdiff.py \
               --base-ref "${BASE_SHA}" \
               --head-ref "${HEAD_SHA}" \
@@ -57,6 +63,7 @@ jobs:
             cp thesis-latexdiff.tex ci_artifacts/thesis-latexdiff.tex
 
       - name: Upload PDFs and logs
+        id: upload-thesis-artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -69,3 +76,53 @@ jobs:
             ci_artifacts/thesis-latexdiff.tex
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Comment artifact link on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          ARTIFACT_URL: ${{ steps.upload-thesis-artifact.outputs.artifact-url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const marker = '<!-- thesis-build-artifact-link -->';
+            const artifactUrl = process.env.ARTIFACT_URL;
+            const runUrl = process.env.RUN_URL;
+            const body = [
+              marker,
+              'Thesis build artifact for this PR update:',
+              '',
+              artifactUrl
+                ? `- [Download thesis PDFs and logs](${artifactUrl})`
+                : '- Artifact link was not produced; check the workflow run.',
+              `- [Workflow run](${runUrl})`,
+              `- Commit: \`${context.sha}\``
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100
+            });
+            const existing = comments.find((comment) =>
+              comment.user.type === 'Bot' && comment.body.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body
+              });
+            }
